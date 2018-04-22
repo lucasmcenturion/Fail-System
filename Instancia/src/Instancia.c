@@ -36,5 +36,6 @@ void imprimirArchivoConfiguracion(){
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
 	return EXIT_SUCCESS;
 }

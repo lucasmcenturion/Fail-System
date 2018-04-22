@@ -1,8 +1,8 @@
 #include "sockets.h"
 
-void Servidor(char* ip, int puerto, char nombre[11],
+void Servidor(char* ip, int puerto, char nombre[13],
 		void (*accion)(Paquete* paquete, int socketFD),
-		int (*RecibirPaquete)(int socketFD, char receptor[11], Paquete* paquete)) {
+		int (*RecibirPaquete)(int socketFD, char receptor[13], Paquete* paquete)) {
 	printf("Iniciando Servidor %s\n", nombre);
 	int SocketEscucha = StartServidor(ip, puerto);
 	fd_set master; // conjunto maestro de descriptores de fichero
@@ -51,7 +51,7 @@ void Servidor(char* ip, int puerto, char nombre[11],
 	}
 }
 
-void ServidorConcurrente(char* ip, int puerto, char nombre[11], t_list** listaDeHilos,
+void ServidorConcurrente(char* ip, int puerto, char nombre[13], t_list** listaDeHilos,
 		bool* terminar, void (*accionHilo)(void* socketFD)) {
 	printf("Iniciando Servidor %s\n", nombre);
 	*terminar = false;
@@ -84,7 +84,7 @@ void ServidorConcurrente(char* ip, int puerto, char nombre[11], t_list** listaDe
 }
 
 
-void ServidorConcurrenteForks(char* ip, int puerto, char nombre[11], t_list** listaDeProcesos,
+void ServidorConcurrenteForks(char* ip, int puerto, char nombre[13], t_list** listaDeProcesos,
 		bool* terminar, void (*accionPadre)(void* socketFD), void (*accionHijo) (void* socketFD)) {
 	printf("Iniciando Servidor %s\n", nombre);
 	*terminar = false;
@@ -129,8 +129,8 @@ void ServidorConcurrenteForks(char* ip, int puerto, char nombre[11], t_list** li
 
 
 
-int ConectarAServidor(int puertoAConectar, char* ipAConectar, char servidor[11],
-		char cliente[11], void RecibirElHandshake(int socketFD, char emisor[11])) {
+int ConectarAServidor(int puertoAConectar, char* ipAConectar, char servidor[13],
+		char cliente[13], void RecibirElHandshake(int socketFD, char emisor[13])) {
 	int socketFD = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in direccion;
@@ -148,24 +148,6 @@ int ConectarAServidor(int puertoAConectar, char* ipAConectar, char servidor[11],
 
 }
 
-int ConectarAServidorDatanode(int puertoAConectar, char* ipAConectar, char servidor[11],
-		char cliente[11], void RecibirElHandshake(int socketFD, char emisor[11]),void enviarElHandshake(int socketFD, char emisor[11])) {
-	int socketFD = socket(AF_INET, SOCK_STREAM, 0);
-
-	struct sockaddr_in direccion;
-
-	direccion.sin_family = AF_INET;
-	direccion.sin_port = htons(puertoAConectar);
-	direccion.sin_addr.s_addr = inet_addr(ipAConectar);
-	memset(&(direccion.sin_zero), '\0', 8);
-
-	while (connect(socketFD, (struct sockaddr *) &direccion, sizeof(struct sockaddr))<0)
-		sleep(1); //Espera un segundo y se vuelve a tratar de conectar.
-	enviarElHandshake(socketFD, cliente);
-	RecibirElHandshake(socketFD, servidor);
-	return socketFD;
-
-}
 
 int StartServidor(char* MyIP, int MyPort) // obtener socket a la escucha
 {
@@ -232,7 +214,7 @@ bool EnviarPaquete(int socketCliente, Paquete* paquete) {
 	return valor_retorno;
 }
 
-bool EnviarDatosTipo(int socketFD, char emisor[11], void* datos, int tamDatos, tipo tipoMensaje){
+bool EnviarDatosTipo(int socketFD, char emisor[13], void* datos, int tamDatos, tipo tipoMensaje){
 	Paquete* paquete = malloc(sizeof(Paquete));
 	//paquete->Payload=malloc(tamDatos);
 	paquete->header.tipoMensaje = tipoMensaje;
@@ -252,7 +234,7 @@ bool EnviarDatosTipo(int socketFD, char emisor[11], void* datos, int tamDatos, t
 	free(paquete);
 	return valor_retorno;
 }
-bool EnviarMensaje(int socketFD, char* msg, char emisor[11]) {
+bool EnviarMensaje(int socketFD, char* msg, char emisor[13]) {
 	Paquete paquete;
 	strcpy(paquete.header.emisor, emisor);
 	paquete.header.tipoMensaje = ESSTRING;
@@ -261,7 +243,7 @@ bool EnviarMensaje(int socketFD, char* msg, char emisor[11]) {
 	return EnviarPaquete(socketFD, &paquete);
 }
 
-void EnviarHandshake(int socketFD, char emisor[11]) {
+void EnviarHandshake(int socketFD, char emisor[13]) {
 	Paquete* paquete = malloc(TAMANIOHEADER);
 	Header header;
 	header.tipoMensaje = ESHANDSHAKE;
@@ -273,11 +255,11 @@ void EnviarHandshake(int socketFD, char emisor[11]) {
 	free(paquete);
 }
 
-bool EnviarDatos(int socketFD, char emisor[11], void* datos, int tamDatos) {
+bool EnviarDatos(int socketFD, char emisor[13], void* datos, int tamDatos) {
 	return EnviarDatosTipo(socketFD, emisor, datos, tamDatos, ESDATOS);
 }
 
-void RecibirHandshake(int socketFD, char emisor[11]) {
+void RecibirHandshake(int socketFD, char emisor[13]) {
 	Header header;
 	int resul = RecibirDatos(&header, socketFD, TAMANIOHEADER);
 	if (resul > 0) { // si no hubo error en la recepcion
@@ -338,7 +320,7 @@ int RecibirDatos(void* paquete, int socketFD, uint32_t cantARecibir) {
 	return recibido;
 }*/
 
-int RecibirPaqueteServidor(int socketFD, char receptor[11], Paquete* paquete) {
+int RecibirPaqueteServidor(int socketFD, char receptor[13], Paquete* paquete) {
 	paquete->Payload = NULL;
 	int resul = RecibirDatos(&(paquete->header), socketFD, TAMANIOHEADER);
 	if (resul > 0) { //si no hubo error
@@ -353,26 +335,7 @@ int RecibirPaqueteServidor(int socketFD, char receptor[11], Paquete* paquete) {
 	return resul;
 }
 
-int RecibirPaqueteServidorFS(int socketFD, char receptor[11], Paquete* paquete) {
-	paquete->Payload = NULL;
-	int resul = RecibirDatos(&(paquete->header), socketFD, TAMANIOHEADER);
-	if (resul > 0) { //si no hubo error
-		if (paquete->header.tipoMensaje == ESHANDSHAKE) { //vemos si es un handshake
-			printf("Se establecio conexion con %s\n", paquete->header.emisor);
-			if(!strcmp(paquete->header.emisor,DATANODE)){
-					paquete->Payload = malloc(paquete->header.tamPayload);
-					resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
-			}
-			EnviarHandshake(socketFD, receptor); // paquete->header.emisor
-		} else if (paquete->header.tamPayload > 0){ //recibimos un payload y lo procesamos (por ej, puede mostrarlo)
-			paquete->Payload = malloc(paquete->header.tamPayload);
-			resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
-		}
-	}
-	return resul;
-}
-
-int RecibirPaqueteCliente(int socketFD, char receptor[11], Paquete* paquete) {
+int RecibirPaqueteCliente(int socketFD, char receptor[13], Paquete* paquete) {
 	paquete->Payload = NULL;
 	int resul = RecibirDatos(&(paquete->header), socketFD, TAMANIOHEADER);
 	if (resul > 0 && paquete->header.tipoMensaje != ESHANDSHAKE && paquete->header.tamPayload > 0) { //si no hubo error ni es un handshake

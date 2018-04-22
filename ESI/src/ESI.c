@@ -30,5 +30,7 @@ void imprimirArchivoConfiguracion(){
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	ConectarAServidor(PUERTO_PLANIFICADOR, IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake);
+	ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, ESI, RecibirHandshake);
 	return EXIT_SUCCESS;
 }
