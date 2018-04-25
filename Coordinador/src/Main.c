@@ -1,4 +1,9 @@
-int main(void) {
+#include "Coordinador.h"
+#include "sockets.h"
+
+t_list* listaHilos;
+
+int main(){
 
 	obtenerValoresArchivoConfiguracion();
 
