@@ -1,12 +1,13 @@
 #include "sockets.h"
-#include "Coordinador.h"
+#define logearError(msg) {log_error(vg_logger,msg);}
 
-/* char *IP, *ALGORITMO_DISTRIBUCION;
-int PUERTO_COORDINADOR, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO;
+/* Variables Globales */
+char *IP, *ALGORITMO_DISTRIBUCION;
+int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO;
 t_list* listaHilos;
-bool end;  */  //Las dejo como variables globales en el .h
+bool end;
+t_log * vg_logger = NULL;
 
-t_list* listaHilos; //No se por qué me tira error en el Coordinador.h
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Coordinador/coordinador.cfg");
@@ -39,7 +40,7 @@ void imprimirArchivoConfiguracion(){
 	fflush(stdout);
 }
 
-/* int comprobarValoresBienSeteados() {
+int comprobarValoresBienSeteados() {
 
 	int retorno = 1;
 
@@ -51,7 +52,7 @@ void imprimirArchivoConfiguracion(){
 
 
 	return retorno;
-} */ //Necesito la general
+}  //Necesito la general
 
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
@@ -66,7 +67,7 @@ void accion(void* socket) {
 
 
 
-/* int main(void) {
+int main(void) {
 
 	obtenerValoresArchivoConfiguracion();
 
@@ -75,4 +76,4 @@ void accion(void* socket) {
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 
 	return EXIT_SUCCESS;
-} */
+}
