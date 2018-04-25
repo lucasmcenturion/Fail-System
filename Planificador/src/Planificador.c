@@ -6,6 +6,9 @@ char **CLAVES_BLOQUEADAS;
 
 int socketCoordinador;
 
+t_list* listaHilos;
+bool end;
+
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Planificador/planificadorCFG.txt");
 	IP = string_duplicate(config_get_string_value(arch, "IP"));
@@ -40,14 +43,42 @@ void imprimirArchivoConfiguracion(){
 }
 
 
-void accion(Paquete* paquete, int socketFD){
-//SWITCH
+void consola() {
+	char * linea;
+	while (true) {
+		linea = readline(">> ");
+		if (linea)
+			add_history(linea);
+		if (!strcmp(linea, "Pausar/Continuar")) {
+			printf("Pausó/Continuó\n");
+		}
+		else if (!strcmp(linea, "exit")) {
+			printf("salio\n");
+			free(linea);
+			break;
+		} else
+			printf("no se conoce el comando\n");
+		free(linea);
+	}
+}
+
+
+void accion(void* socket) {
+	int socketFD = *(int*) socket;
+	Paquete paquete;
+	void* datos;
+	while (RecibirPaqueteServidor(socketFD, COORDINADOR, &paquete) > 0) {
+	//SWITCH
+	}
 }
 
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
 	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, PLANIFICADOR, RecibirHandshake);
-	Servidor(IP, PUERTO, PLANIFICADOR, accion, RecibirPaqueteServidor);
+	pthread_t hiloConsola;
+	pthread_create(&hiloConsola, NULL, (void*) consola, NULL);
+	ServidorConcurrente(IP,PUERTO, PLANIFICADOR, &listaHilos, &end, accion);
+	pthread_join(hiloConsola, NULL);
 	return EXIT_SUCCESS;
 }
