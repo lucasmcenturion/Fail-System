@@ -67,6 +67,7 @@ void accion(void* socket) {
 
 
 
+
 int main(void) {
 
 	obtenerValoresArchivoConfiguracion();
