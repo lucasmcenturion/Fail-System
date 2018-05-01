@@ -93,7 +93,16 @@ void accion(void* socket) {
 				break;
 			}
 		}
-
+		if(!strcmp(paquete.header.emisor, ESI)){
+			switch(paquete.header.tipoMensaje){
+				case NUEVAOPERACION:{
+					//aca se recibe la operacion
+					//recibir linea del ESI, separarlo por espacios, verificar el primer elemento
+					//si es SET,GET o STORE
+				}
+				break;
+			}
+		}
 		if (paquete.Payload != NULL)
 			free(paquete.Payload);
 	}

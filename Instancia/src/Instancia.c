@@ -1,7 +1,7 @@
 #include "sockets.h"
 
 char *IP_COORDINADOR, *ALGORITMO_REEMPLAZO, *PUNTO_MONTAJE, *NOMBRE_INSTANCIA;
-int PUERTO_COORDINADOR, INTERVALO_DUMP;
+int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA;
 char **tabla_entradas;
 t_list *entradas_administrativa;
 
@@ -34,7 +34,12 @@ void imprimirArchivoConfiguracion(){
 				);
 	fflush(stdout);
 }
+int ceilDivision(int tamanio) {
+	double cantidadEntradas;
+	cantidadEntradas = (tamanio + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
+	return cantidadEntradas;
 
+}
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
@@ -50,22 +55,48 @@ int main(void) {
 			}
 			break;
 			case GET:{
-
+				int tamanioKey = *((int*)datos);
+				datos+=sizeof(int);
+				char *key = malloc(tamanioKey);
+				strcpy(key,datos);
 			}
 			break;
 			case SET:{
+				int tamanioKey = *((int*)datos);
+				datos+=sizeof(int);
+				char *key = malloc(tamanioKey);
+				strcpy(key,datos);
+				datos+=strlen(tamanioKey);
+				int tamanioValue = *((int*)datos);
+				datos +=sizeof(int);
+				char *value = malloc(tamanioValue);
+				strcpy(value,datos);
 
+				t_Entrada *nueva=malloc(sizeof(t_Entrada));
+				nueva->clave=malloc(tamanioKey);
+				strcpy(nueva->clave,key);
+				//luego hacer otra funcion que retorne el primer index del array libre y que entre todo el value
+				// ( puede que halla uno libre pero que se exceda del tamaño maximo del array )
+				nueva->index = 0;
+				nueva->tamanio = ceilDivision(strlen(value));
+				//hay que partir el value en ENTRADAS y guardarlo
+
+
+				/*int i;
+				for(i=nueva->index;i<nueva->index+nueva->tamanio;i++){
+					tabla_entradas[nueva->index]=
+				}*/
 			}
 			break;
 			case GETENTRADAS:{
-				int tamanioEntradas=*((int*)datos);
+				TAMANIO_ENTRADA=*((int*)datos);
 				datos+=sizeof(int);
-				int cantidadEntradas=*((int*)datos);
+				CANT_ENTRADA=*((int*)datos);
 				datos+=sizeof(int);
-				tabla_entradas=malloc(cantidadEntradas*sizeof(char*));
+				tabla_entradas=malloc(CANT_ENTRADA*sizeof(char*));
 				int i;
-				for(i=0;i<cantidadEntradas;i++){
-					tabla_entradas[i]=malloc(tamanioEntradas);
+				for(i=0;i<CANT_ENTRADA;i++){
+					tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
 				}
 
 			}
