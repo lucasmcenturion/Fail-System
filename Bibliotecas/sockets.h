@@ -20,7 +20,8 @@
 #define COORDINADOR "Coordinador "
 #define PLANIFICADOR "Planificador"
 
-typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR} tipo;
+typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR, IDENTIFICACIONINSTANCIA,SOLICITUDNOMBRE, GET, SET,
+				GETENTRADAS} tipo;
 
 typedef struct {
 	tipo tipoMensaje;

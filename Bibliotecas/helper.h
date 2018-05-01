@@ -42,4 +42,16 @@ void escribir_log(char* nombre_log,char* proceso,char* mensaje,char* tipo);
 char* integer_to_string(char*string,int x);
 size_t getFileSize(const char* filename);
 
+
+typedef struct {
+	int socket;
+	char* nombre;
+}__attribute__((packed)) t_IdInstancia;
+
+typedef struct {
+	char* clave;
+	int index;
+	int tamanio;
+}__attribute__((packed)) t_Entrada;
+
 #endif /* HELPER_*/

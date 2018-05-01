@@ -7,6 +7,8 @@ int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO;
 t_list* listaHilos;
 bool end;
 t_log * vg_logger = NULL;
+t_list* instancias;
+pthread_mutex_t mutex_instancias;
 
 
 void obtenerValoresArchivoConfiguracion() {
@@ -60,7 +62,42 @@ void accion(void* socket) {
 	void* datos;
 	while (RecibirPaqueteServidor(socketFD, COORDINADOR, &paquete) > 0) {
 	//SWITCH
+		if (!strcmp(paquete.header.emisor, INSTANCIA)) {
+			switch(paquete.header.tipoMensaje){
+				case ESHANDSHAKE:{
+					void *datosNombre=malloc(sizeof(int));
+					EnviarDatosTipo(socketFD,COORDINADOR,datos,0,SOLICITUDNOMBRE);
+					free(datosNombre);
+					int tamanioDatosEntradas=sizeof(int)*2;
+					void *datosEntradas=malloc(tamanioDatosEntradas);
+					*((int*)datosEntradas)=TAMANIO_ENTRADA;
+					datosEntradas+=sizeof(int);
+					*((int*)datosEntradas)=CANT_ENTRADAS;
+					datosEntradas+=sizeof(int);
+					datosEntradas-=tamanioDatosEntradas;
+					EnviarDatosTipo(socketFD,COORDINADOR,datosEntradas,tamanioDatosEntradas,GETENTRADAS);
+					free(datosEntradas);
+				}
+				break;
+				case IDENTIFICACIONINSTANCIA: {
+					char *nombreInstancia = malloc(paquete.header.tamPayload);
+					strcpy(nombreInstancia,(char*)paquete.Payload);
+					t_IdInstancia *instancia= malloc(sizeof(t_IdInstancia));
+					instancia->socket=socketFD;
+					instancia->nombre=malloc(strlen(nombreInstancia)+1);
+					strcpy(instancia->nombre,nombreInstancia);
+					pthread_mutex_lock(&mutex_instancias);
+					list_add(instancias,instancia);
+					pthread_mutex_unlock(&mutex_instancias);
+				}
+				break;
+			}
+		}
+
+		if (paquete.Payload != NULL)
+			free(paquete.Payload);
 	}
+	close(socketFD);
 }
 
 
@@ -71,9 +108,9 @@ void accion(void* socket) {
 int main(void) {
 
 	obtenerValoresArchivoConfiguracion();
-
 	imprimirArchivoConfiguracion();
-
+	pthread_mutex_init(&mutex_instancias,NULL);
+	instancias=list_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 
 	return EXIT_SUCCESS;
