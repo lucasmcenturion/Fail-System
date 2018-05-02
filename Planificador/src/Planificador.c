@@ -9,6 +9,11 @@ int socketCoordinador;
 t_list* listaHilos;
 bool end;
 
+//COLAS
+
+t_list *listos, *ejecucion, *bloqueados, *terminados;
+
+
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Planificador/planificadorCFG.txt");
 	IP = string_duplicate(config_get_string_value(arch, "IP"));

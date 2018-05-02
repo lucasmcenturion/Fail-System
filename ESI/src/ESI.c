@@ -27,9 +27,12 @@ void imprimirArchivoConfiguracion(){
 	fflush(stdout);
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	char* programaAEjecutar = argv[1];
+	printf("el programa a ejecutar es %s", programaAEjecutar);
+	fflush(stdout);
 	ConectarAServidor(PUERTO_PLANIFICADOR, IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake);
 	ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, ESI, RecibirHandshake);
 	return EXIT_SUCCESS;
