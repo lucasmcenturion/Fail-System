@@ -62,16 +62,23 @@ int getProximo(){
 	if(list_size(instancias)==0)
 		return 0;
 	t_IdInstancia *aux;
-	if(!list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo;}))){
+
+	if(list_all_satisfy(instancias,LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo==true;}))){
 		list_iterate(instancias, LAMBDA(void _(t_IdInstancia * elemento) {  elemento->activo=false;}));
-		t_IdInstancia* nuevo = list_get(instancias,0);
-		nuevo->activo=true;
-		list_replace(instancias,0,nuevo);
-		return ((t_IdInstancia*)list_get(instancias,0))->socket;
+		aux= list_get(instancias,0);
+		aux->activo=true;
+		list_replace(instancias,0,aux);
+		return aux->socket;
 	}
-	t_IdInstancia * replace= list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo;}));
-	replace->activo=true;
-	return replace->socket;
+	int i=-1;
+	bool proximo (t_IdInstancia *elemento){
+		i++;
+		return elemento->activo;
+	}
+	aux= list_get(instancias, (void*)proximo);
+	aux->activo=true;
+	list_replace(instancias,i,aux);
+	return aux->socket;
 
 }
 void accion(void* socket) {
