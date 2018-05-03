@@ -54,8 +54,26 @@ int comprobarValoresBienSeteados() {
 
 
 	return retorno;
-}  //Necesito la general
+}
+bool inactivo (t_IdInstancia * elemento){
+		return elemento->activo;
+}
+int getProximo(){
+	if(list_size(instancias)==0)
+		return 0;
+	t_IdInstancia *aux;
+	if(!list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo;}))){
+		list_iterate(instancias, LAMBDA(void _(t_IdInstancia * elemento) {  elemento->activo=false;}));
+		t_IdInstancia* nuevo = list_get(instancias,0);
+		nuevo->activo=true;
+		list_replace(instancias,0,nuevo);
+		return ((t_IdInstancia*)list_get(instancias,0))->socket;
+	}
+	t_IdInstancia * replace= list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo;}));
+	replace->activo=true;
+	return replace->socket;
 
+}
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
@@ -85,10 +103,12 @@ void accion(void* socket) {
 					t_IdInstancia *instancia= malloc(sizeof(t_IdInstancia));
 					instancia->socket=socketFD;
 					instancia->nombre=malloc(strlen(nombreInstancia)+1);
+					instancia->activo = false;
 					strcpy(instancia->nombre,nombreInstancia);
 					pthread_mutex_lock(&mutex_instancias);
 					list_add(instancias,instancia);
 					pthread_mutex_unlock(&mutex_instancias);
+					getProximo();
 				}
 				break;
 			}
@@ -99,6 +119,14 @@ void accion(void* socket) {
 					//aca se recibe la operacion
 					//recibir linea del ESI, separarlo por espacios, verificar el primer elemento
 					//si es SET,GET o STORE
+					if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
+						int socketSiguiente = getProximo();
+						if(socketSiguiente!=0){
+
+						}else{
+							//error, no hay instancias conectadas al sistema
+						}
+					}
 				}
 				break;
 			}

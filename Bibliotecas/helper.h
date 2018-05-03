@@ -46,6 +46,7 @@ size_t getFileSize(const char* filename);
 typedef struct {
 	int socket;
 	char* nombre;
+	bool activo;
 }__attribute__((packed)) t_IdInstancia;
 
 typedef struct {
