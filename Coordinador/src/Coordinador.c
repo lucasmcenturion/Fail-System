@@ -101,9 +101,7 @@ void accion(void* socket) {
 		if (!strcmp(paquete.header.emisor, INSTANCIA)) {
 			switch(paquete.header.tipoMensaje){
 				case ESHANDSHAKE:{
-					void *datosNombre=malloc(sizeof(int));
-					EnviarDatosTipo(socketFD,COORDINADOR,datos,0,SOLICITUDNOMBRE);
-					free(datosNombre);
+					EnviarDatosTipo(socketFD,COORDINADOR,1,0,SOLICITUDNOMBRE);
 					int tamanioDatosEntradas=sizeof(int)*2;
 					void *datosEntradas=malloc(tamanioDatosEntradas);
 					*((int*)datosEntradas)=TAMANIO_ENTRADA;
@@ -126,6 +124,33 @@ void accion(void* socket) {
 					pthread_mutex_lock(&mutex_instancias);
 					list_add(instancias,instancia);
 					pthread_mutex_unlock(&mutex_instancias);
+
+					/*//para testeo SET
+					int tamanioTesteo=2*sizeof(int)+strlen("unaKey")+strlen("value2")+2;
+					void *datosTesteo=malloc(tamanioTesteo);
+					*((int*)datosTesteo)=strlen("unaKey")+1;
+					datosTesteo+=sizeof(int);
+					strcpy(datosTesteo,"unaKey");
+					datosTesteo+=strlen("unaKey")+1;
+					*((int*)datosTesteo)=strlen("value")+1;
+					datosTesteo+=sizeof(int);
+					strcpy(datosTesteo,"value2");
+					datosTesteo+=strlen("value2")+1;
+					datosTesteo-=tamanioTesteo;
+
+					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteo,tamanioTesteo,SET);
+					free(datosTesteo);
+					//para testeo GET
+
+					int tamanioTesteoGET=sizeof(int)+strlen("unaKey");
+					void *datosTesteoGET=malloc(tamanioTesteo);
+					*((int*)datosTesteo)=strlen("unaKey")+1;
+					datosTesteo+=sizeof(int);
+					strcpy(datosTesteo,"unaKey");
+					datosTesteo+=strlen("unaKey")+1;
+					datosTesteo-=tamanioTesteo;
+
+					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteoGET,tamanioTesteoGET,GET);*/
 				}
 				break;
 			}

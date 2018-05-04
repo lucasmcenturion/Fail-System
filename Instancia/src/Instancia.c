@@ -49,7 +49,7 @@ int getFirstIndex (int entradasValue){
 			int aux;
 			bool cumple=true;
 			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
-			for(aux=i+1; i< entradasValue; aux++){
+			for(aux=i+1; aux< entradasValue; aux++){
 				if(strcmp(tabla_entradas[aux],"NaN")){
 					cumple=false;
 					break;
@@ -82,6 +82,21 @@ int main(void) {
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);
 				strcpy(key,datos);
+				t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {  return !strcmp(key,elemento->clave);}));
+				char *valueReturn = malloc(esperada->tamanio+1);
+				int contador=0;
+				for (int var = esperada->index; var < esperada->index+esperada->entradasOcupadas; var++) {
+					if((esperada->index+esperada->entradasOcupadas)-1 == var){
+						strcpy(valueReturn,tabla_entradas[var]);
+						valueReturn+=strlen(tabla_entradas[var]);
+						break;
+					}
+					strncpy(valueReturn,tabla_entradas[var],TAMANIO_ENTRADA);
+					valueReturn+=TAMANIO_ENTRADA;
+					contador++;
+				}
+				valueReturn-=esperada->tamanio;
+				printf("%s\n",valueReturn);
 			}
 			break;
 			case SET:{
@@ -89,23 +104,32 @@ int main(void) {
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);
 				strcpy(key,datos);
-				datos+=strlen(tamanioKey);
+				datos+=strlen(key)+1;
 				int tamanioValue = *((int*)datos);
 				datos +=sizeof(int);
 				char *value = malloc(tamanioValue);
 				strcpy(value,datos);
-
 				t_Entrada *nueva=malloc(sizeof(t_Entrada));
 				nueva->clave=malloc(tamanioKey);
 				strcpy(nueva->clave,key);
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
 				nueva->tamanio = strlen(value);
-				nueva->index = getFirstIndex(nueva->tamanio);
+				nueva->index = getFirstIndex(nueva->entradasOcupadas);
 				list_add(entradas_administrativa,nueva);
 				int i;
-				/*for(i=nueva->index;i<nueva->index+nueva->tamanio;i++){
-					strcpy(tabla_entradas[])
-				}*/
+				char *valueAux=malloc(strlen(value)+1);
+				strcpy(valueAux,value);
+				for(i=nueva->index;i<(nueva->index+nueva->entradasOcupadas);i++){
+					if((nueva->index+nueva->entradasOcupadas)-1 == i){
+						strcpy(tabla_entradas[i],valueAux);
+						break;
+					}
+					strncpy(tabla_entradas[i],valueAux,TAMANIO_ENTRADA);
+					valueAux+=TAMANIO_ENTRADA;
+				}
+				free(key);
+				free(value);
+
 			}
 			break;
 			case GETENTRADAS:{
@@ -119,7 +143,6 @@ int main(void) {
 					tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
 					strcpy(tabla_entradas[i],"NaN");
 				}
-
 			}
 			break;
 
