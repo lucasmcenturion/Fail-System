@@ -73,14 +73,25 @@ int getProximo(){
 	int i=-1;
 	bool proximo (t_IdInstancia *elemento){
 		i++;
-		return elemento->activo;
+		if(!elemento->activo)
+			return true;
 	}
-	aux= list_get(instancias, (void*)proximo);
+	list_find(instancias, (void*)proximo);
+	aux= list_get(instancias, i);
 	aux->activo=true;
 	list_replace(instancias,i,aux);
 	return aux->socket;
-
 }
+
+void sacar_instancia(int socket) {
+	int tiene_socket(t_IdInstancia *instancia) {
+		if (instancia->socket == socket)
+			return instancia->socket != socket;
+	}
+	instancias = list_filter(instancias, (void*) tiene_socket);
+}
+
+
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
@@ -115,7 +126,6 @@ void accion(void* socket) {
 					pthread_mutex_lock(&mutex_instancias);
 					list_add(instancias,instancia);
 					pthread_mutex_unlock(&mutex_instancias);
-					getProximo();
 				}
 				break;
 			}
@@ -127,12 +137,15 @@ void accion(void* socket) {
 					//recibir linea del ESI, separarlo por espacios, verificar el primer elemento
 					//si es SET,GET o STORE
 					if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
+						pthread_mutex_lock(&mutex_instancias);
 						int socketSiguiente = getProximo();
 						if(socketSiguiente!=0){
-
+							printf("%s\n",socketSiguiente);
+							fflush(stdout);
 						}else{
 							//error, no hay instancias conectadas al sistema
 						}
+						pthread_mutex_unlock(&mutex_instancias);
 					}
 				}
 				break;
@@ -142,6 +155,9 @@ void accion(void* socket) {
 			free(paquete.Payload);
 	}
 	close(socketFD);
+	pthread_mutex_lock(&mutex_instancias);
+	sacar_instancia(socketFD);
+	pthread_mutex_unlock(&mutex_instancias);
 }
 
 

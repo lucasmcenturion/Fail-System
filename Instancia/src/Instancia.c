@@ -34,15 +34,38 @@ void imprimirArchivoConfiguracion(){
 				);
 	fflush(stdout);
 }
-int ceilDivision(int tamanio) {
+
+int ceilDivision(int lengthValue) {
 	double cantidadEntradas;
-	cantidadEntradas = (tamanio + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
+	cantidadEntradas = (lengthValue + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
 	return cantidadEntradas;
 
 }
+
+int getFirstIndex (int entradasValue){
+	int i;
+	for (i=0;  i< CANT_ENTRADA; i++) {
+		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
+			int aux;
+			bool cumple=true;
+			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
+			for(aux=i+1; i< entradasValue; aux++){
+				if(strcmp(tabla_entradas[aux],"NaN")){
+					cumple=false;
+					break;
+				}
+			}
+			if(cumple)
+				return i;
+		}
+	}
+	return -1;
+}
+
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	entradas_administrativa=list_create();
 	//socket que maneja la conexion con coordinador
 	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
 	Paquete paquete;
@@ -75,16 +98,13 @@ int main(void) {
 				t_Entrada *nueva=malloc(sizeof(t_Entrada));
 				nueva->clave=malloc(tamanioKey);
 				strcpy(nueva->clave,key);
-				//luego hacer otra funcion que retorne el primer index del array libre y que entre todo el value
-				// ( puede que halla uno libre pero que se exceda del tamaño maximo del array )
-				nueva->index = 0;
-				nueva->tamanio = ceilDivision(strlen(value));
-				//hay que partir el value en ENTRADAS y guardarlo
-
-
-				/*int i;
-				for(i=nueva->index;i<nueva->index+nueva->tamanio;i++){
-					tabla_entradas[nueva->index]=
+				nueva->entradasOcupadas = ceilDivision(strlen(value));
+				nueva->tamanio = strlen(value);
+				nueva->index = getFirstIndex(nueva->tamanio);
+				list_add(entradas_administrativa,nueva);
+				int i;
+				/*for(i=nueva->index;i<nueva->index+nueva->tamanio;i++){
+					strcpy(tabla_entradas[])
 				}*/
 			}
 			break;
@@ -97,6 +117,7 @@ int main(void) {
 				int i;
 				for(i=0;i<CANT_ENTRADA;i++){
 					tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
+					strcpy(tabla_entradas[i],"NaN");
 				}
 
 			}

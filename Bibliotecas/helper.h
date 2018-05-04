@@ -52,6 +52,7 @@ typedef struct {
 typedef struct {
 	char* clave;
 	int index;
+	int entradasOcupadas;
 	int tamanio;
 }__attribute__((packed)) t_Entrada;
 
