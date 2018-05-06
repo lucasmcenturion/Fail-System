@@ -62,18 +62,36 @@ int getProximo(){
 	if(list_size(instancias)==0)
 		return 0;
 	t_IdInstancia *aux;
-	if(!list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo;}))){
-		list_iterate(instancias, LAMBDA(void _(t_IdInstancia * elemento) {  elemento->activo=false;}));
-		t_IdInstancia* nuevo = list_get(instancias,0);
-		nuevo->activo=true;
-		list_replace(instancias,0,nuevo);
-		return ((t_IdInstancia*)list_get(instancias,0))->socket;
-	}
-	t_IdInstancia * replace= list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo;}));
-	replace->activo=true;
-	return replace->socket;
 
+	if(list_all_satisfy(instancias,LAMBDA(bool _(t_IdInstancia * elemento) { return elemento->activo==true;}))){
+		list_iterate(instancias, LAMBDA(void _(t_IdInstancia * elemento) {  elemento->activo=false;}));
+		aux= list_get(instancias,0);
+		aux->activo=true;
+		list_replace(instancias,0,aux);
+		return aux->socket;
+	}
+	int i=-1;
+	bool proximo (t_IdInstancia *elemento){
+		i++;
+		if(!elemento->activo)
+			return true;
+	}
+	list_find(instancias, (void*)proximo);
+	aux= list_get(instancias, i);
+	aux->activo=true;
+	list_replace(instancias,i,aux);
+	return aux->socket;
 }
+
+void sacar_instancia(int socket) {
+	int tiene_socket(t_IdInstancia *instancia) {
+		if (instancia->socket == socket)
+			return instancia->socket != socket;
+	}
+	instancias = list_filter(instancias, (void*) tiene_socket);
+}
+
+
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
@@ -83,9 +101,7 @@ void accion(void* socket) {
 		if (!strcmp(paquete.header.emisor, INSTANCIA)) {
 			switch(paquete.header.tipoMensaje){
 				case ESHANDSHAKE:{
-					void *datosNombre=malloc(sizeof(int));
-					EnviarDatosTipo(socketFD,COORDINADOR,datos,0,SOLICITUDNOMBRE);
-					free(datosNombre);
+					EnviarDatosTipo(socketFD,COORDINADOR,1,0,SOLICITUDNOMBRE);
 					int tamanioDatosEntradas=sizeof(int)*2;
 					void *datosEntradas=malloc(tamanioDatosEntradas);
 					*((int*)datosEntradas)=TAMANIO_ENTRADA;
@@ -108,7 +124,33 @@ void accion(void* socket) {
 					pthread_mutex_lock(&mutex_instancias);
 					list_add(instancias,instancia);
 					pthread_mutex_unlock(&mutex_instancias);
-					getProximo();
+
+					/*//para testeo SET
+					int tamanioTesteo=2*sizeof(int)+strlen("unaKey")+strlen("value2")+2;
+					void *datosTesteo=malloc(tamanioTesteo);
+					*((int*)datosTesteo)=strlen("unaKey")+1;
+					datosTesteo+=sizeof(int);
+					strcpy(datosTesteo,"unaKey");
+					datosTesteo+=strlen("unaKey")+1;
+					*((int*)datosTesteo)=strlen("value")+1;
+					datosTesteo+=sizeof(int);
+					strcpy(datosTesteo,"value2");
+					datosTesteo+=strlen("value2")+1;
+					datosTesteo-=tamanioTesteo;
+
+					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteo,tamanioTesteo,SET);
+					free(datosTesteo);
+					//para testeo GET
+
+					int tamanioTesteoGET=sizeof(int)+strlen("unaKey");
+					void *datosTesteoGET=malloc(tamanioTesteo);
+					*((int*)datosTesteo)=strlen("unaKey")+1;
+					datosTesteo+=sizeof(int);
+					strcpy(datosTesteo,"unaKey");
+					datosTesteo+=strlen("unaKey")+1;
+					datosTesteo-=tamanioTesteo;
+
+					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteoGET,tamanioTesteoGET,GET);*/
 				}
 				break;
 			}
@@ -120,12 +162,15 @@ void accion(void* socket) {
 					//recibir linea del ESI, separarlo por espacios, verificar el primer elemento
 					//si es SET,GET o STORE
 					if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
+						pthread_mutex_lock(&mutex_instancias);
 						int socketSiguiente = getProximo();
 						if(socketSiguiente!=0){
-
+							printf("%s\n",socketSiguiente);
+							fflush(stdout);
 						}else{
 							//error, no hay instancias conectadas al sistema
 						}
+						pthread_mutex_unlock(&mutex_instancias);
 					}
 				}
 				break;
@@ -135,6 +180,9 @@ void accion(void* socket) {
 			free(paquete.Payload);
 	}
 	close(socketFD);
+	pthread_mutex_lock(&mutex_instancias);
+	sacar_instancia(socketFD);
+	pthread_mutex_unlock(&mutex_instancias);
 }
 
 

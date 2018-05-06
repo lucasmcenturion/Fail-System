@@ -34,15 +34,38 @@ void imprimirArchivoConfiguracion(){
 				);
 	fflush(stdout);
 }
-int ceilDivision(int tamanio) {
+
+int ceilDivision(int lengthValue) {
 	double cantidadEntradas;
-	cantidadEntradas = (tamanio + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
+	cantidadEntradas = (lengthValue + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
 	return cantidadEntradas;
 
 }
+
+int getFirstIndex (int entradasValue){
+	int i;
+	for (i=0;  i< CANT_ENTRADA; i++) {
+		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
+			int aux;
+			bool cumple=true;
+			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
+			for(aux=i+1; aux< entradasValue; aux++){
+				if(strcmp(tabla_entradas[aux],"NaN")){
+					cumple=false;
+					break;
+				}
+			}
+			if(cumple)
+				return i;
+		}
+	}
+	return -1;
+}
+
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	entradas_administrativa=list_create();
 	//socket que maneja la conexion con coordinador
 	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
 	Paquete paquete;
@@ -59,6 +82,21 @@ int main(void) {
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);
 				strcpy(key,datos);
+				t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {  return !strcmp(key,elemento->clave);}));
+				char *valueReturn = malloc(esperada->tamanio+1);
+				int contador=0;
+				for (int var = esperada->index; var < esperada->index+esperada->entradasOcupadas; var++) {
+					if((esperada->index+esperada->entradasOcupadas)-1 == var){
+						strcpy(valueReturn,tabla_entradas[var]);
+						valueReturn+=strlen(tabla_entradas[var]);
+						break;
+					}
+					strncpy(valueReturn,tabla_entradas[var],TAMANIO_ENTRADA);
+					valueReturn+=TAMANIO_ENTRADA;
+					contador++;
+				}
+				valueReturn-=esperada->tamanio;
+				printf("%s\n",valueReturn);
 			}
 			break;
 			case SET:{
@@ -66,26 +104,32 @@ int main(void) {
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);
 				strcpy(key,datos);
-				datos+=strlen(tamanioKey);
+				datos+=strlen(key)+1;
 				int tamanioValue = *((int*)datos);
 				datos +=sizeof(int);
 				char *value = malloc(tamanioValue);
 				strcpy(value,datos);
-
 				t_Entrada *nueva=malloc(sizeof(t_Entrada));
 				nueva->clave=malloc(tamanioKey);
 				strcpy(nueva->clave,key);
-				//luego hacer otra funcion que retorne el primer index del array libre y que entre todo el value
-				// ( puede que halla uno libre pero que se exceda del tamaño maximo del array )
-				nueva->index = 0;
-				nueva->tamanio = ceilDivision(strlen(value));
-				//hay que partir el value en ENTRADAS y guardarlo
+				nueva->entradasOcupadas = ceilDivision(strlen(value));
+				nueva->tamanio = strlen(value);
+				nueva->index = getFirstIndex(nueva->entradasOcupadas);
+				list_add(entradas_administrativa,nueva);
+				int i;
+				char *valueAux=malloc(strlen(value)+1);
+				strcpy(valueAux,value);
+				for(i=nueva->index;i<(nueva->index+nueva->entradasOcupadas);i++){
+					if((nueva->index+nueva->entradasOcupadas)-1 == i){
+						strcpy(tabla_entradas[i],valueAux);
+						break;
+					}
+					strncpy(tabla_entradas[i],valueAux,TAMANIO_ENTRADA);
+					valueAux+=TAMANIO_ENTRADA;
+				}
+				free(key);
+				free(value);
 
-
-				/*int i;
-				for(i=nueva->index;i<nueva->index+nueva->tamanio;i++){
-					tabla_entradas[nueva->index]=
-				}*/
 			}
 			break;
 			case GETENTRADAS:{
@@ -97,8 +141,8 @@ int main(void) {
 				int i;
 				for(i=0;i<CANT_ENTRADA;i++){
 					tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
+					strcpy(tabla_entradas[i],"NaN");
 				}
-
 			}
 			break;
 
