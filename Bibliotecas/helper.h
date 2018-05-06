@@ -55,4 +55,8 @@ typedef struct {
 	int tamanio;
 }__attribute__((packed)) t_Entrada;
 
+typedef struct {
+	char* programa;
+}__attribute__((packed)) procesoEsi;
+
 #endif /* HELPER_*/

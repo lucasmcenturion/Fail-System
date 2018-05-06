@@ -148,6 +148,24 @@ int ConectarAServidor(int puertoAConectar, char* ipAConectar, char servidor[13],
 
 }
 
+int ConectarAServidorESI(int puertoAConectar, char* ipAConectar, char servidor[13],
+		char cliente[13], void RecibirElHandshake(int socketFD, char emisor[13]), void EnviarElHandshake(int socketFD, char emisor[13])) {
+	int socketFD = socket(AF_INET, SOCK_STREAM, 0);
+
+	struct sockaddr_in direccion;
+
+	direccion.sin_family = AF_INET;
+	direccion.sin_port = htons(puertoAConectar);
+	direccion.sin_addr.s_addr = inet_addr(ipAConectar);
+	memset(&(direccion.sin_zero), '\0', 8);
+
+	while (connect(socketFD, (struct sockaddr *) &direccion, sizeof(struct sockaddr))<0)
+		sleep(1); //Espera un segundo y se vuelve a tratar de conectar.
+	EnviarElHandshake(socketFD, cliente);
+	RecibirElHandshake(socketFD, servidor);
+	return socketFD;
+
+}
 
 int StartServidor(char* MyIP, int MyPort) // obtener socket a la escucha
 {
@@ -326,6 +344,25 @@ int RecibirPaqueteServidor(int socketFD, char receptor[13], Paquete* paquete) {
 	if (resul > 0) { //si no hubo error
 		if (paquete->header.tipoMensaje == ESHANDSHAKE) { //vemos si es un handshake
 			printf("Se establecio conexion con %s\n", paquete->header.emisor);
+			EnviarHandshake(socketFD, receptor); // paquete->header.emisor
+		} else if (paquete->header.tamPayload > 0){ //recibimos un payload y lo procesamos (por ej, puede mostrarlo)
+			paquete->Payload = malloc(paquete->header.tamPayload);
+			resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
+		}
+	}
+	return resul;
+}
+
+int RecibirPaqueteServidorPlanificador(int socketFD, char receptor[13], Paquete* paquete) {
+	paquete->Payload = NULL;
+	int resul = RecibirDatos(&(paquete->header), socketFD, TAMANIOHEADER);
+	if (resul > 0) { //si no hubo error
+		if (paquete->header.tipoMensaje == ESHANDSHAKE) { //vemos si es un handshake
+			printf("Se establecio conexion con %s\n", paquete->header.emisor);
+			if(!strcmp(paquete->header.emisor,ESI)){
+					paquete->Payload = malloc(paquete->header.tamPayload);
+					resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
+			}
 			EnviarHandshake(socketFD, receptor); // paquete->header.emisor
 		} else if (paquete->header.tamPayload > 0){ //recibimos un payload y lo procesamos (por ej, puede mostrarlo)
 			paquete->Payload = malloc(paquete->header.tamPayload);

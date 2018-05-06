@@ -20,8 +20,8 @@
 #define COORDINADOR "Coordinador "
 #define PLANIFICADOR "Planificador"
 
-typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR, IDENTIFICACIONINSTANCIA,SOLICITUDNOMBRE, GET, SET,
-				GETENTRADAS, NUEVAOPERACION} tipo;
+typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR, IDENTIFICACIONINSTANCIA,SOLICITUDNOMBRE, GETINST, SETINST,
+				GETENTRADAS, NUEVAOPERACION, BLOQUEODECLAVE, DESBLOQUEODECLAVE, SIGUIENTELINEA, REPETIRLINEA} tipo;
 
 typedef struct {
 	tipo tipoMensaje;
@@ -53,7 +53,10 @@ void ServidorConcurrenteForks(char* ip, int puerto, char nombre[13], t_list** li
 		bool* terminar, void (*accionPadre)(void* socketFD), void (*accionHijo)(void* socketFD));
 int StartServidor(char* MyIP, int MyPort);
 int ConectarAServidor(int puertoAConectar, char* ipAConectar, char servidor[13], char cliente[13],
-		void RecibirElHandshake(int socketFD, char emisor[13])); //Sobrecarga para Kernel
+		void RecibirElHandshake(int socketFD, char emisor[13]));
+int ConectarAServidorESI(int puertoAConectar, char* ipAConectar, char servidor[13], char cliente[13],
+		void RecibirElHandshake(int socketFD, char emisor[13]),
+		void EnviarElHandshake(int socketFD, char emisor[13]));
 
 bool EnviarDatos(int socketFD, char emisor[13], void* datos, int tamDatos);
 bool EnviarDatosTipo(int socketFD, char emisor[13], void* datos, int tamDatos, tipo tipoMensaje);
@@ -61,6 +64,7 @@ bool EnviarMensaje(int socketFD, char* msg, char emisor[13]);
 bool EnviarPaquete(int socketCliente, Paquete* paquete);
 void RecibirHandshake(int socketFD, char emisor[13]);
 int RecibirPaqueteServidor(int socketFD, char receptor[13], Paquete* paquete); //Responde al recibir un Handshake
+int RecibirPaqueteServidorPlanificador(int socketFD, char receptor[13], Paquete* paquete);
 int RecibirPaqueteCliente(int socketFD, char receptor[13], Paquete* paquete); //No responde los Handshakes
 
 #endif //SOCKETS_H_
