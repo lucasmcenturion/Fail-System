@@ -381,3 +381,22 @@ int RecibirPaqueteCliente(int socketFD, char receptor[13], Paquete* paquete) {
 	}
 	return resul;
 }
+
+int RecibirPaqueteServidorCoordinador(int socketFD, char receptor[13], Paquete* paquete) {
+	paquete->Payload = NULL;
+	int resul = RecibirDatos(&(paquete->header), socketFD, TAMANIOHEADER);
+	if (resul > 0) { //si no hubo error
+		if (paquete->header.tipoMensaje == ESHANDSHAKE) { //vemos si es un handshake
+			printf("Se establecio conexion con %s\n", paquete->header.emisor);
+			if(!strcmp(paquete->header.emisor,ESI)){
+					paquete->Payload = malloc(paquete->header.tamPayload);
+					resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
+			}
+			EnviarHandshake(socketFD, receptor); // paquete->header.emisor
+		} else if (paquete->header.tamPayload > 0){ //recibimos un payload y lo procesamos (por ej, puede mostrarlo)
+			paquete->Payload = malloc(paquete->header.tamPayload);
+			resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
+		}
+	}
+	return resul;
+}

@@ -77,14 +77,13 @@ int main(void) {
 				EnviarDatosTipo(socketCoordinador,INSTANCIA,NOMBRE_INSTANCIA,strlen(NOMBRE_INSTANCIA)+1,IDENTIFICACIONINSTANCIA);
 			}
 			break;
-			case GET:{
+			case GETINST:{
 				int tamanioKey = *((int*)datos);
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);
 				strcpy(key,datos);
 				t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {  return !strcmp(key,elemento->clave);}));
 				char *valueReturn = malloc(esperada->tamanio+1);
-				int contador=0;
 				for (int var = esperada->index; var < esperada->index+esperada->entradasOcupadas; var++) {
 					if((esperada->index+esperada->entradasOcupadas)-1 == var){
 						strcpy(valueReturn,tabla_entradas[var]);
@@ -93,13 +92,12 @@ int main(void) {
 					}
 					strncpy(valueReturn,tabla_entradas[var],TAMANIO_ENTRADA);
 					valueReturn+=TAMANIO_ENTRADA;
-					contador++;
 				}
 				valueReturn-=esperada->tamanio;
 				printf("%s\n",valueReturn);
 			}
 			break;
-			case SET:{
+			case SETINST:{
 				int tamanioKey = *((int*)datos);
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);

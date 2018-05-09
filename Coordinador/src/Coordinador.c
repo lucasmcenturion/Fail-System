@@ -3,13 +3,14 @@
 
 /* Variables Globales */
 char *IP, *ALGORITMO_DISTRIBUCION;
-int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO;
+int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO,socketCoordinador;
 t_list* listaHilos;
 bool end;
 t_log * vg_logger = NULL;
 t_list* instancias;
+t_list* esis;
 pthread_mutex_t mutex_instancias;
-
+pthread_mutex_t mutex_esis;
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Coordinador/coordinador.cfg");
@@ -55,9 +56,6 @@ int comprobarValoresBienSeteados() {
 
 	return retorno;
 }
-bool inactivo (t_IdInstancia * elemento){
-		return elemento->activo;
-}
 int getProximo(){
 	if(list_size(instancias)==0)
 		return 0;
@@ -76,7 +74,7 @@ int getProximo(){
 		if(!elemento->activo)
 			return true;
 	}
-	list_find(instancias, (void*)proximo);
+	list_find(instancias, proximo);
 	aux= list_get(instancias, i);
 	aux->activo=true;
 	list_replace(instancias,i,aux);
@@ -96,7 +94,7 @@ void accion(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
 	void* datos;
-	while (RecibirPaqueteServidor(socketFD, COORDINADOR, &paquete) > 0) {
+	while (RecibirPaqueteServidorCoordinador(socketFD, COORDINADOR, &paquete) > 0) {
 	//SWITCH
 		if (!strcmp(paquete.header.emisor, INSTANCIA)) {
 			switch(paquete.header.tipoMensaje){
@@ -158,9 +156,6 @@ void accion(void* socket) {
 		if(!strcmp(paquete.header.emisor, ESI)){
 			switch(paquete.header.tipoMensaje){
 				case NUEVAOPERACION:{
-					//aca se recibe la operacion
-					//recibir linea del ESI, separarlo por espacios, verificar el primer elemento
-					//si es SET,GET o STORE
 					if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
 						pthread_mutex_lock(&mutex_instancias);
 						int socketSiguiente = getProximo();
@@ -172,6 +167,30 @@ void accion(void* socket) {
 						}
 						pthread_mutex_unlock(&mutex_instancias);
 					}
+				}
+				break;
+				case ESHANDSHAKE:{
+					t_esiCoordinador*nuevo =malloc(sizeof(t_esiCoordinador));
+					nuevo->id=malloc(paquete.header.tamPayload);
+					strcpy(nuevo->id,paquete.Payload);
+					nuevo->socket = socketFD;
+					pthread_mutex_lock(&mutex_esis);
+					list_add(esis,nuevo);
+					pthread_mutex_unlock(&mutex_esis);
+				}
+				break;
+				case GET: {
+					char*id=malloc(10);
+					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
+					id=realloc(id,strlen(id)+1);
+					EnviarDatosTipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,GETPLANI);
+				}
+			}
+		}
+		if(!strcmp(paquete.header.emisor, COORDINADOR)){
+			switch(paquete.header.tipoMensaje){
+				case ESHANDSHAKE: {
+					socketCoordinador = socketFD;
 				}
 				break;
 			}
@@ -195,6 +214,8 @@ int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
 	pthread_mutex_init(&mutex_instancias,NULL);
+	pthread_mutex_init(&mutex_esis,NULL);
+	esis=list_create();
 	instancias=list_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 

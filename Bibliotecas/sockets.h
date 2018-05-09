@@ -20,8 +20,8 @@
 #define COORDINADOR "Coordinador "
 #define PLANIFICADOR "Planificador"
 
-typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR, IDENTIFICACIONINSTANCIA,SOLICITUDNOMBRE, GETINST, SETINST,
-				GETENTRADAS, NUEVAOPERACION, BLOQUEODECLAVE, DESBLOQUEODECLAVE, SIGUIENTELINEA, REPETIRLINEA} tipo;
+typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR, IDENTIFICACIONINSTANCIA,SOLICITUDNOMBRE, SETINST,
+				GETENTRADAS, NUEVAOPERACION, BLOQUEODECLAVE, DESBLOQUEODECLAVE, SIGUIENTELINEA, REPETIRLINEA, SET, GET, STORE,GETPLANI} tipo;
 
 typedef struct {
 	tipo tipoMensaje;
@@ -66,5 +66,6 @@ void RecibirHandshake(int socketFD, char emisor[13]);
 int RecibirPaqueteServidor(int socketFD, char receptor[13], Paquete* paquete); //Responde al recibir un Handshake
 int RecibirPaqueteServidorPlanificador(int socketFD, char receptor[13], Paquete* paquete);
 int RecibirPaqueteCliente(int socketFD, char receptor[13], Paquete* paquete); //No responde los Handshakes
+int RecibirPaqueteServidorCoordinador(int socketFD, char receptor[13], Paquete* paquete);
 
 #endif //SOCKETS_H_

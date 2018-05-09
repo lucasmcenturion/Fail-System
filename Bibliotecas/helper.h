@@ -60,4 +60,8 @@ typedef struct {
 	char* programa;
 }__attribute__((packed)) procesoEsi;
 
+typedef struct {
+	char* id;
+	int socket;
+}__attribute__((packed)) t_esiCoordinador;
 #endif /* HELPER_*/
