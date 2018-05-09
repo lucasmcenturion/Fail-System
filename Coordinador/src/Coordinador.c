@@ -179,7 +179,7 @@ void accion(void* socket) {
 					pthread_mutex_unlock(&mutex_esis);
 				}
 				break;
-				case GET: {
+				case GETCOORD: {
 					char*id=malloc(10);
 					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
 					id=realloc(id,strlen(id)+1);
