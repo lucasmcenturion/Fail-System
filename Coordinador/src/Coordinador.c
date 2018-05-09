@@ -138,6 +138,7 @@ void accion(void* socket) {
 
 					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteo,tamanioTesteo,SET);
 					free(datosTesteo);
+
 					//para testeo GET
 
 					int tamanioTesteoGET=sizeof(int)+strlen("unaKey");

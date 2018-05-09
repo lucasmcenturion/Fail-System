@@ -12,7 +12,7 @@ pthread_mutex_t binario_linea;
 
 
 void obtenerValoresArchivoConfiguracion() {
-	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/ESI/esiCFG.txt");
+	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/ESI/esi.cfg");
 	IP_COORDINADOR = string_duplicate(config_get_string_value(arch, "IP_COORDINADOR"));
 	PUERTO_COORDINADOR = config_get_int_value(arch, "PUERTO_COORDINADOR");
 	IP_PLANIFICADOR = string_duplicate(config_get_string_value(arch, "IP_PLANIFICADOR"));
