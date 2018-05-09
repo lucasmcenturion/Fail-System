@@ -108,25 +108,12 @@ void accion(void* socket) {
 					printf("El proceso ESI es %s\n", (char*)paquete.Payload);
 					fflush(stdout);
 					procesoEsi* nuevoEsi =  malloc(sizeof(procesoEsi));
-					nuevoEsi->programa = malloc(strlen(paquete.Payload) + 1);
-					strcpy(nuevoEsi->programa, paquete.Payload);
+					nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
+					strcpy(nuevoEsi->id, paquete.Payload);
 					list_add(LISTOS, nuevoEsi);
 					break;
 			}
 		}
-		else if (!strcmp(paquete.header.emisor, ESI)) {
-					switch(paquete.header.tipoMensaje)
-					{
-						case ESHANDSHAKE:
-							printf("El proceso ESI es %s\n", (char*)paquete.Payload);
-							fflush(stdout);
-							procesoEsi* nuevoEsi =  malloc(sizeof(procesoEsi));
-							nuevoEsi->programa = malloc(strlen(paquete.Payload) + 1);
-							strcpy(nuevoEsi->programa, paquete.Payload);
-							list_add(LISTOS, nuevoEsi);
-							break;
-					}
-				}
 		else
 			perror("No es ningún proceso ESI.\n");
 		if (paquete.Payload != NULL)
