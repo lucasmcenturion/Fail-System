@@ -57,7 +57,7 @@ typedef struct {
 }__attribute__((packed)) t_Entrada;
 
 typedef struct {
-	char* programa;
+	char* id;
 }__attribute__((packed)) procesoEsi;
 
 typedef struct {

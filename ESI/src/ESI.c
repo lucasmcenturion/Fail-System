@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR, IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake, enviarHandshakeESI);
-	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, ESI, RecibirHandshake);
+	socketCoordinador = ConectarAServidorESI(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, ESI, RecibirHandshake, enviarHandshakeESI);
 	pthread_t hiloCoordinador;
 	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
 	pthread_t hiloPlanificador;
