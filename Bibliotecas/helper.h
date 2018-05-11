@@ -58,6 +58,7 @@ typedef struct {
 }__attribute__((packed)) t_Entrada;
 
 typedef struct {
+	int socket;
 	char* id;
 }__attribute__((packed)) procesoEsi;
 

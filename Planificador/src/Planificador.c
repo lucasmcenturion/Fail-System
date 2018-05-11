@@ -70,6 +70,23 @@ void escuchaCoordinador(){
 		datos=paquete.Payload;
 		switch(paquete.header.tipoMensaje)
 		{
+			case GETPLANI:
+			{
+				/*LO QUE SEA QUE ME MANDE EL COORDINADOR PARA SABER QUE SE BLOQUEO UNA CLAVE (GET)*/
+				list_add(clavesBloqueadas, datos);
+
+			}
+			break;
+
+			case ABORTAR:
+			{
+				procesoEsi* esiAAbortar = list_remove_by_condition(EJECUCION, LAMBDA(bool _(char* item1){ return !strcmp(item1, datos);}));
+				EnviarDatosTipo(esiAAbortar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
+				//liberarrecursos()
+				list_add(TERMINADOS, esiAAbortar);
+			}
+			break;
+
 			case BLOQUEODECLAVE:
 			{
 				/*LO QUE SEA QUE ME MANDE EL COORDINADOR PARA SABER QUE SE BLOQUEO UNA CLAVE (GET)*/
@@ -109,6 +126,7 @@ void accion(void* socket) {
 					fflush(stdout);
 					procesoEsi* nuevoEsi =  malloc(sizeof(procesoEsi));
 					nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
+					nuevoEsi->socket = socketFD;
 					strcpy(nuevoEsi->id, paquete.Payload);
 					list_add(LISTOS, nuevoEsi);
 					break;
@@ -157,5 +175,7 @@ int main(void) {
 	pthread_create(&hiloPlanificador, NULL, (void*)planificar, NULL);
 	ServidorConcurrente(IP,PUERTO, PLANIFICADOR, &listaHilos, &end, accion);
 	pthread_join(hiloConsola, NULL);
+	pthread_join(hiloPlanificador, NULL);
+	pthread_join(hiloCoordinador, NULL);
 	return EXIT_SUCCESS;
 }
