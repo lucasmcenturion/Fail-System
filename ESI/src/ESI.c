@@ -121,17 +121,22 @@ int main(int argc, char* argv[]) {
 	while ((read = getline(&line, &len, fp)) != -1) {
 		pthread_mutex_lock(&binario_linea);
 		t_esi_operacion parsed = parse(line);
-
+		void* datos;
 		if(parsed.valido){
 			switch(parsed.keyword){
 				case GET:
+
 					printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
+					EnviarDatosTipo(socketCoordinador, ESI, datos, tamanio, GETCOORD);
 					break;
 				case SET:
 					printf("SET\tclave: <%s>\tvalor: <%s>\n", parsed.argumentos.SET.clave, parsed.argumentos.SET.valor);
+					EnviarDatosTipo(socketCoordinador, ESI, datos, tamanio, SETCOORD);
+
 					break;
 				case STORE:
 					printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
+					EnviarDatosTipo(socketCoordinador, ESI, datos, tamanio, STORECOORD);
 					break;
 				default:
 					fprintf(stderr, "No pude interpretar <%s>\n", line);
