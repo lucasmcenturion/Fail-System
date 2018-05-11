@@ -78,9 +78,7 @@ int main(void) {
 			}
 			break;
 			case STOREINST:{
-				int tamanioKey = *((int*)datos);
-				datos+=sizeof(int);
-				char *key = malloc(tamanioKey);
+				char *key = malloc(strlen(datos)+1);
 				strcpy(key,datos);
 				t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {  return !strcmp(key,elemento->clave);}));
 				char *valueReturn = malloc(esperada->tamanio+1);
@@ -98,17 +96,13 @@ int main(void) {
 			}
 			break;
 			case SETINST:{
-				int tamanioKey = *((int*)datos);
-				datos+=sizeof(int);
-				char *key = malloc(tamanioKey);
+				char*key=malloc(strlen(datos)+1);
 				strcpy(key,datos);
-				datos+=strlen(key)+1;
-				int tamanioValue = *((int*)datos);
-				datos +=sizeof(int);
-				char *value = malloc(tamanioValue);
+				datos+=strlen(datos)+1;
+				char* value=malloc(strlen(datos)+1);
 				strcpy(value,datos);
 				t_Entrada *nueva=malloc(sizeof(t_Entrada));
-				nueva->clave=malloc(tamanioKey);
+				nueva->clave=malloc(strlen(key)+1);
 				strcpy(nueva->clave,key);
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
 				nueva->tamanio = strlen(value);

@@ -3,7 +3,7 @@
 
 /* Variables Globales */
 char *IP, *ALGORITMO_DISTRIBUCION;
-int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO,socketCoordinador;
+int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO,socketPlanificador;
 t_list* listaHilos;
 bool end;
 t_log * vg_logger = NULL;
@@ -134,31 +134,14 @@ void accion(void* socket) {
 							return e->socket != socketFD;
 					}
 					pthread_mutex_lock(&mutex_instancias);
-					list_add(((t_IdInstancia*)list_find(instancias, tiene_socket)),(char*)paquete.Payload);
+					list_add(((t_IdInstancia*)list_find(instancias, tiene_socket))->claves,(char*)paquete.Payload);
 					pthread_mutex_unlock(&mutex_instancias);
-					pthread_mutex_lock(&mutex_claves);
-					list_add(claves_globales,(char*)paquete.Payload);
-					pthread_mutex_unlock(&mutex_claves);
 				}
 				break;
 			}
 		}
 		if(!strcmp(paquete.header.emisor, ESI)){
 			switch(paquete.header.tipoMensaje){
-				case SETCOORD:{
-					if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
-						pthread_mutex_lock(&mutex_instancias);
-						int socketSiguiente = getProximo();
-						if(socketSiguiente!=0){
-							printf("%s\n",socketSiguiente);
-							fflush(stdout);
-						}else{
-							//error, no hay instancias conectadas al sistema
-						}
-						pthread_mutex_unlock(&mutex_instancias);
-					}
-				}
-				break;
 				case ESHANDSHAKE:{
 					t_esiCoordinador*nuevo =malloc(sizeof(t_esiCoordinador));
 					nuevo->id=malloc(paquete.header.tamPayload);
@@ -169,39 +152,91 @@ void accion(void* socket) {
 					pthread_mutex_unlock(&mutex_esis);
 				}
 				break;
-				case GETCOORD: {
-					bool foo(char*e){
-						return !strcmp(e,(char*)paquete.Payload);
-					}
-					bool verificarClave(t_IdInstancia *e){
-						return list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,(char*)paquete.Payload);}));
-					}
+				case SETCOORD:{
+					usleep(RETARDO);
+					char*key=malloc(strlen(datos)+1);
+					strcpy(key,datos);
+					datos+=strlen(datos)+1;
+					char* value=malloc(strlen(datos)+1);
+					strcpy(value,datos);
+
 					char*id=malloc(10);
 					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
 					id=realloc(id,strlen(id)+1);
+					bool foo(char*e){
+						return !strcmp(e,key);
+					}
+					bool verificarClave(t_IdInstancia *e){
+						return list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,key);}));
+					}
 					pthread_mutex_lock(&mutex_claves);
 					if(list_any_satisfy(claves_globales, foo)){
 						if(!list_any_satisfy(instancias, verificarClave)){
 							//clave eviste en el sistema, pero la instancia esta caida
-							printf("Error clave innacesible");
+							printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
 							fflush(stdout);
-							EnviarDatosTipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 						}else{
-							EnviarDatosTipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,GETPLANI);
+							int tam=strlen(key)+strlen(value)+2;
+							void*sendInstancia = malloc(tam);
+							strcpy(sendInstancia,key);
+							sendInstancia+=strlen(key)+1;
+							strcpy(sendInstancia,value);
+							sendInstancia-=strlen(value)+1;
+							sendInstancia-=tam;
+							if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
+								pthread_mutex_lock(&mutex_instancias);
+								int socketSiguiente = getProximo();
+								if(socketSiguiente!=0){
+									printf("%s\n",socketSiguiente);
+									fflush(stdout);
+									EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
+								}else{
+									//error, no hay instancias conectadas al sistema
+								}
+								pthread_mutex_unlock(&mutex_instancias);
+							}
+							free(sendInstancia);
 						}
-
 					}else{
 						//clave no existe en el sistema
-						EnviarDatostipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+						printf("Se intenta bloquear la clave %s pero no existe",key);
+						EnviarDatostipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}
 					pthread_mutex_unlock(&mutex_claves);
+					free(key);
+					free(value);
+					free(id);
 				}
+				break;
+				case GETCOORD: {
+					usleep(RETARDO);
+					pthread_mutex_lock(&mutex_claves);
+					list_add(claves_globales,(char*)paquete.Payload);
+					pthread_mutex_unlock(&mutex_claves);
+					char*id=malloc(10);
+					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
+					id=realloc(id,strlen(id)+1);
+					int tamSend=strlen(paquete.Payload)+strlen(id)+2;
+					void* sendPlanificador = malloc(tamSend);
+					strcpy(sendPlanificador,paquete.Payload);
+					sendPlanificador+=strlen(paquete.Payload)+1;
+					strcpy(sendPlanificador,id);
+					sendPlanificador+=strlen(id)+1;
+					sendPlanificador-=tamSend;
+					EnviarDatosTipo(socketPlanificador,COORDINADOR,sendPlanificador,tamSend,GETPLANI);
+				}
+				break;
+				case STORECOORD:{
+					usleep(RETARDO);
+				}
+				break;
 			}
 		}
-		if(!strcmp(paquete.header.emisor, COORDINADOR)){
+		if(!strcmp(paquete.header.emisor, PLANIFICADOR)){
 			switch(paquete.header.tipoMensaje){
 				case ESHANDSHAKE: {
-					socketCoordinador = socketFD;
+					socketPlanificador = socketFD;
 				}
 				break;
 			}
@@ -214,11 +249,6 @@ void accion(void* socket) {
 	sacar_instancia(socketFD);
 	pthread_mutex_unlock(&mutex_instancias);
 }
-
-
-
-
-
 
 int main(void) {
 
