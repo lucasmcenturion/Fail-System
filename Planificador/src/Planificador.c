@@ -72,7 +72,7 @@ void escuchaCoordinador(){
 		{
 			case GETPLANI:
 			{
-				/*LO QUE SEA QUE ME MANDE EL COORDINADOR PARA SABER QUE SE BLOQUEO UNA CLAVE (GET)*/
+				//todo hacer la logica de las claves bloqueadas
 				list_add(clavesBloqueadas, datos);
 
 			}

@@ -201,7 +201,7 @@ void accion(void* socket) {
 					}else{
 						//clave no existe en el sistema
 						printf("Se intenta bloquear la clave %s pero no existe",key);
-						EnviarDatostipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}
 					pthread_mutex_unlock(&mutex_claves);
 					free(key);

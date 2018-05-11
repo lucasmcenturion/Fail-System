@@ -92,6 +92,8 @@ void escucharPlanificador(int socketFD,char emisor[13]){
 
 				case ABORTAR:
 				{
+					close(socketCoordinador);
+					close(socketPlanificador);
 					terminar = true;
 				}
 				break;
@@ -113,7 +115,7 @@ void parsear(){
 		fp = fopen(programaAEjecutar, "r");
 		if (fp == NULL){
 			perror("Error al abrir el archivo: ");
-			exit(EXIT_FAILURE);
+			muerteEsi();
 		}
 
 		while ((read = getline(&line, &len, fp)) != -1) {
@@ -142,13 +144,13 @@ void parsear(){
 						break;
 					default:
 						fprintf(stderr, "No pude interpretar <%s>\n", line);
-						exit(EXIT_FAILURE);
+						muerteEsi();
 				}
 
 				destruir_operacion(parsed);
 			} else {
 				fprintf(stderr, "La linea <%s> no es valida\n", line);
-				exit(EXIT_FAILURE);
+				muerteEsi();
 			}
 		}
 
@@ -156,6 +158,13 @@ void parsear(){
 		if (line)
 			free(line);
 
+}
+
+void muerteEsi(){
+	close(socketCoordinador);
+	EnviarDatosTipo(socketPlanificador, ESI, NULL, 0, MUERTEESI);
+	close(socketPlanificador);
+	terminar = true;
 }
 
 int main(int argc, char* argv[]) {
