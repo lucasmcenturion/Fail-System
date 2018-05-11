@@ -388,7 +388,7 @@ int RecibirPaqueteServidorCoordinador(int socketFD, char receptor[13], Paquete* 
 	if (resul > 0) { //si no hubo error
 		if (paquete->header.tipoMensaje == ESHANDSHAKE) { //vemos si es un handshake
 			printf("Se establecio conexion con %s\n", paquete->header.emisor);
-			if(!strcmp(paquete->header.emisor,ESI)){
+			if(!strcmp(paquete->header.emisor,ESI) || strcmp(paquete->header.emisor, PLANIFICADOR)){
 					paquete->Payload = malloc(paquete->header.tamPayload);
 					resul = RecibirDatos(paquete->Payload, socketFD, paquete->header.tamPayload);
 			}
