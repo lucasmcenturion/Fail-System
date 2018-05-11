@@ -47,6 +47,7 @@ typedef struct {
 	int socket;
 	char* nombre;
 	bool activo;
+	t_list *claves;
 }__attribute__((packed)) t_IdInstancia;
 
 typedef struct {

@@ -9,8 +9,10 @@ bool end;
 t_log * vg_logger = NULL;
 t_list* instancias;
 t_list* esis;
+t_list* claves_globales;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
+pthread_mutex_t mutex_claves;
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Coordinador/coordinador.cfg");
@@ -118,45 +120,32 @@ void accion(void* socket) {
 					instancia->socket=socketFD;
 					instancia->nombre=malloc(strlen(nombreInstancia)+1);
 					instancia->activo = false;
+					instancia->claves = list_create();
 					strcpy(instancia->nombre,nombreInstancia);
 					pthread_mutex_lock(&mutex_instancias);
 					list_add(instancias,instancia);
 					pthread_mutex_unlock(&mutex_instancias);
-
-					/*//para testeo SET
-					int tamanioTesteo=2*sizeof(int)+strlen("unaKey")+strlen("value2")+2;
-					void *datosTesteo=malloc(tamanioTesteo);
-					*((int*)datosTesteo)=strlen("unaKey")+1;
-					datosTesteo+=sizeof(int);
-					strcpy(datosTesteo,"unaKey");
-					datosTesteo+=strlen("unaKey")+1;
-					*((int*)datosTesteo)=strlen("value")+1;
-					datosTesteo+=sizeof(int);
-					strcpy(datosTesteo,"value2");
-					datosTesteo+=strlen("value2")+1;
-					datosTesteo-=tamanioTesteo;
-
-					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteo,tamanioTesteo,SET);
-					free(datosTesteo);
-
-					//para testeo GET
-
-					int tamanioTesteoGET=sizeof(int)+strlen("unaKey");
-					void *datosTesteoGET=malloc(tamanioTesteo);
-					*((int*)datosTesteo)=strlen("unaKey")+1;
-					datosTesteo+=sizeof(int);
-					strcpy(datosTesteo,"unaKey");
-					datosTesteo+=strlen("unaKey")+1;
-					datosTesteo-=tamanioTesteo;
-
-					EnviarDatosTipo(socketFD,COORDINADOR,datosTesteoGET,tamanioTesteoGET,GET);*/
+				}
+				break;
+				case SETOK:
+				{
+					int tiene_socket(t_IdInstancia *e) {
+						if (e->socket == socketFD)
+							return e->socket != socketFD;
+					}
+					pthread_mutex_lock(&mutex_instancias);
+					list_add(((t_IdInstancia*)list_find(instancias, tiene_socket)),(char*)paquete.Payload);
+					pthread_mutex_unlock(&mutex_instancias);
+					pthread_mutex_lock(&mutex_claves);
+					list_add(claves_globales,(char*)paquete.Payload);
+					pthread_mutex_unlock(&mutex_claves);
 				}
 				break;
 			}
 		}
 		if(!strcmp(paquete.header.emisor, ESI)){
 			switch(paquete.header.tipoMensaje){
-				case NUEVAOPERACION:{
+				case SETCOORD:{
 					if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
 						pthread_mutex_lock(&mutex_instancias);
 						int socketSiguiente = getProximo();
@@ -181,10 +170,31 @@ void accion(void* socket) {
 				}
 				break;
 				case GETCOORD: {
+					bool foo(char*e){
+						return !strcmp(e,(char*)paquete.Payload);
+					}
+					bool verificarClave(t_IdInstancia *e){
+						return list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,(char*)paquete.Payload);}));
+					}
 					char*id=malloc(10);
 					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
 					id=realloc(id,strlen(id)+1);
-					EnviarDatosTipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,GETPLANI);
+					pthread_mutex_lock(&mutex_claves);
+					if(list_any_satisfy(claves_globales, foo)){
+						if(!list_any_satisfy(instancias, verificarClave)){
+							//clave eviste en el sistema, pero la instancia esta caida
+							printf("Error clave innacesible");
+							fflush(stdout);
+							EnviarDatosTipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+						}else{
+							EnviarDatosTipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,GETPLANI);
+						}
+
+					}else{
+						//clave no existe en el sistema
+						EnviarDatostipo(socketCoordinador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+					}
+					pthread_mutex_unlock(&mutex_claves);
 				}
 			}
 		}
@@ -216,7 +226,9 @@ int main(void) {
 	imprimirArchivoConfiguracion();
 	pthread_mutex_init(&mutex_instancias,NULL);
 	pthread_mutex_init(&mutex_esis,NULL);
+	pthread_mutex_init(&mutex_claves,NULL);
 	esis=list_create();
+	claves_globales=list_create();
 	instancias=list_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 

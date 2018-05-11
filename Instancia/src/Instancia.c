@@ -77,7 +77,7 @@ int main(void) {
 				EnviarDatosTipo(socketCoordinador,INSTANCIA,NOMBRE_INSTANCIA,strlen(NOMBRE_INSTANCIA)+1,IDENTIFICACIONINSTANCIA);
 			}
 			break;
-			case GETINST:{
+			case STOREINST:{
 				int tamanioKey = *((int*)datos);
 				datos+=sizeof(int);
 				char *key = malloc(tamanioKey);
@@ -125,8 +125,10 @@ int main(void) {
 					strncpy(tabla_entradas[i],valueAux,TAMANIO_ENTRADA);
 					valueAux+=TAMANIO_ENTRADA;
 				}
+				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,SETOK);
 				free(key);
 				free(value);
+				free(valueAux);
 
 			}
 			break;
