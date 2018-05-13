@@ -167,6 +167,25 @@ int ConectarAServidorESI(int puertoAConectar, char* ipAConectar, char servidor[1
 
 }
 
+int ConectarAServidorPlanificador(int puertoAConectar, char* ipAConectar, char servidor[13],
+		char cliente[13], void RecibirElHandshake(int socketFD, char emisor[13]), void EnviarElHandshake(int socketFD, char emisor[13])) {
+	int socketFD = socket(AF_INET, SOCK_STREAM, 0);
+
+	struct sockaddr_in direccion;
+
+	direccion.sin_family = AF_INET;
+	direccion.sin_port = htons(puertoAConectar);
+	direccion.sin_addr.s_addr = inet_addr(ipAConectar);
+	memset(&(direccion.sin_zero), '\0', 8);
+
+	while (connect(socketFD, (struct sockaddr *) &direccion, sizeof(struct sockaddr))<0)
+		sleep(1); //Espera un segundo y se vuelve a tratar de conectar.
+	EnviarElHandshake(socketFD, cliente);
+	RecibirElHandshake(socketFD, servidor);
+	return socketFD;
+
+}
+
 int StartServidor(char* MyIP, int MyPort) // obtener socket a la escucha
 {
 	struct sockaddr_in myaddr; // dirección del servidor
