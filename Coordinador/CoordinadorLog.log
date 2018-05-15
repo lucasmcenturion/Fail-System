@@ -1,0 +1,151 @@
+[INFO] 18:14:38:453 Coordinador/(7551:7551): Voy a mirar archivo de configuración
+[INFO] 18:14:38:456 Coordinador/(7551:7551): configuro el puerto
+[ERROR] 18:14:38:456 Coordinador/(7551:7551): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 18:18:48:64 Coordinador/(7828:7828): Chequeo archivo de configuración
+[INFO] 18:23:57:45 Coordinador/(8197:8197): Chequeo archivo de configuración
+[INFO] 18:25:12:220 Coordinador/(8295:8295): Chequeo archivo de configuración
+[INFO] 11:29:06:821 Coordinador/(3598:3598): Chequeo archivo de configuración
+[INFO] 11:34:02:155 Coordinador/(3731:3731): Chequeo archivo de configuración
+[INFO] 11:34:02:156 Coordinador/(3731:3731): Puerto Correcto
+[INFO] 11:35:53:947 Coordinador/(3832:3832): Chequeo archivo de configuración
+[INFO] 11:35:53:947 Coordinador/(3832:3832): Chequeo archivo de configuración: 148716232
+[INFO] 11:35:53:947 Coordinador/(3832:3832): Puerto Correcto
+[INFO] 11:37:29:298 Coordinador/(3963:3963): Chequeo archivo de configuración
+[INFO] 11:37:29:298 Coordinador/(3963:3963): Chequeo archivo de configuración: 145629696
+[INFO] 11:37:29:299 Coordinador/(3963:3963): Puerto Correcto
+[INFO] 11:38:58:916 Coordinador/(4000:4000): Chequeo archivo de configuración
+[INFO] 11:38:58:917 Coordinador/(4000:4000): Chequeo archivo de configuración: 151368192
+[INFO] 11:38:58:917 Coordinador/(4000:4000): Puerto Correcto
+[INFO] 11:39:50:892 Coordinador/(4088:4088): Chequeo archivo de configuración
+[INFO] 11:39:50:892 Coordinador/(4088:4088): IP: 127.0.0.1
+[INFO] 11:39:50:892 Coordinador/(4088:4088): Puerto Correcto
+[INFO] 11:40:03:464 Coordinador/(4102:4102): Chequeo archivo de configuración
+[INFO] 11:40:03:464 Coordinador/(4102:4102): IP: 127.0.0.1
+[INFO] 11:40:03:464 Coordinador/(4102:4102): Puerto Correcto
+[INFO] 11:45:13:268 Coordinador/(4258:4258): Chequeo archivo de configuración
+[INFO] 11:46:01:976 Coordinador/(4290:4290): Chequeo archivo de configuración
+[INFO] 11:48:28:416 Coordinador/(4410:4410): Chequeo archivo de configuración
+[INFO] 12:18:39:749 Coordinador/(5482:5482): Chequeo archivo de configuración
+[INFO] 12:18:59:930 Coordinador/(5515:5515): Chequeo archivo de configuración
+[INFO] 12:25:34:75 Coordinador/(5770:5770): Chequeo archivo de configuración
+[INFO] 12:25:34:75 Coordinador/(5770:5770): Puerto Correcto
+[INFO] 12:26:26:118 Coordinador/(5844:5844): Chequeo archivo de configuración
+[INFO] 12:26:26:118 Coordinador/(5844:5844): Puerto Correcto
+[INFO] 12:26:42:74 Coordinador/(5897:5897): Chequeo archivo de configuración
+[INFO] 12:26:42:74 Coordinador/(5897:5897): Puerto Correcto
+[INFO] 12:27:03:858 Coordinador/(5964:5964): Chequeo archivo de configuración
+[INFO] 12:27:03:858 Coordinador/(5964:5964): Puerto Correcto
+[INFO] 12:27:14:336 Coordinador/(6017:6017): Chequeo archivo de configuración
+[INFO] 12:27:22:236 Coordinador/(6030:6030): Chequeo archivo de configuración
+[INFO] 12:27:43:150 Coordinador/(6084:6084): Chequeo archivo de configuración
+[INFO] 12:27:43:150 Coordinador/(6084:6084): Puerto Correcto
+[INFO] 12:28:07:987 Coordinador/(6134:6134): Chequeo archivo de configuración
+[INFO] 12:28:07:987 Coordinador/(6134:6134): Puerto Correcto
+[INFO] 12:28:53:768 Coordinador/(6197:6197): Chequeo archivo de configuración
+[INFO] 12:31:31:535 Coordinador/(6397:6397): Chequeo archivo de configuración
+[INFO] 12:31:47:289 Coordinador/(6448:6448): Chequeo archivo de configuración
+[INFO] 12:32:06:835 Coordinador/(6476:6476): Chequeo archivo de configuración
+[INFO] 12:39:53:974 Coordinador/(6723:6723): Chequeo archivo de configuración
+[INFO] 12:41:13:977 Coordinador/(6802:6802): Chequeo archivo de configuración
+[INFO] 12:42:53:842 Coordinador/(6914:6914): Chequeo archivo de configuración
+[INFO] 12:42:53:842 Coordinador/(6914:6914): Puerto Correcto
+[INFO] 12:45:40:71 Coordinador/(7148:7148): Chequeo archivo de configuración
+[INFO] 12:46:51:461 Coordinador/(7198:7198): Chequeo archivo de configuración
+[INFO] 12:47:23:677 Coordinador/(7255:7255): Chequeo archivo de configuración
+[INFO] 17:40:50:649 Coordinador/(11050:11050): Chequeo archivo de configuración
+[ERROR] 17:40:50:649 Coordinador/(11050:11050): IP erroneo en Coordinador.cfg
+[INFO] 17:40:50:649 Coordinador/(11050:11050): Puerto Correcto
+[INFO] 17:42:06:773 Coordinador/(11070:11070): Chequeo archivo de configuración
+[INFO] 17:42:06:773 Coordinador/(11070:11070): IP: 123
+[INFO] 17:42:06:773 Coordinador/(11070:11070): Puerto Correcto
+[INFO] 17:42:43:594 Coordinador/(11120:11120): Chequeo archivo de configuración
+[ERROR] 17:42:43:594 Coordinador/(11120:11120): IP erroneo en Coordinador.cfg
+[INFO] 17:42:43:594 Coordinador/(11120:11120): Puerto Correcto
+[INFO] 17:43:05:790 Coordinador/(11136:11136): Chequeo archivo de configuración
+[ERROR] 17:43:05:790 Coordinador/(11136:11136): IP erroneo en Coordinador.cfg
+[INFO] 17:43:05:790 Coordinador/(11136:11136): Puerto Correcto
+[INFO] 17:43:24:590 Coordinador/(11171:11171): Chequeo archivo de configuración
+[INFO] 17:43:24:591 Coordinador/(11171:11171): IP: 123
+[INFO] 17:43:24:591 Coordinador/(11171:11171): Puerto Correcto
+[INFO] 17:46:36:857 Coordinador/(11496:11496): Chequeo archivo de configuración
+[INFO] 17:46:36:857 Coordinador/(11496:11496): IP: 127.0.0.1
+[INFO] 17:47:25:375 Coordinador/(11531:11531): Chequeo archivo de configuración
+[INFO] 17:47:25:376 Coordinador/(11531:11531): IP: 127.0.0.1
+[INFO] 17:48:05:243 Coordinador/(11576:11576): Chequeo archivo de configuración
+[INFO] 17:48:05:243 Coordinador/(11576:11576): IP: 127.0.0.1
+[INFO] 17:48:22:100 Coordinador/(11605:11605): Chequeo archivo de configuración
+[INFO] 17:48:25:250 Coordinador/(11605:11605): IP: 127.0.0.1
+[INFO] 17:48:51:36 Coordinador/(11665:11665): Chequeo archivo de configuración
+[INFO] 17:48:51:37 Coordinador/(11665:11665): IP: 127.0.0.1
+[INFO] 17:48:51:37 Coordinador/(11665:11665): PUERTO: 8000
+[INFO] 17:48:51:37 Coordinador/(11665:11665): Puerto Correcto
+[INFO] 17:49:15:60 Coordinador/(11727:11727): Chequeo archivo de configuración
+[INFO] 17:49:15:60 Coordinador/(11727:11727): IP: 127.0.0.1
+[INFO] 17:49:25:224 Coordinador/(11756:11756): Chequeo archivo de configuración
+[INFO] 17:49:25:224 Coordinador/(11756:11756): IP: 127.0.0.1
+[INFO] 17:49:48:982 Coordinador/(11802:11802): Chequeo archivo de configuración
+[INFO] 17:49:52:363 Coordinador/(11802:11802): IP: 127.0.0.1
+[INFO] 17:50:59:767 Coordinador/(11883:11883): Chequeo archivo de configuración
+[INFO] 17:50:59:767 Coordinador/(11883:11883): IP: 127.0.0.1
+[INFO] 17:53:12:703 Coordinador/(11993:11993): Chequeo archivo de configuración
+[INFO] 17:53:12:703 Coordinador/(11993:11993): IP: 127.0.0.1
+[INFO] 17:58:05:318 Coordinador/(12064:12064): Chequeo archivo de configuración
+[INFO] 17:58:53:554 Coordinador/(12141:12141): Chequeo archivo de configuración
+[INFO] 17:58:53:554 Coordinador/(12141:12141): IP: 127.0.0.1
+[INFO] 18:00:58:902 Coordinador/(12186:12186): Chequeo archivo de configuración
+[INFO] 18:01:22:864 Coordinador/(12230:12230): Chequeo archivo de configuración
+[INFO] 18:01:27:467 Coordinador/(12230:12230): IP: 127.0.0.1
+[INFO] 18:08:07:202 Coordinador/(12420:12420): Chequeo archivo de configuración
+[INFO] 18:08:07:202 Coordinador/(12420:12420): IP: 127.0.0.1
+[INFO] 18:08:21:576 Coordinador/(12452:12452): Chequeo archivo de configuración
+[INFO] 18:08:21:576 Coordinador/(12452:12452): IP: 127.0.0.1
+[INFO] 18:09:10:907 Coordinador/(12492:12492): Chequeo archivo de configuración
+[INFO] 18:09:14:945 Coordinador/(12492:12492): IP: 127.0.0.1
+[INFO] 13:01:41:933 Coordinador/(4579:4579): Chequeo archivo de configuración
+[INFO] 13:01:41:947 Coordinador/(4579:4579): IP: 127.0.0.1
+[INFO] 13:05:03:66 Coordinador/(4660:4660): Chequeo archivo de configuración
+[INFO] 13:05:03:66 Coordinador/(4660:4660): IP: 127.0.0.1
+[INFO] 13:07:04:121 Coordinador/(4863:4863): Chequeo archivo de configuración
+[INFO] 13:07:04:121 Coordinador/(4863:4863): IP: 127.0.0.1
+[ERROR] 13:07:04:122 Coordinador/(4863:4863): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:07:04:122 Coordinador/(4863:4863): Puerto Correcto
+[INFO] 13:09:21:638 Coordinador/(5112:5112): Chequeo archivo de configuración
+[INFO] 13:09:21:638 Coordinador/(5112:5112): IP: 127.0.0.1
+[INFO] 13:09:55:801 Coordinador/(5171:5171): Chequeo archivo de configuración
+[INFO] 13:09:55:802 Coordinador/(5171:5171): IP: 127.0.0.1
+[ERROR] 13:09:55:802 Coordinador/(5171:5171): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:09:55:802 Coordinador/(5171:5171): Puerto Correcto
+[INFO] 13:10:55:53 Coordinador/(5241:5241): Chequeo archivo de configuración
+[INFO] 13:10:55:54 Coordinador/(5241:5241): IP: 127.0.0.1
+[INFO] 13:10:55:54 Coordinador/(5241:5241): (null)
+[ERROR] 13:10:55:55 Coordinador/(5241:5241): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:10:55:55 Coordinador/(5241:5241): Puerto Correcto
+[INFO] 13:12:08:327 Coordinador/(5322:5322): Chequeo archivo de configuración
+[INFO] 13:12:08:327 Coordinador/(5322:5322): IP: 127.0.0.1
+[INFO] 13:13:18:888 Coordinador/(5393:5393): Chequeo archivo de configuración
+[INFO] 13:13:18:888 Coordinador/(5393:5393): IP: 127.0.0.1
+[ERROR] 13:13:18:888 Coordinador/(5393:5393): PUERTO erroneo en Coordinador.cfg
+[ERROR] 13:13:18:888 Coordinador/(5393:5393): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:13:18:888 Coordinador/(5393:5393): Puerto Correcto
+[INFO] 13:14:51:941 Coordinador/(5457:5457): Chequeo archivo de configuración
+[INFO] 13:14:51:941 Coordinador/(5457:5457): IP: 127.0.0.1
+[INFO] 13:14:51:941 Coordinador/(5457:5457): 8000
+[ERROR] 13:14:51:941 Coordinador/(5457:5457): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:14:51:941 Coordinador/(5457:5457): Puerto Correcto
+[INFO] 13:15:42:638 Coordinador/(5532:5532): Chequeo archivo de configuración
+[INFO] 13:15:42:638 Coordinador/(5532:5532): IP: 127.0.0.1
+[INFO] 13:15:42:638 Coordinador/(5532:5532): PUERTO: 8000
+[INFO] 13:15:42:638 Coordinador/(5532:5532): Puerto Correcto
+[INFO] 13:16:06:548 Coordinador/(5544:5544): Chequeo archivo de configuración
+[INFO] 13:16:06:548 Coordinador/(5544:5544): IP: 127.0.0.1
+[INFO] 13:16:06:548 Coordinador/(5544:5544): PUERTO: 0
+[ERROR] 13:16:06:549 Coordinador/(5544:5544): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:16:06:549 Coordinador/(5544:5544): Puerto Correcto
+[INFO] 13:17:25:570 Coordinador/(5590:5590): Chequeo archivo de configuración
+[INFO] 13:17:25:570 Coordinador/(5590:5590): IP: 127.0.0.1
+[INFO] 13:17:25:570 Coordinador/(5590:5590): PUERTO: 0
+[ERROR] 13:17:25:570 Coordinador/(5590:5590): Archivo config de Coordinador: el puerto del COORDINADOR está mal configurado.
+[INFO] 13:17:25:570 Coordinador/(5590:5590): Puerto Correcto
+[INFO] 13:58:34:247 Coordinador/(6378:6378): Chequeo archivo de configuración
+[INFO] 13:58:34:247 Coordinador/(6378:6378): IP: 127.0.0.1
+[INFO] 13:58:34:247 Coordinador/(6378:6378): PUERTO: 0
