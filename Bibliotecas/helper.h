@@ -63,6 +63,11 @@ typedef struct {
 }__attribute__((packed)) procesoEsi;
 
 typedef struct {
+	char* clave;
+	char* idEsi;
+}__attribute__((packed)) clavexEsi;
+
+typedef struct {
 	char* id;
 	int socket;
 }__attribute__((packed)) t_esiCoordinador;

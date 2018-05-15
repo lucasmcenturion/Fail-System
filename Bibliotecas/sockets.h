@@ -21,7 +21,7 @@
 #define PLANIFICADOR "Planificador"
 
 typedef enum { ESHANDSHAKE, ESDATOS, ESSTRING, ESARCHIVO, ESINT, ESERROR, IDENTIFICACIONINSTANCIA,SOLICITUDNOMBRE, SETINST, GETINST,
-	GETENTRADAS, SETCOORD, STORECOORD, MUERTEESI, ABORTAR, BLOQUEODECLAVE, DESBLOQUEODECLAVE, SIGUIENTELINEA, REPETIRLINEA, GETPLANI,STOREINST, GETCOORD, SETOK} tipo;
+	GETENTRADAS, SETCOORD, STORECOORD, MUERTEESI, ABORTAR, SIGUIENTELINEA, REPETIRLINEA, GETPLANI,STOREINST, GETCOORD, SETOK} tipo;
 
 
 typedef struct {
@@ -56,6 +56,9 @@ int StartServidor(char* MyIP, int MyPort);
 int ConectarAServidor(int puertoAConectar, char* ipAConectar, char servidor[13], char cliente[13],
 		void RecibirElHandshake(int socketFD, char emisor[13]));
 int ConectarAServidorESI(int puertoAConectar, char* ipAConectar, char servidor[13], char cliente[13],
+		void RecibirElHandshake(int socketFD, char emisor[13]),
+		void EnviarElHandshake(int socketFD, char emisor[13]));
+int ConectarAServidorPlanificador(int puertoAConectar, char* ipAConectar, char servidor[13], char cliente[13],
 		void RecibirElHandshake(int socketFD, char emisor[13]),
 		void EnviarElHandshake(int socketFD, char emisor[13]));
 
