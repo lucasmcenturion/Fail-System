@@ -9,10 +9,8 @@ bool end;
 t_log * vg_logger = NULL;
 t_list* instancias;
 t_list* esis;
-t_list* claves_globales;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
-pthread_mutex_t mutex_claves;
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Coordinador/coordinador.cfg");
@@ -91,7 +89,10 @@ void sacar_instancia(int socket) {
 	instancias = list_filter(instancias, (void*) tiene_socket);
 }
 
-
+bool verificarGet(char *idEsi, char* keyEsi){
+	t_esiCoordinador *aux = list_find(esis, LAMBDA(int _(t_esiCoordinador *elemento) {  return !strcmp(elemento->id,idEsi);}));
+	return list_any_satisfy(aux->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,keyEsi);}));
+}
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
@@ -147,6 +148,7 @@ void accion(void* socket) {
 					nuevo->id=malloc(paquete.header.tamPayload);
 					strcpy(nuevo->id,paquete.Payload);
 					nuevo->socket = socketFD;
+					nuevo->claves = list_create();
 					pthread_mutex_lock(&mutex_esis);
 					list_add(esis,nuevo);
 					pthread_mutex_unlock(&mutex_esis);
@@ -160,50 +162,50 @@ void accion(void* socket) {
 					char* value=malloc(strlen(datos)+1);
 					strcpy(value,datos);
 
-					char*id=malloc(10);
-					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
-					id=realloc(id,strlen(id)+1);
-					bool foo(char*e){
-						return !strcmp(e,key);
-					}
 					bool verificarClave(t_IdInstancia *e){
 						return list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,key);}));
 					}
-					pthread_mutex_lock(&mutex_claves);
-					if(list_any_satisfy(claves_globales, foo)){
-						if(!list_any_satisfy(instancias, verificarClave)){
-							//clave eviste en el sistema, pero la instancia esta caida
-							printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
-							fflush(stdout);
-							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
-						}else{
-							int tam=strlen(key)+strlen(value)+2;
-							void*sendInstancia = malloc(tam);
-							strcpy(sendInstancia,key);
-							sendInstancia+=strlen(key)+1;
-							strcpy(sendInstancia,value);
-							sendInstancia-=strlen(value)+1;
-							sendInstancia-=tam;
-							if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
-								pthread_mutex_lock(&mutex_instancias);
-								int socketSiguiente = getProximo();
-								if(socketSiguiente!=0){
-									printf("%s\n",socketSiguiente);
-									fflush(stdout);
-									EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
-								}else{
-									//error, no hay instancias conectadas al sistema
-								}
-								pthread_mutex_unlock(&mutex_instancias);
-							}
-							free(sendInstancia);
-						}
+
+					char*id=malloc(10);
+					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
+					id=realloc(id,strlen(id)+1);
+					if(strlen(key)>40){
+						printf("Se quiere hacer un SET de una clave que excede los 40 caracteres\n");
+						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}else{
-						//clave no existe en el sistema
-						printf("Se intenta bloquear la clave %s pero no existe",key);
-						EnviarDatostipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+						if(verificarGet(id,key)){
+							if(!list_any_satisfy(instancias, verificarClave)){
+								//clave eviste en el sistema, pero la instancia esta caida
+								printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
+								fflush(stdout);
+								EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+							}else{
+								int tam=strlen(key)+strlen(value)+2;
+								void*sendInstancia = malloc(tam);
+								strcpy(sendInstancia,key);
+								sendInstancia+=strlen(key)+1;
+								strcpy(sendInstancia,value);
+								sendInstancia-=strlen(value)+1;
+								sendInstancia-=tam;
+								if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
+									pthread_mutex_lock(&mutex_instancias);
+									int socketSiguiente = getProximo();
+									if(socketSiguiente!=0){
+										printf("%s\n",socketSiguiente);
+										fflush(stdout);
+										EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
+									}else{
+										//error, no hay instancias conectadas al sistema
+									}
+									pthread_mutex_unlock(&mutex_instancias);
+								}
+								free(sendInstancia);
+							}
+						}else{
+							printf("Se intenta hacer un SET de una clave que nunca se hizo un GET \n");
+							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+						}
 					}
-					pthread_mutex_unlock(&mutex_claves);
 					free(key);
 					free(value);
 					free(id);
@@ -211,20 +213,28 @@ void accion(void* socket) {
 				break;
 				case GETCOORD: {
 					usleep(RETARDO);
-					pthread_mutex_lock(&mutex_claves);
-					list_add(claves_globales,(char*)paquete.Payload);
-					pthread_mutex_unlock(&mutex_claves);
+					pthread_mutex_lock(&mutex_esis);
+					t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
+					list_add(aux->claves,(char*)paquete.Payload);
+					pthread_mutex_unlock(&mutex_esis);
 					char*id=malloc(10);
-					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
+					strcpy(id,aux->id);
 					id=realloc(id,strlen(id)+1);
-					int tamSend=strlen(paquete.Payload)+strlen(id)+2;
-					void* sendPlanificador = malloc(tamSend);
-					strcpy(sendPlanificador,paquete.Payload);
-					sendPlanificador+=strlen(paquete.Payload)+1;
-					strcpy(sendPlanificador,id);
-					sendPlanificador+=strlen(id)+1;
-					sendPlanificador-=tamSend;
-					EnviarDatosTipo(socketPlanificador,COORDINADOR,sendPlanificador,tamSend,GETPLANI);
+					if(strlen((char*)paquete.Payload) > 40){
+						printf("Se intenta hacer un GET de una clave que excede el tamaño maximo\n");
+						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+					}else{
+						int tamSend=strlen(paquete.Payload)+strlen(id)+2;
+						void* sendPlanificador = malloc(tamSend);
+						strcpy(sendPlanificador,paquete.Payload);
+						sendPlanificador+=strlen(paquete.Payload)+1;
+						strcpy(sendPlanificador,id);
+						sendPlanificador+=strlen(id)+1;
+						sendPlanificador-=tamSend;
+						EnviarDatosTipo(socketPlanificador,COORDINADOR,sendPlanificador,tamSend,GETPLANI);
+						free(sendPlanificador);
+					}
+					free(id);
 				}
 				break;
 				case STORECOORD:{
@@ -258,7 +268,6 @@ int main(void) {
 	pthread_mutex_init(&mutex_esis,NULL);
 	pthread_mutex_init(&mutex_claves,NULL);
 	esis=list_create();
-	claves_globales=list_create();
 	instancias=list_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 

@@ -64,5 +64,6 @@ typedef struct {
 typedef struct {
 	char* id;
 	int socket;
+	t_list* claves;
 }__attribute__((packed)) t_esiCoordinador;
 #endif /* HELPER_*/
