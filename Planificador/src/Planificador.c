@@ -56,10 +56,11 @@ void imprimirArchivoConfiguracion(){
 
 	string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char* item1)
 		{
-		    list_add(clavesBloqueadas, item1);
-			printf("\t\t   %s\n", item1);
+			clavexEsi* cxe = malloc(sizeof(clavexEsi));
+			strcpy(cxe->idEsi, "SYSTEM");
+			strcpy(cxe->clave, item1);
+		    list_add(clavesBloqueadas, cxe);
 		}));
-	free(CLAVES_BLOQUEADAS);
 	fflush(stdout);
 }
 
@@ -70,23 +71,33 @@ void escuchaCoordinador(){
 		datos=paquete.Payload;
 		switch(paquete.header.tipoMensaje)
 		{
-			case BLOQUEODECLAVE:
+			case GETPLANI:
 			{
-				/*LO QUE SEA QUE ME MANDE EL COORDINADOR PARA SABER QUE SE BLOQUEO UNA CLAVE (GET)*/
-				list_add(clavesBloqueadas, datos);
+				//Se fija si la clave que recibio está en la lista de claves bloqueadas
+				if(list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, paquete.Payload);})))
+				{
+					//Si está, bloquea al proceso ESI
+					procesoEsi* esiABloquear = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+					list_add(BLOQUEADOS, esiABloquear);
+				}
+				else
+				{
+					//Sino, agrega la clave a claves bloqueadas
+					clavexEsi* cxe = malloc(sizeof(clavexEsi));
+					strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
+					strcpy(cxe->clave, paquete.Payload);
+					list_add(clavesBloqueadas, cxe);
+				}
 
 			}
 			break;
 
-			case DESBLOQUEODECLAVE:
+			case ABORTAR:
 			{
-				/*LO QUE SEA QUE ME MANDE EL COORDINADOR PARA SABER QUE SE DESBLOQUEO UNA CLAVE (STORE)*/
-				list_remove_and_destroy_by_condition(clavesBloqueadas, LAMBDA(bool _(char* item)
-				{
-					return !strcmp(item, datos);
-				}),
-				free);
-
+				procesoEsi* esiAAbortar = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, datos);}));
+				EnviarDatosTipo(esiAAbortar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
+				//liberarrecursos()
+				list_add(TERMINADOS, esiAAbortar);
 			}
 			break;
 		}
@@ -109,6 +120,7 @@ void accion(void* socket) {
 					fflush(stdout);
 					procesoEsi* nuevoEsi =  malloc(sizeof(procesoEsi));
 					nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
+					nuevoEsi->socket = socketFD;
 					strcpy(nuevoEsi->id, paquete.Payload);
 					list_add(LISTOS, nuevoEsi);
 					break;
@@ -143,12 +155,47 @@ void planificar()
 	}
 }
 
+void EnviarHandshakePlani(int socketFD,char emisor[13]){
+	void *datos;
+	int tamanio = 0, cant=0;
+	string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char* item1)
+		{
+			datos = realloc(datos, tamanio + strlen(item1) + 1);
+			strcpy(datos, item1);
+			datos += strlen(item1) + 1;
+			tamanio += strlen(item1) + 1;
+			cant++;
+			free(item1);
+		}));
+	datos -= tamanio;
+
+	Paquete* paquete = malloc(TAMANIOHEADER+sizeof(int)+tamanio);
+	Header header;
+	header.tipoMensaje = ESHANDSHAKE;
+
+	header.tamPayload = tamanio + sizeof(int);
+	paquete->Payload=malloc(sizeof(int) + tamanio);
+
+	((int*)paquete->Payload)[0] = cant;
+	memcpy(paquete->Payload + sizeof(int), datos, tamanio);
+	free(datos);
+
+	strcpy(header.emisor, emisor);
+	paquete->header = header;
+
+	EnviarPaquete(socketFD, paquete);
+
+	free(paquete->Payload);
+	free(paquete);
+	free(CLAVES_BLOQUEADAS);
+}
+
 int main(void) {
 	inicializar();
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
 	planificacion_detenida = false;
-	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, PLANIFICADOR, RecibirHandshake);
+	socketCoordinador = ConectarAServidorPlanificador(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, PLANIFICADOR, RecibirHandshake, EnviarHandshakePlani);
 	pthread_t hiloCoordinador;
 	pthread_create(&hiloCoordinador, NULL, (void*) escuchaCoordinador, NULL);
 	pthread_t hiloConsola;
@@ -157,5 +204,7 @@ int main(void) {
 	pthread_create(&hiloPlanificador, NULL, (void*)planificar, NULL);
 	ServidorConcurrente(IP,PUERTO, PLANIFICADOR, &listaHilos, &end, accion);
 	pthread_join(hiloConsola, NULL);
+	pthread_join(hiloPlanificador, NULL);
+	pthread_join(hiloCoordinador, NULL);
 	return EXIT_SUCCESS;
 }

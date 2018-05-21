@@ -7,8 +7,11 @@ int PUERTO_COORDINADOR, PUERTO_PLANIFICADOR;
 int socketPlanificador, socketCoordinador;
 
 char *programaAEjecutar;
+bool terminar = false;
 
 pthread_mutex_t binario_linea;
+
+pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
 
 void obtenerValoresArchivoConfiguracion() {
@@ -86,12 +89,82 @@ void escucharPlanificador(int socketFD,char emisor[13]){
 					//ALGO
 				}
 				break;
+
+				case ABORTAR:
+				{
+					close(socketCoordinador);
+					close(socketPlanificador);
+					terminar = true;
+				}
+				break;
 			}
 
 			if (paquete.Payload != NULL){
 				free(paquete.Payload);
 			}
 		}
+}
+
+void parsear(){
+	FILE * fp;
+		char * line = NULL;
+		size_t len = 0;
+		ssize_t read;
+		void* datos;
+
+		fp = fopen(programaAEjecutar, "r");
+		if (fp == NULL){
+			perror("Error al abrir el archivo: ");
+			muerteEsi();
+		}
+
+		while ((read = getline(&line, &len, fp)) != -1) {
+			pthread_mutex_lock(&binario_linea);
+			t_esi_operacion parsed = parse(line);
+			if(parsed.valido){
+				switch(parsed.keyword){
+					case GET:
+						datos = malloc(strlen(parsed.argumentos.GET.clave)+1);
+						strcpy(datos, parsed.argumentos.GET.clave);
+						EnviarDatosTipo(socketCoordinador, ESI, datos, strlen(parsed.argumentos.GET.clave)+1, GETCOORD);
+						printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
+						break;
+					case SET:
+						datos = malloc(strlen(parsed.argumentos.SET.clave)+strlen(parsed.argumentos.SET.valor)+2);
+						strcpy(datos, parsed.argumentos.SET.clave);
+						strcpy(datos + strlen(parsed.argumentos.SET.clave) + 1, parsed.argumentos.SET.valor);
+						EnviarDatosTipo(socketCoordinador, ESI, datos, strlen(parsed.argumentos.SET.clave)+strlen(parsed.argumentos.SET.valor)+2, SETCOORD);
+						printf("SET\tclave: <%s>\tvalor: <%s>\n", parsed.argumentos.SET.clave, parsed.argumentos.SET.valor);
+						break;
+					case STORE:
+						datos = malloc(strlen(parsed.argumentos.STORE.clave)+1);
+						strcpy(datos, parsed.argumentos.STORE.clave);
+						EnviarDatosTipo(socketCoordinador, ESI, datos, strlen(parsed.argumentos.STORE.clave)+1, STORECOORD);
+						printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
+						break;
+					default:
+						fprintf(stderr, "No pude interpretar <%s>\n", line);
+						muerteEsi();
+				}
+
+				destruir_operacion(parsed);
+			} else {
+				fprintf(stderr, "La linea <%s> no es valida\n", line);
+				muerteEsi();
+			}
+		}
+
+		fclose(fp);
+		if (line)
+			free(line);
+
+}
+
+void muerteEsi(){
+	close(socketCoordinador);
+	EnviarDatosTipo(socketPlanificador, ESI, NULL, 0, MUERTEESI);
+	close(socketPlanificador);
+	terminar = true;
 }
 
 int main(int argc, char* argv[]) {
@@ -103,50 +176,12 @@ int main(int argc, char* argv[]) {
 	pthread_mutex_init(&binario_linea, NULL);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR, IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake, enviarHandshakeESI);
 	socketCoordinador = ConectarAServidorESI(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, ESI, RecibirHandshake, enviarHandshakeESI);
-	pthread_t hiloCoordinador;
 	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
-	pthread_t hiloPlanificador;
 	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
-	FILE * fp;
-	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
-
-	fp = fopen(programaAEjecutar, "r");
-	if (fp == NULL){
-		perror("Error al abrir el archivo: ");
-		exit(EXIT_FAILURE);
-	}
-
-	while ((read = getline(&line, &len, fp)) != -1) {
-		pthread_mutex_lock(&binario_linea);
-		t_esi_operacion parsed = parse(line);
-
-		if(parsed.valido){
-			switch(parsed.keyword){
-				case GET:
-					printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
-					break;
-				case SET:
-					printf("SET\tclave: <%s>\tvalor: <%s>\n", parsed.argumentos.SET.clave, parsed.argumentos.SET.valor);
-					break;
-				case STORE:
-					printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
-					break;
-				default:
-					fprintf(stderr, "No pude interpretar <%s>\n", line);
-					exit(EXIT_FAILURE);
-			}
-
-			destruir_operacion(parsed);
-		} else {
-			fprintf(stderr, "La linea <%s> no es valida\n", line);
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	fclose(fp);
-	if (line)
-		free(line);
+	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
+	while(!terminar);
+	pthread_join(hiloCoordinador, NULL);
+	pthread_join(hiloPlanificador, NULL);
+	pthread_join(hiloParser, NULL);
 	return EXIT_SUCCESS;
 }
