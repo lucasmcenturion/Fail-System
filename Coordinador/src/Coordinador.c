@@ -139,7 +139,7 @@ void accion(void* socket) {
 						tamanioDatosEntradas, GETENTRADAS);
 				free(datosEntradas);
 			}
-				break;
+			break;
 			case IDENTIFICACIONINSTANCIA: {
 				char *nombreInstancia = malloc(paquete.header.tamPayload);
 				strcpy(nombreInstancia, (char*) paquete.Payload);
@@ -153,19 +153,17 @@ void accion(void* socket) {
 				list_add(instancias, instancia);
 				pthread_mutex_unlock(&mutex_instancias);
 			}
-				break;
+			break;
 			case SETOK: {
 				int tiene_socket(t_IdInstancia *e) {
 					if (e->socket == socketFD)
 						return e->socket != socketFD;
 				}
 				pthread_mutex_lock(&mutex_instancias);
-				list_add(
-						((t_IdInstancia*) list_find(instancias, tiene_socket))->claves,
-						(char*) paquete.Payload);
+				list_add(((t_IdInstancia*) list_find(instancias, tiene_socket))->claves,(char*)paquete.Payload);
 				pthread_mutex_unlock(&mutex_instancias);
 			}
-				break;
+			break;
 			}
 		}
 		if(!strcmp(paquete.header.emisor, ESI)){
@@ -181,13 +179,13 @@ void accion(void* socket) {
 					pthread_mutex_unlock(&mutex_esis);
 				}
 				break;
-			case SETCOORD: {
-				usleep(RETARDO);
-				char*key = malloc(strlen(datos) + 1);
-				strcpy(key, datos);
-				datos += strlen(datos) + 1;
-				char* value = malloc(strlen(datos) + 1);
-				strcpy(value, datos);
+				case SETCOORD: {
+					usleep(RETARDO);
+					char*key = malloc(strlen(datos) + 1);
+					strcpy(key, datos);
+					datos += strlen(datos) + 1;
+					char* value = malloc(strlen(datos) + 1);
+					strcpy(value, datos);
 
 					bool verificarClave(t_IdInstancia *e){
 						return list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,key);}));
@@ -236,43 +234,38 @@ void accion(void* socket) {
 					free(key);
 					free(value);
 					free(id);
+			}
+			break;
+			case GETCOORD: {
+				usleep(RETARDO);
+				pthread_mutex_lock(&mutex_esis);
+				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
+				list_add(aux->claves,(char*)paquete.Payload);
+				pthread_mutex_unlock(&mutex_esis);
+				char*id=malloc(10);
+				strcpy(id,aux->id);
+				id=realloc(id,strlen(id)+1);
+				if(strlen((char*)paquete.Payload) > 40){
+					printf("Se intenta hacer un GET de una clave que excede el tamaño maximo\n");
+					EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+				}else{
+					int tamSend=strlen(paquete.Payload)+strlen(id)+2;
+					void* sendPlanificador = malloc(tamSend);
+					strcpy(sendPlanificador,paquete.Payload);
+					sendPlanificador+=strlen(paquete.Payload)+1;
+					strcpy(sendPlanificador,id);
+					sendPlanificador+=strlen(id)+1;
+					sendPlanificador-=tamSend;
+					EnviarDatosTipo(socketPlanificador,COORDINADOR,sendPlanificador,tamSend,GETPLANI);
+					free(sendPlanificador);
 				}
-				pthread_mutex_unlock(&mutex_claves);
-				free(key);
-				free(value);
 				free(id);
 			}
-				break;
-				case GETCOORD: {
-					usleep(RETARDO);
-					pthread_mutex_lock(&mutex_esis);
-					t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
-					list_add(aux->claves,(char*)paquete.Payload);
-					pthread_mutex_unlock(&mutex_esis);
-					char*id=malloc(10);
-					strcpy(id,aux->id);
-					id=realloc(id,strlen(id)+1);
-					if(strlen((char*)paquete.Payload) > 40){
-						printf("Se intenta hacer un GET de una clave que excede el tamaño maximo\n");
-						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
-					}else{
-						int tamSend=strlen(paquete.Payload)+strlen(id)+2;
-						void* sendPlanificador = malloc(tamSend);
-						strcpy(sendPlanificador,paquete.Payload);
-						sendPlanificador+=strlen(paquete.Payload)+1;
-						strcpy(sendPlanificador,id);
-						sendPlanificador+=strlen(id)+1;
-						sendPlanificador-=tamSend;
-						EnviarDatosTipo(socketPlanificador,COORDINADOR,sendPlanificador,tamSend,GETPLANI);
-						free(sendPlanificador);
-					}
-					free(id);
-				}
-				break;
+			break;
 			case STORECOORD: {
 				usleep(RETARDO);
 			}
-				break;
+			break;
 			}
 		}
 		if (!strcmp(paquete.header.emisor, PLANIFICADOR)) {
