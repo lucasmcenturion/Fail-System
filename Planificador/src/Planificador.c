@@ -87,6 +87,8 @@ void escuchaCoordinador(){
 				{
 					//Sino, agrega la clave a claves bloqueadas
 					clavexEsi* cxe = malloc(sizeof(clavexEsi));
+					cxe->idEsi = malloc(strlen(paquete.Payload + strlen(paquete.Payload) + 1) + 1);
+					cxe->clave = malloc(strlen(paquete.Payload) + 1);
 					strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
 					strcpy(cxe->clave, paquete.Payload);
 					list_add(clavesBloqueadas, cxe);
