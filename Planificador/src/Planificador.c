@@ -57,9 +57,12 @@ void imprimirArchivoConfiguracion(){
 	string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char* item1)
 		{
 			clavexEsi* cxe = malloc(sizeof(clavexEsi));
+			cxe->idEsi = malloc(strlen("SYSTEM")+1);
+			cxe->clave = malloc(strlen(item1)+1);
 			strcpy(cxe->idEsi, "SYSTEM");
 			strcpy(cxe->clave, item1);
 		    list_add(clavesBloqueadas, cxe);
+		    printf("\t\t%s\n",item1);
 		}));
 	fflush(stdout);
 }
@@ -156,18 +159,17 @@ void planificar()
 }
 
 void EnviarHandshakePlani(int socketFD,char emisor[13]){
-	void *datos;
+	void *datos = malloc(0);
 	int tamanio = 0, cant=0;
+
 	string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char* item1)
 		{
 			datos = realloc(datos, tamanio + strlen(item1) + 1);
-			strcpy(datos, item1);
-			datos += strlen(item1) + 1;
+			strcpy(datos+tamanio, item1);
 			tamanio += strlen(item1) + 1;
 			cant++;
 			free(item1);
 		}));
-	datos -= tamanio;
 
 	Paquete* paquete = malloc(TAMANIOHEADER+sizeof(int)+tamanio);
 	Header header;

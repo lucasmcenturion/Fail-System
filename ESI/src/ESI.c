@@ -84,12 +84,6 @@ void escucharPlanificador(int socketFD,char emisor[13]){
 				}
 				break;
 
-				case REPETIRLINEA:
-				{
-					//ALGO
-				}
-				break;
-
 				case ABORTAR:
 				{
 					close(socketCoordinador);
