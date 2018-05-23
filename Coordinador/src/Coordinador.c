@@ -272,6 +272,13 @@ void accion(void* socket) {
 			switch (paquete.header.tipoMensaje) {
 			case ESHANDSHAKE: {
 				socketPlanificador = socketFD;
+				datos = paquete.Payload;
+				int tope = ((uint32_t*)datos)[0];
+				datos += sizeof(uint32_t);
+				for (int i=0; i < tope; i++){
+					printf("%s\n", datos);
+					datos += strlen(datos) +1;
+				}
 			}
 				break;
 			}
