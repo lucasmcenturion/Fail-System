@@ -144,12 +144,19 @@ void planificar()
 {
 	while (!planificacion_detenida)
 	{
+		if (!list_is_empty(LISTOS))
+		{
 			if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO"))
 			{
 				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
 				list_add(EJECUCION, esiAEjecutar);
+				EnviarDatosTipo(esiAEjecutar->socket,PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 			}
-			else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF"))
+			else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD"))
+			{
+
+			}
+			else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD"))
 			{
 
 			}
@@ -157,6 +164,7 @@ void planificar()
 			{
 
 			}
+		}
 	}
 }
 
