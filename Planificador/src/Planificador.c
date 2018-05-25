@@ -92,6 +92,8 @@ void escuchaCoordinador(){
 					strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
 					strcpy(cxe->clave, paquete.Payload);
 					list_add(clavesBloqueadas, cxe);
+					procesoEsi* esiAEstarReady = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+					list_add(LISTOS, esiAEstarReady);
 				}
 
 			}
