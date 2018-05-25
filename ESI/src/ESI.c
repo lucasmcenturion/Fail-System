@@ -13,6 +13,16 @@ pthread_mutex_t binario_linea;
 
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
+t_log* vg_logger;
+
+
+/* Creo el logger de ESI*/
+
+/*Creación de Logger*/
+void crearLogger() {
+	vg_logger = log_create("ESILog.log", "Coordinador", true,
+			LOG_LEVEL_INFO);
+}
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/ESI/esi.cfg");
@@ -122,6 +132,7 @@ void parsear(){
 						strcpy(datos, parsed.argumentos.GET.clave);
 						EnviarDatosTipo(socketCoordinador, ESI, datos, strlen(parsed.argumentos.GET.clave)+1, GETCOORD);
 						printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
+						log_info(vg_logger, "ESI id: %s, se ejecutó operación GET, con clave: %s", ID, parsed.argumentos.GET.clave);
 						break;
 					case SET:
 						datos = malloc(strlen(parsed.argumentos.SET.clave)+strlen(parsed.argumentos.SET.valor)+2);
@@ -129,12 +140,14 @@ void parsear(){
 						strcpy(datos + strlen(parsed.argumentos.SET.clave) + 1, parsed.argumentos.SET.valor);
 						EnviarDatosTipo(socketCoordinador, ESI, datos, strlen(parsed.argumentos.SET.clave)+strlen(parsed.argumentos.SET.valor)+2, SETCOORD);
 						printf("SET\tclave: <%s>\tvalor: <%s>\n", parsed.argumentos.SET.clave, parsed.argumentos.SET.valor);
+						log_info(vg_logger, "ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s", ID,parsed.argumentos.SET.clave,parsed.argumentos.SET.valor);
 						break;
 					case STORE:
 						datos = malloc(strlen(parsed.argumentos.STORE.clave)+1);
 						strcpy(datos, parsed.argumentos.STORE.clave);
 						EnviarDatosTipo(socketCoordinador, ESI, datos, strlen(parsed.argumentos.STORE.clave)+1, STORECOORD);
 						printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
+						log_info(vg_logger, "ESI id: %s, se ejecutó operación STORE, con clave: %s", ID, parsed.argumentos.STORE.clave);
 						break;
 					default:
 						fprintf(stderr, "No pude interpretar <%s>\n", line);

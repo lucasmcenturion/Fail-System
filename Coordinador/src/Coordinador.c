@@ -276,6 +276,7 @@ void accion(void* socket) {
 					free(key);
 					free(value);
 					free(id);
+					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s", id, key, value);
 			}
 			break;
 			case GETCOORD: {
@@ -305,10 +306,13 @@ void accion(void* socket) {
 					free(sendPlanificador);
 				}
 				free(id);
+				log_info(vg_logger, "El COORDINADOR recibió operación GET del ESI: %s, con clave: %s", id, paquete.Payload);
 			}
 			break;
 			case STORECOORD: {
 				usleep(RETARDO);
+
+				//log_info(vg_logger, "El COORDINADOR recibe operación STORE del ESI: %s"....);
 			}
 			break;
 			}
