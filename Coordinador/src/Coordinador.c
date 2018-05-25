@@ -178,7 +178,7 @@ void accion(void* socket) {
 				char *idEsi = malloc(10);
 				strcpy(idEsi,obtenerId((char*)paquete.Payload));
 				idEsi=realloc(idEsi,strlen(idEsi)+1);
-				EnviarDatosTipo(socketFD,COORDINADOR,idEsi,strlen(idEsi)+1,SETOKPLANI);
+				EnviarDatosTipo(socketPlanificador,COORDINADOR,idEsi,strlen(idEsi)+1,SETOKPLANI);
 				free(idEsi);
 			}
 			break;

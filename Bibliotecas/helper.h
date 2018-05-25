@@ -65,6 +65,7 @@ typedef struct {
 typedef struct {
 	char* clave;
 	char* idEsi;
+	bool borrar;
 }__attribute__((packed)) clavexEsi;
 
 typedef struct {

@@ -13,9 +13,9 @@
 extern bool planificacion_detenida;
 
 void PausarContinuar();
-void Bloquear();
-void Desbloquear();
-void Listar();
+void Bloquear(char* clave, char* id);
+void Desbloquear(char* clave);
+void Listar(char* recurso);
 void Kill();
 void Status();
 void Deadlock();
