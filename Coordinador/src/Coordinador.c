@@ -8,8 +8,10 @@ t_list* listaHilos;
 bool end;
 t_list* instancias;
 t_list* esis;
+t_dictionary* clavesNuevas;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
+pthread_mutex_t mutex_clavesNuevas;
 t_log* vg_logger;
 
 /*Creación de Logger*/
@@ -156,11 +158,11 @@ void accion(void* socket) {
 			break;
 			case SETOK: {
 				int tiene_socket(t_IdInstancia *e) {
-					if (e->socket == socketFD)
-						return e->socket != socketFD;
+						return e->socket == socketFD;
 				}
 				pthread_mutex_lock(&mutex_instancias);
-				list_add(((t_IdInstancia*) list_find(instancias, tiene_socket))->claves,(char*)paquete.Payload);
+				t_IdInstancia *aux = list_find(instancias, tiene_socket);
+				list_add(aux->claves,(char*)paquete.Payload);
 				pthread_mutex_unlock(&mutex_instancias);
 			}
 			break;
@@ -181,6 +183,7 @@ void accion(void* socket) {
 				break;
 				case SETCOORD: {
 					usleep(RETARDO);
+					datos=paquete.Payload;
 					char*key = malloc(strlen(datos) + 1);
 					strcpy(key, datos);
 					datos += strlen(datos) + 1;
@@ -188,7 +191,8 @@ void accion(void* socket) {
 					strcpy(value, datos);
 
 					bool verificarClave(t_IdInstancia *e){
-						return list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,key);}));
+						bool rv = list_any_satisfy(e->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,key);}));
+						return rv;
 					}
 
 					char*id=malloc(10);
@@ -199,12 +203,8 @@ void accion(void* socket) {
 						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}else{
 						if(verificarGet(id,key)){
-							if(!list_any_satisfy(instancias, verificarClave)){
-								//clave eviste en el sistema, pero la instancia esta caida
-								printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
-								fflush(stdout);
-								EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
-							}else{
+							pthread_mutex_lock(&mutex_clavesNuevas);
+							if(dictionary_has_key(clavesNuevas,key)){
 								int tam=strlen(key)+strlen(value)+2;
 								void*sendInstancia = malloc(tam);
 								strcpy(sendInstancia,key);
@@ -216,16 +216,42 @@ void accion(void* socket) {
 									pthread_mutex_lock(&mutex_instancias);
 									int socketSiguiente = getProximo();
 									if(socketSiguiente!=0){
-										printf("%s\n",socketSiguiente);
-										fflush(stdout);
 										EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
 									}else{
 										//error, no hay instancias conectadas al sistema
 									}
 									pthread_mutex_unlock(&mutex_instancias);
 								}
-								free(sendInstancia);
+							}else{
+								if(!list_any_satisfy(instancias, verificarClave)){
+									//clave existe en el sistema, pero la instancia esta caida
+									printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
+									fflush(stdout);
+									EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+								}else{
+									int tam=strlen(key)+strlen(value)+2;
+									void*sendInstancia = malloc(tam);
+									strcpy(sendInstancia,key);
+									sendInstancia+=strlen(key)+1;
+									strcpy(sendInstancia,value);
+									sendInstancia-=strlen(value)+1;
+									sendInstancia-=tam;
+									if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
+										pthread_mutex_lock(&mutex_instancias);
+										int socketSiguiente = getProximo();
+										if(socketSiguiente!=0){
+											printf("%s\n",socketSiguiente);
+											fflush(stdout);
+											EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
+										}else{
+											//error, no hay instancias conectadas al sistema
+										}
+										pthread_mutex_unlock(&mutex_instancias);
+									}
+								}
 							}
+							dictionary_remove(clavesNuevas,key);
+							pthread_mutex_unlock(&mutex_clavesNuevas);
 						}else{
 							printf("Se intenta hacer un SET de una clave que nunca se hizo un GET \n");
 							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
@@ -242,6 +268,9 @@ void accion(void* socket) {
 				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
 				list_add(aux->claves,(char*)paquete.Payload);
 				pthread_mutex_unlock(&mutex_esis);
+				pthread_mutex_lock(&mutex_clavesNuevas);
+				dictionary_put(clavesNuevas,(char*)paquete.Payload,true);
+				pthread_mutex_unlock(&mutex_clavesNuevas);
 				char*id=malloc(10);
 				strcpy(id,aux->id);
 				id=realloc(id,strlen(id)+1);
@@ -298,8 +327,10 @@ int main(void) {
 	imprimirArchivoConfiguracion();
 	pthread_mutex_init(&mutex_instancias,NULL);
 	pthread_mutex_init(&mutex_esis,NULL);
+	pthread_mutex_init(&mutex_clavesNuevas,NULL);
 	esis=list_create();
 	instancias=list_create();
+	clavesNuevas = dictionary_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 	finalizarLogger();
 	return EXIT_SUCCESS;

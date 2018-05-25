@@ -149,3 +149,75 @@
 [INFO] 13:58:34:247 Coordinador/(6378:6378): Chequeo archivo de configuración
 [INFO] 13:58:34:247 Coordinador/(6378:6378): IP: 127.0.0.1
 [INFO] 13:58:34:247 Coordinador/(6378:6378): PUERTO: 0
+[INFO] 00:04:41:848 Coordinador/(21687:21687): Chequeo archivo de configuración
+[INFO] 00:04:41:848 Coordinador/(21687:21687): IP: 127.0.0.1
+[INFO] 00:04:41:848 Coordinador/(21687:21687): PUERTO: 8000
+[INFO] 00:04:54:327 Coordinador/(21720:21720): Chequeo archivo de configuración
+[INFO] 00:04:54:327 Coordinador/(21720:21720): IP: 127.0.0.1
+[INFO] 00:04:54:327 Coordinador/(21720:21720): PUERTO: 8000
+[INFO] 00:08:56:366 Coordinador/(21931:21931): Chequeo archivo de configuración
+[INFO] 00:08:56:366 Coordinador/(21931:21931): IP: 127.0.0.1
+[INFO] 00:08:56:366 Coordinador/(21931:21931): PUERTO: 8000
+[INFO] 19:19:16:641 Coordinador/(23657:23657): Chequeo archivo de configuración
+[INFO] 19:19:16:644 Coordinador/(23657:23657): IP: 127.0.0.1
+[INFO] 19:19:16:644 Coordinador/(23657:23657): PUERTO: 8000
+[INFO] 20:14:07:50 Coordinador/(27958:27958): Chequeo archivo de configuración
+[INFO] 20:14:07:51 Coordinador/(27958:27958): IP: 127.0.0.1
+[INFO] 20:14:07:51 Coordinador/(27958:27958): PUERTO: 8000
+[INFO] 20:17:09:359 Coordinador/(28119:28119): Chequeo archivo de configuración
+[INFO] 20:17:09:359 Coordinador/(28119:28119): IP: 127.0.0.1
+[INFO] 20:17:09:359 Coordinador/(28119:28119): PUERTO: 8000
+[INFO] 20:19:44:511 Coordinador/(28238:28238): Chequeo archivo de configuración
+[INFO] 20:19:44:511 Coordinador/(28238:28238): IP: 127.0.0.1
+[INFO] 20:19:44:511 Coordinador/(28238:28238): PUERTO: 8000
+[INFO] 20:32:24:937 Coordinador/(28506:28506): Chequeo archivo de configuración
+[INFO] 20:32:24:937 Coordinador/(28506:28506): IP: 127.0.0.1
+[INFO] 20:32:24:937 Coordinador/(28506:28506): PUERTO: 8000
+[INFO] 20:57:46:825 Coordinador/(29208:29208): Chequeo archivo de configuración
+[INFO] 20:57:46:825 Coordinador/(29208:29208): IP: 127.0.0.1
+[INFO] 20:57:46:825 Coordinador/(29208:29208): PUERTO: 8000
+[INFO] 21:11:08:818 Coordinador/(29542:29542): Chequeo archivo de configuración
+[INFO] 21:11:08:818 Coordinador/(29542:29542): IP: 127.0.0.1
+[INFO] 21:11:08:818 Coordinador/(29542:29542): PUERTO: 8000
+[INFO] 21:13:34:805 Coordinador/(29672:29672): Chequeo archivo de configuración
+[INFO] 21:13:34:805 Coordinador/(29672:29672): IP: 127.0.0.1
+[INFO] 21:13:34:805 Coordinador/(29672:29672): PUERTO: 8000
+[INFO] 21:18:48:704 Coordinador/(29864:29864): Chequeo archivo de configuración
+[INFO] 21:18:48:704 Coordinador/(29864:29864): IP: 127.0.0.1
+[INFO] 21:18:48:704 Coordinador/(29864:29864): PUERTO: 8000
+[INFO] 21:34:55:428 Coordinador/(30225:30225): Chequeo archivo de configuración
+[INFO] 21:34:55:428 Coordinador/(30225:30225): IP: 127.0.0.1
+[INFO] 21:34:55:428 Coordinador/(30225:30225): PUERTO: 8000
+[INFO] 21:36:29:24 Coordinador/(30384:30384): Chequeo archivo de configuración
+[INFO] 21:36:29:24 Coordinador/(30384:30384): IP: 127.0.0.1
+[INFO] 21:36:29:24 Coordinador/(30384:30384): PUERTO: 8000
+[INFO] 21:37:34:289 Coordinador/(30521:30521): Chequeo archivo de configuración
+[INFO] 21:37:34:289 Coordinador/(30521:30521): IP: 127.0.0.1
+[INFO] 21:37:34:289 Coordinador/(30521:30521): PUERTO: 8000
+[INFO] 21:41:51:337 Coordinador/(30687:30687): Chequeo archivo de configuración
+[INFO] 21:41:51:337 Coordinador/(30687:30687): IP: 127.0.0.1
+[INFO] 21:41:51:337 Coordinador/(30687:30687): PUERTO: 8000
+[INFO] 21:43:08:171 Coordinador/(30791:30791): Chequeo archivo de configuración
+[INFO] 21:43:08:171 Coordinador/(30791:30791): IP: 127.0.0.1
+[INFO] 21:43:08:171 Coordinador/(30791:30791): PUERTO: 8000
+[INFO] 21:47:37:933 Coordinador/(30990:30990): Chequeo archivo de configuración
+[INFO] 21:47:37:933 Coordinador/(30990:30990): IP: 127.0.0.1
+[INFO] 21:47:37:933 Coordinador/(30990:30990): PUERTO: 8000
+[INFO] 21:49:31:249 Coordinador/(31121:31121): Chequeo archivo de configuración
+[INFO] 21:49:31:249 Coordinador/(31121:31121): IP: 127.0.0.1
+[INFO] 21:49:31:249 Coordinador/(31121:31121): PUERTO: 8000
+[INFO] 21:50:35:57 Coordinador/(31248:31248): Chequeo archivo de configuración
+[INFO] 21:50:35:57 Coordinador/(31248:31248): IP: 127.0.0.1
+[INFO] 21:50:35:57 Coordinador/(31248:31248): PUERTO: 8000
+[INFO] 21:52:43:394 Coordinador/(31411:31411): Chequeo archivo de configuración
+[INFO] 21:52:43:394 Coordinador/(31411:31411): IP: 127.0.0.1
+[INFO] 21:52:43:394 Coordinador/(31411:31411): PUERTO: 8000
+[INFO] 21:54:48:189 Coordinador/(31584:31584): Chequeo archivo de configuración
+[INFO] 21:54:48:189 Coordinador/(31584:31584): IP: 127.0.0.1
+[INFO] 21:54:48:189 Coordinador/(31584:31584): PUERTO: 8000
+[INFO] 21:59:11:61 Coordinador/(31715:31715): Chequeo archivo de configuración
+[INFO] 21:59:11:62 Coordinador/(31715:31715): IP: 127.0.0.1
+[INFO] 21:59:11:62 Coordinador/(31715:31715): PUERTO: 8000
+[INFO] 22:00:08:94 Coordinador/(31838:31838): Chequeo archivo de configuración
+[INFO] 22:00:08:95 Coordinador/(31838:31838): IP: 127.0.0.1
+[INFO] 22:00:08:95 Coordinador/(31838:31838): PUERTO: 8000
