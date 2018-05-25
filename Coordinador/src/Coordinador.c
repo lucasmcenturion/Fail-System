@@ -119,6 +119,17 @@ bool verificarGet(char *idEsi, char* keyEsi){
 	t_esiCoordinador *aux = list_find(esis, LAMBDA(int _(t_esiCoordinador *elemento) {  return !strcmp(elemento->id,idEsi);}));
 	return list_any_satisfy(aux->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,keyEsi);}));
 }
+char* obtenerId(char* key){
+	t_esiCoordinador* encontrarClave(t_esiCoordinador *elemento){
+		if(list_any_satisfy(elemento->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,key);}))){
+			return elemento;
+		}
+	}
+	pthread_mutex_lock(&mutex_esis);
+	t_esiCoordinador*aux=list_find(esis,encontrarClave);
+	pthread_mutex_unlock(&mutex_esis);
+	return aux->id;
+}
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
@@ -164,6 +175,11 @@ void accion(void* socket) {
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
 				list_add(aux->claves,(char*)paquete.Payload);
 				pthread_mutex_unlock(&mutex_instancias);
+				char *idEsi = malloc(10);
+				strcpy(idEsi,obtenerId((char*)paquete.Payload));
+				idEsi=realloc(idEsi,strlen(idEsi)+1);
+				EnviarDatosTipo(socketFD,COORDINADOR,idEsi,strlen(idEsi)+1,SETOKPLANI);
+				free(idEsi);
 			}
 			break;
 			}
