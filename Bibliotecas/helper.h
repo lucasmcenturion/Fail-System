@@ -63,6 +63,11 @@ typedef struct {
 }__attribute__((packed)) procesoEsi;
 
 typedef struct {
+	procesoEsi* esi;
+	char* clave;
+}__attribute__((packed)) esiBloqueado;
+
+typedef struct {
 	char* clave;
 	char* idEsi;
 	bool borrar;

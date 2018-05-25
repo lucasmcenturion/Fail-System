@@ -82,7 +82,11 @@ void escuchaCoordinador(){
 				{
 					//Si está, bloquea al proceso ESI
 					procesoEsi* esiABloquear = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
-					list_add(BLOQUEADOS, esiABloquear);
+					esiBloqueado* esiBloqueado = malloc(sizeof(esiBloqueado));
+					esiBloqueado->esi = esiABloquear;
+					esiBloqueado->clave = malloc(strlen(paquete.Payload)+1);
+					strcpy(esiBloqueado->clave, paquete.Payload);
+					list_add(BLOQUEADOS, esiBloqueado);
 				}
 				else
 				{
@@ -96,6 +100,8 @@ void escuchaCoordinador(){
 					list_add(clavesBloqueadas, cxe);
 					procesoEsi* esiAEstarReady = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
 					list_add(LISTOS, esiAEstarReady);
+					//if (!strcmp(ALGORITMO_PLANIFICACION,"SJF/CD"))
+					//	planificar();
 				}
 
 			}
@@ -132,6 +138,8 @@ void accion(void* socket) {
 					nuevoEsi->socket = socketFD;
 					strcpy(nuevoEsi->id, paquete.Payload);
 					list_add(LISTOS, nuevoEsi);
+					if (!strcmp(ALGORITMO_PLANIFICACION,"SJF/CD") || list_size(LISTOS)==1)
+						planificar();
 					break;
 			}
 		}
@@ -146,7 +154,7 @@ void accion(void* socket) {
 
 void planificar()
 {
-	while (!planificacion_detenida)
+	if (!planificacion_detenida)
 	{
 		if (!list_is_empty(LISTOS))
 		{
@@ -217,7 +225,6 @@ int main(void) {
 	pthread_t hiloConsola;
 	pthread_create(&hiloConsola, NULL, (void*) consola, NULL);
 	pthread_t hiloPlanificador;
-	pthread_create(&hiloPlanificador, NULL, (void*)planificar, NULL);
 	ServidorConcurrente(IP,PUERTO, PLANIFICADOR, &listaHilos, &end, accion);
 	pthread_join(hiloConsola, NULL);
 	pthread_join(hiloPlanificador, NULL);
