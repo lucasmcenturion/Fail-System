@@ -11,6 +11,7 @@
 #include "sockets.h"
 
 extern bool planificacion_detenida;
+extern t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 
 void PausarContinuar();
 void Bloquear(char* clave, char* id);
