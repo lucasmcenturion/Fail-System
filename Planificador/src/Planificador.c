@@ -106,12 +106,44 @@ void escuchaCoordinador(){
 
 			}
 			break;
+			/* PARA EL CASO DEL STORE
+			case MENSAJEQUEMEMANDEJULIPARASTORE:
+						{
+							//Se fija si la clave que recibio está en la lista de claves bloqueadas
+							if(list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, paquete.Payload);})))
+							{
+								//Si está, bloquea al proceso ESI
+								procesoEsi* esiABloquear = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+								esiBloqueado* esiBloqueado = malloc(sizeof(esiBloqueado));
+								esiBloqueado->esi = esiABloquear;
+								esiBloqueado->clave = malloc(strlen(paquete.Payload)+1);
+								strcpy(esiBloqueado->clave, paquete.Payload);
+								list_add(BLOQUEADOS, esiBloqueado);
+							}
+							else
+							{
+								//Sino, agrega la clave a claves bloqueadas
+								clavexEsi* cxe = malloc(sizeof(clavexEsi));
+								cxe->idEsi = malloc(strlen(paquete.Payload + strlen(paquete.Payload) + 1) + 1);
+								cxe->clave = malloc(strlen(paquete.Payload) + 1);
+								cxe->borrar = false;
+								strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
+								strcpy(cxe->clave, paquete.Payload);
+								list_add(clavesBloqueadas, cxe);
+								procesoEsi* esiAEstarReady = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+								list_add(LISTOS, esiAEstarReady);
+								//if (!strcmp(ALGORITMO_PLANIFICACION,"SJF/CD"))
+								//	planificar();
+							}
+
+						}
+						break;
+			*/
 
 			case ABORTAR:
 			{
 				procesoEsi* esiAAbortar = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, datos);}));
 				EnviarDatosTipo(esiAAbortar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
-				//liberarrecursos()
 				list_add(TERMINADOS, esiAAbortar);
 			}
 			break;
@@ -140,6 +172,10 @@ void accion(void* socket) {
 					list_add(LISTOS, nuevoEsi);
 					if (!strcmp(ALGORITMO_PLANIFICACION,"SJF/CD") || list_size(LISTOS)==1)
 						planificar();
+					break;
+
+				case MUERTEESI:
+					//liberarrecursos
 					break;
 			}
 		}

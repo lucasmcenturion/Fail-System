@@ -96,9 +96,7 @@ void escucharPlanificador(int socketFD,char emisor[13]){
 
 				case ABORTAR:
 				{
-					close(socketCoordinador);
-					close(socketPlanificador);
-					terminar = true;
+					muerteEsi();
 				}
 				break;
 			}
@@ -164,6 +162,7 @@ void parsear(){
 		fclose(fp);
 		if (line)
 			free(line);
+		muerteEsi();
 
 }
 
