@@ -1,6 +1,7 @@
 #include "Consola.h"
 
 bool planificacion_detenida;
+t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
