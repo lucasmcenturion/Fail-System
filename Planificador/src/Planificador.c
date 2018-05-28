@@ -257,13 +257,24 @@ void planificar() {
 			if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
 				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
 				list_add(EJECUCION, esiAEjecutar);
-				EnviarDatosTipo(esiAEjecutar->socket,
-				PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+				EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD")) {
+				//AUX: lista ordenada de esis por estimacion de rafaga
 				t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
 				list_sort(AUX, (void*) ComparadorDeRafagas);
-				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX, 0);
-				EJECUCION = list_create();
+
+				procesoEsi* esiMenorEst = (procesoEsi*) list_get(AUX, 0);
+				//si hay ESIs con estimaciones repetidas
+				//AUX2: lista ordenada por orden de llegada de esis con igual estimacion
+				t_list* AUX2 = list_create();
+				for(int x=0; x<list_size(AUX); x++){
+					procesoEsi* unEsi = (procesoEsi*) list_get(AUX, x);
+					if(unEsi->rafagasEstimadas==esiMenorEst->rafagasEstimadas){
+						list_add(AUX2, unEsi);
+					}
+				}
+				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX2, 0);
 				list_add(EJECUCION, esiAEjecutar);
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
 
