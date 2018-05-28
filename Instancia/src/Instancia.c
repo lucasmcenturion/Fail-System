@@ -1,10 +1,12 @@
 #include "sockets.h"
 #include <dirent.h>
+#include <commons/collections/list.h>
 
 char *IP_COORDINADOR, *ALGORITMO_REEMPLAZO, *PUNTO_MONTAJE, *NOMBRE_INSTANCIA;
 int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA;
 char **tabla_entradas;
 t_list *entradas_administrativa;
+t_log * vg_logger;
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/instancia.cfg");
@@ -76,10 +78,12 @@ void verificarPuntoMontaje(){
 	else if (ENOENT == errno)
 	{
 		//el directorio no existe
+		log_info(vg_logger,"No existe el punto de montaje, se crea el directorio");
 		mkdir(PUNTO_MONTAJE,0700);
 	}
 	else
 	{
+		log_error(vg_logger, "Se detectó el siguiente error al abrir el directorio: %s", strerror(errno));
 	    printf("Fallo el opendir \n");
 	    fflush(stdout);
 	}
@@ -94,6 +98,51 @@ void crearArchivo(char*key,char*value){
 	fclose(f);
 	free(ruta);
 }
+
+
+//No se puso en el SWITCH debido a que es PROPIO DE LA INSTANCIA! No depende del COORDINADOR.
+
+void dump(){
+
+	//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
+	int i,j;
+	for (i=0;  i< list_size(entradas_administrativa); i++) {
+
+		/* Agarro las claves con list_get */
+		t_Entrada* actual = (t_Entrada*)list_get(entradas_administrativa, i);
+
+		/* Creo el directorio dinámico de la clave */
+		char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
+		strcpy(directorio_actual, PUNTO_MONTAJE);
+		strcpy(directorio_actual+strlen(PUNTO_MONTAJE),actual->clave);
+
+		//Valor que va a tener la clave dentro de la tabla de entradas
+		char* valor=malloc(actual->tamanio);
+
+		//Recorro tabla entradas para obtener clave completa
+		for (j = actual->index; j < (actual->index + actual->entradasOcupadas);j++) {
+			//Pregunto si tiene una sola entrada o utiliza más
+			if((actual->index + actual->entradasOcupadas) -1 == j){
+				strcpy(valor, tabla_entradas[j]);
+			}else{
+				strcpy(valor, tabla_entradas[j]);
+				valor += TAMANIO_ENTRADA;
+			}
+		}
+
+		//Creo archivo con dirección dinámica (directorio)
+		FILE* file_a_crear = fopen(directorio_actual,"w+");
+
+		//Escribo la clave en el archivo
+		fwrite(valor,actual->tamanio,sizeof(char),file_a_crear);
+
+		//Libero memoria
+		free(valor);
+		fclose(file_a_crear);
+	}
+}
+
+
 
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
@@ -143,7 +192,7 @@ int main(void) {
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
 				nueva->tamanio = strlen(value);
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
-				list_add(entradas_administrativa,nueva);
+				list_add(entradas_administrativa,nueva);  //
 				int i;
 				char *valueAux=malloc(strlen(value)+1);
 				strcpy(valueAux,value);
@@ -166,7 +215,7 @@ int main(void) {
 				datos+=sizeof(int);
 				CANT_ENTRADA=*((int*)datos);
 				datos+=sizeof(int);
-				tabla_entradas=malloc(CANT_ENTRADA*sizeof(char*));
+				tabla_entradas=malloc(CANT_ENTRADA*sizeof(char*)); //CANT_ENTRADA * TAMANIO_ENTRADA
 				int i;
 				for(i=0;i<CANT_ENTRADA;i++){
 					tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
@@ -174,7 +223,6 @@ int main(void) {
 				}
 			}
 			break;
-
 		}
 		if (paquete.Payload != NULL){
 			free(paquete.Payload);
@@ -182,3 +230,27 @@ int main(void) {
 	}
 	return EXIT_SUCCESS;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
