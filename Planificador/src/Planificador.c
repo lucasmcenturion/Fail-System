@@ -1,10 +1,11 @@
 #include "Consola.h"
 
 char *IP, *ALGORITMO_PLANIFICACION, *IP_COORDINADOR;
-int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR;
+int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR, ALFA_ESTIMACION;
 char **CLAVES_BLOQUEADAS;
 
 int socketCoordinador;
+int tiempo = 0; //Controlar arribos
 
 t_list* listaHilos;
 bool end;
@@ -30,6 +31,7 @@ void obtenerValoresArchivoConfiguracion() {
 	PUERTO = config_get_int_value(arch, "PUERTO");
 	ALGORITMO_PLANIFICACION = string_duplicate(
 			config_get_string_value(arch, "ALGORITMO_PLANIFICACION"));
+	ALFA_ESTIMACION = config_get_int_value(arch, "ALFA_ESTIMACION");
 	ESTIMACION_INICIAL = config_get_int_value(arch, "ESTIMACION_INICIAL");
 	IP_COORDINADOR = string_duplicate(
 			config_get_string_value(arch, "IP_COORDINADOR"));
@@ -43,10 +45,11 @@ void imprimirArchivoConfiguracion() {
 			"IP=%s\n"
 			"PUERTO=%d\n"
 			"ALGORITMO_PLANIFICACION=%s\n"
+			"ALFA_ESTIMACION=%d\n"
 			"ESTIMACION_INICIAL=%d\n"
 			"IP_COORDINADOR=%s\n"
 			"PUERTO_COORDINADOR=%d\n"
-			"CLAVES_BLOQUEADAS=\n", IP, PUERTO, ALGORITMO_PLANIFICACION,
+			"CLAVES_BLOQUEADAS=\n", IP, PUERTO, ALGORITMO_PLANIFICACION, ALFA_ESTIMACION,
 			ESTIMACION_INICIAL, IP_COORDINADOR, PUERTO_COORDINADOR);
 
 	string_iterate_lines(CLAVES_BLOQUEADAS,
@@ -239,16 +242,40 @@ void accion(void* socket) {
 	}
 }
 
+procesoEsi* CalcularEstimacion(procesoEsi* unEsi){
+	unEsi->rafagasEstimadas = (ALFA_ESTIMACION*ESTIMACION_INICIAL)+((1-ALFA_ESTIMACION)*(unEsi->rafagasRealesEjecutadas));
+	return unEsi;
+}
+
+bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor){
+	return esi->rafagasEstimadas < esiMenor->rafagasEstimadas;
+}
+
 void planificar() {
 	if (!planificacion_detenida) {
 		if (!list_is_empty(LISTOS)) {
 			if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
 				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
 				list_add(EJECUCION, esiAEjecutar);
-				EnviarDatosTipo(esiAEjecutar->socket,
-				PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
-			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD")) {
+				EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD")) {
+				//AUX: lista ordenada de esis por estimacion de rafaga
+				t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
+				list_sort(AUX, (void*) ComparadorDeRafagas);
+
+				procesoEsi* esiMenorEst = (procesoEsi*) list_get(AUX, 0);
+				//si hay ESIs con estimaciones repetidas
+				//AUX2: lista ordenada por orden de llegada de esis con igual estimacion
+				t_list* AUX2 = list_create();
+				for(int x=0; x<list_size(AUX); x++){
+					procesoEsi* unEsi = (procesoEsi*) list_get(AUX, x);
+					if(unEsi->rafagasEstimadas==esiMenorEst->rafagasEstimadas){
+						list_add(AUX2, unEsi);
+					}
+				}
+				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX2, 0);
+				list_add(EJECUCION, esiAEjecutar);
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
 
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
