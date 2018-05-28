@@ -122,9 +122,9 @@ void parsear() {
 				EnviarDatosTipo(socketCoordinador, ESI, datos,
 						strlen(parsed.argumentos.GET.clave) + 1, GETCOORD);
 				printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
-				log_info(vg_logger,
-						"ESI id: %s, se ejecutó operación GET, con clave: %s",
-						ID, parsed.argumentos.GET.clave);
+//				log_info(vg_logger,
+//						"ESI id: %s, se ejecutó operación GET, con clave: %s",
+//						ID, parsed.argumentos.GET.clave);
 				break;
 			case SET:
 				datos = malloc(
@@ -140,10 +140,10 @@ void parsear() {
 				printf("SET\tclave: <%s>\tvalor: <%s>\n",
 						parsed.argumentos.SET.clave,
 						parsed.argumentos.SET.valor);
-				log_info(vg_logger,
-						"ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s",
-						ID, parsed.argumentos.SET.clave,
-						parsed.argumentos.SET.valor);
+//				log_info(vg_logger,
+//						"ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s",
+//						ID, parsed.argumentos.SET.clave,
+//						parsed.argumentos.SET.valor);
 				break;
 			case STORE:
 				datos = malloc(strlen(parsed.argumentos.STORE.clave) + 1);
@@ -151,10 +151,10 @@ void parsear() {
 				EnviarDatosTipo(socketCoordinador, ESI, datos,
 						strlen(parsed.argumentos.STORE.clave) + 1, STORECOORD);
 				printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
-				log_info(vg_logger,
-						"ESI id: %s, se ejecutó operación STORE, con clave: %s",
-						ID, parsed.argumentos.STORE.clave);
-				break;
+//				log_info(vg_logger,
+//						"ESI id: %s, se ejecutó operación STORE, con clave: %s",
+//						ID, parsed.argumentos.STORE.clave);
+//				break;
 			default:
 				fprintf(stderr, "No pude interpretar <%s>\n", line);
 				muerteEsi();

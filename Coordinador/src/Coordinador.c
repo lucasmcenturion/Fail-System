@@ -119,11 +119,16 @@ bool verificarGet(char *idEsi, char* keyEsi){
 	t_esiCoordinador *aux = list_find(esis, LAMBDA(int _(t_esiCoordinador *elemento) {  return !strcmp(elemento->id,idEsi);}));
 	return list_any_satisfy(aux->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,keyEsi);}));
 }
+bool obtenerSocket(char* keyEsi){
+	bool compararClaves(t_IdInstancia*elemento){
+		return list_any_satisfy(elemento->claves,LAMBDA(int _(char *e) {  return !strcmp(e,keyEsi);}));
+	}
+	t_IdInstancia *aux = list_find(instancias, compararClaves);
+	return aux->socket;
+}
 char* obtenerId(char* key){
-	t_esiCoordinador* encontrarClave(t_esiCoordinador *elemento){
-		if(list_any_satisfy(elemento->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,key);}))){
-			return elemento;
-		}
+	bool encontrarClave(t_esiCoordinador *elemento){
+		return list_any_satisfy(elemento->claves,LAMBDA(int _(char *e) {  return !strcmp(e,key);}));
 	}
 	pthread_mutex_lock(&mutex_esis);
 	t_esiCoordinador*aux=list_find(esis,encontrarClave);
@@ -226,7 +231,7 @@ void accion(void* socket) {
 								strcpy(sendInstancia,key);
 								sendInstancia+=strlen(key)+1;
 								strcpy(sendInstancia,value);
-								sendInstancia-=strlen(value)+1;
+								sendInstancia+=strlen(value)+1;
 								sendInstancia-=tam;
 								if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
 									pthread_mutex_lock(&mutex_instancias);
@@ -250,7 +255,7 @@ void accion(void* socket) {
 									strcpy(sendInstancia,key);
 									sendInstancia+=strlen(key)+1;
 									strcpy(sendInstancia,value);
-									sendInstancia-=strlen(value)+1;
+									sendInstancia+=strlen(value)+1;
 									sendInstancia-=tam;
 									if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
 										pthread_mutex_lock(&mutex_instancias);
@@ -283,7 +288,9 @@ void accion(void* socket) {
 				usleep(RETARDO);
 				pthread_mutex_lock(&mutex_esis);
 				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
-				list_add(aux->claves,(char*)paquete.Payload);
+				char * key=malloc(strlen((char*)paquete.Payload));
+				strcpy(key,(char*)paquete.Payload);
+				list_add(aux->claves,key);
 				pthread_mutex_unlock(&mutex_esis);
 				pthread_mutex_lock(&mutex_clavesNuevas);
 				dictionary_put(clavesNuevas,(char*)paquete.Payload,true);
@@ -311,6 +318,20 @@ void accion(void* socket) {
 			break;
 			case STORECOORD: {
 				usleep(RETARDO);
+				char*id=malloc(10);
+				strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
+				id=realloc(id,strlen(id)+1);
+				if(strlen((char*)paquete.Payload)>40){
+					printf("Se quiere hacer un SET de una clave que excede los 40 caracteres\n");
+					EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+				}else{
+					if(verificarGet(id,(char*)paquete.Payload)){
+						EnviarDatosTipo(obtenerSocket(paquete.Payload),COORDINADOR,paquete.Payload,strlen(paquete.Payload)+1,STOREINST);
+					}else{
+						printf("Se intenta hacer un STORE de una clave que nunca se hizo un GET \n");
+						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
+					}
+				}
 
 				//log_info(vg_logger, "El COORDINADOR recibe operación STORE del ESI: %s"....);
 			}

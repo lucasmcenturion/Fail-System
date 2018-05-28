@@ -233,3 +233,128 @@
 [INFO] 23:11:01:302 Coordinador/(1378:1378): Chequeo archivo de configuración
 [INFO] 23:11:01:302 Coordinador/(1378:1378): IP: 127.0.0.1
 [INFO] 23:11:01:302 Coordinador/(1378:1378): PUERTO: 8000
+[INFO] 22:02:34:895 Coordinador/(6071:6071): Chequeo archivo de configuración
+[INFO] 22:02:34:895 Coordinador/(6071:6071): IP: 127.0.0.1
+[INFO] 22:02:34:895 Coordinador/(6071:6071): PUERTO: 8000
+[INFO] 22:04:38:840 Coordinador/(6071:6286): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:05:53:2 Coordinador/(6319:6319): Chequeo archivo de configuración
+[INFO] 22:05:53:2 Coordinador/(6319:6319): IP: 127.0.0.1
+[INFO] 22:05:53:2 Coordinador/(6319:6319): PUERTO: 8000
+[INFO] 22:06:02:230 Coordinador/(6319:6372): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:08:44:194 Coordinador/(6402:6402): Chequeo archivo de configuración
+[INFO] 22:08:44:195 Coordinador/(6402:6402): IP: 127.0.0.1
+[INFO] 22:08:44:195 Coordinador/(6402:6402): PUERTO: 8000
+[INFO] 22:09:48:136 Coordinador/(6402:6484): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:11:42:491 Coordinador/(6539:6539): Chequeo archivo de configuración
+[INFO] 22:11:42:491 Coordinador/(6539:6539): IP: 127.0.0.1
+[INFO] 22:11:42:491 Coordinador/(6539:6539): PUERTO: 8000
+[INFO] 22:11:48:94 Coordinador/(6539:6606): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:11:48:132 Coordinador/(6539:6606): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 22:12:54:131 Coordinador/(6627:6627): Chequeo archivo de configuración
+[INFO] 22:12:54:147 Coordinador/(6627:6627): IP: 127.0.0.1
+[INFO] 22:12:54:147 Coordinador/(6627:6627): PUERTO: 8000
+[INFO] 22:16:17:423 Coordinador/(6753:6753): Chequeo archivo de configuración
+[INFO] 22:16:17:423 Coordinador/(6753:6753): IP: 127.0.0.1
+[INFO] 22:16:17:423 Coordinador/(6753:6753): PUERTO: 8000
+[INFO] 22:16:32:374 Coordinador/(6753:6807): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:16:32:412 Coordinador/(6753:6807): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 22:16:57:211 Coordinador/(6821:6821): Chequeo archivo de configuración
+[INFO] 22:16:57:211 Coordinador/(6821:6821): IP: 127.0.0.1
+[INFO] 22:16:57:214 Coordinador/(6821:6821): PUERTO: 8000
+[INFO] 22:17:51:483 Coordinador/(6821:6964): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:17:51:523 Coordinador/(6821:6964): El COORDINADOR recibió operación SET del ESI: , con clave: �[G	dor y valor: xlG	i
+[INFO] 22:19:00:563 Coordinador/(7033:7033): Chequeo archivo de configuración
+[INFO] 22:19:00:563 Coordinador/(7033:7033): IP: 127.0.0.1
+[INFO] 22:19:00:563 Coordinador/(7033:7033): PUERTO: 8000
+[INFO] 22:19:06:644 Coordinador/(7033:7084): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:19:06:683 Coordinador/(7033:7084): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 22:19:27:142 Coordinador/(7111:7111): Chequeo archivo de configuración
+[INFO] 22:19:27:142 Coordinador/(7111:7111): IP: 127.0.0.1
+[INFO] 22:19:27:142 Coordinador/(7111:7111): PUERTO: 8000
+[INFO] 22:19:36:664 Coordinador/(7111:7189): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:19:36:703 Coordinador/(7111:7189): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 22:20:46:447 Coordinador/(7240:7240): Chequeo archivo de configuración
+[INFO] 22:20:46:448 Coordinador/(7240:7240): IP: 127.0.0.1
+[INFO] 22:20:46:448 Coordinador/(7240:7240): PUERTO: 8000
+[INFO] 22:21:05:500 Coordinador/(7240:7327): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:21:33:128 Coordinador/(7351:7351): Chequeo archivo de configuración
+[INFO] 22:21:33:128 Coordinador/(7351:7351): IP: 127.0.0.1
+[INFO] 22:21:33:128 Coordinador/(7351:7351): PUERTO: 8000
+[INFO] 22:21:38:948 Coordinador/(7351:7403): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:21:38:988 Coordinador/(7351:7403): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 22:28:14:918 Coordinador/(7488:7488): Chequeo archivo de configuración
+[INFO] 22:28:14:918 Coordinador/(7488:7488): IP: 127.0.0.1
+[INFO] 22:28:14:918 Coordinador/(7488:7488): PUERTO: 8000
+[INFO] 22:28:20:950 Coordinador/(7488:7538): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:28:20:987 Coordinador/(7488:7538): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 22:31:00:270 Coordinador/(7597:7597): Chequeo archivo de configuración
+[INFO] 22:31:00:270 Coordinador/(7597:7597): IP: 127.0.0.1
+[INFO] 22:31:00:270 Coordinador/(7597:7597): PUERTO: 8000
+[INFO] 22:31:35:560 Coordinador/(7597:7649): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 22:31:35:562 Coordinador/(7597:7649): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:02:45:562 Coordinador/(8275:8275): Chequeo archivo de configuración
+[INFO] 23:02:45:563 Coordinador/(8275:8275): IP: 127.0.0.1
+[INFO] 23:02:45:563 Coordinador/(8275:8275): PUERTO: 8000
+[INFO] 23:03:36:642 Coordinador/(8275:8324): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:05:01:628 Coordinador/(8392:8392): Chequeo archivo de configuración
+[INFO] 23:05:01:629 Coordinador/(8392:8392): IP: 127.0.0.1
+[INFO] 23:05:01:629 Coordinador/(8392:8392): PUERTO: 8000
+[INFO] 23:05:21:421 Coordinador/(8392:8441): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:05:40:767 Coordinador/(8392:8441): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:07:24:783 Coordinador/(8599:8599): Chequeo archivo de configuración
+[INFO] 23:07:24:783 Coordinador/(8599:8599): IP: 127.0.0.1
+[INFO] 23:07:24:783 Coordinador/(8599:8599): PUERTO: 8000
+[INFO] 23:07:31:524 Coordinador/(8599:8647): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:07:31:525 Coordinador/(8599:8647): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:09:14:921 Coordinador/(8725:8725): Chequeo archivo de configuración
+[INFO] 23:09:14:921 Coordinador/(8725:8725): IP: 127.0.0.1
+[INFO] 23:09:14:921 Coordinador/(8725:8725): PUERTO: 8000
+[INFO] 23:09:22:534 Coordinador/(8725:8776): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:09:22:535 Coordinador/(8725:8776): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:12:08:542 Coordinador/(8906:8906): Chequeo archivo de configuración
+[INFO] 23:12:08:542 Coordinador/(8906:8906): IP: 127.0.0.1
+[INFO] 23:12:08:542 Coordinador/(8906:8906): PUERTO: 8000
+[INFO] 23:12:21:317 Coordinador/(8906:8954): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:12:21:318 Coordinador/(8906:8954): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:13:40:231 Coordinador/(9062:9062): Chequeo archivo de configuración
+[INFO] 23:13:40:231 Coordinador/(9062:9062): IP: 127.0.0.1
+[INFO] 23:13:40:231 Coordinador/(9062:9062): PUERTO: 8000
+[INFO] 23:13:50:229 Coordinador/(9062:9116): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:13:50:232 Coordinador/(9062:9116): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:15:56:825 Coordinador/(9216:9216): Chequeo archivo de configuración
+[INFO] 23:15:56:825 Coordinador/(9216:9216): IP: 127.0.0.1
+[INFO] 23:15:56:825 Coordinador/(9216:9216): PUERTO: 8000
+[INFO] 23:16:01:878 Coordinador/(9216:9265): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:16:01:917 Coordinador/(9216:9265): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:17:00:489 Coordinador/(9303:9303): Chequeo archivo de configuración
+[INFO] 23:17:00:489 Coordinador/(9303:9303): IP: 127.0.0.1
+[INFO] 23:17:00:489 Coordinador/(9303:9303): PUERTO: 8000
+[INFO] 23:17:12:132 Coordinador/(9303:9379): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:17:12:172 Coordinador/(9303:9379): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:19:14:207 Coordinador/(9437:9437): Chequeo archivo de configuración
+[INFO] 23:19:14:207 Coordinador/(9437:9437): IP: 127.0.0.1
+[INFO] 23:19:14:208 Coordinador/(9437:9437): PUERTO: 8000
+[INFO] 23:19:29:29 Coordinador/(9493:9493): Chequeo archivo de configuración
+[INFO] 23:19:29:29 Coordinador/(9493:9493): IP: 127.0.0.1
+[INFO] 23:19:29:29 Coordinador/(9493:9493): PUERTO: 8000
+[INFO] 23:19:56:276 Coordinador/(9493:9574): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:19:56:316 Coordinador/(9493:9574): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:21:28:793 Coordinador/(9624:9624): Chequeo archivo de configuración
+[INFO] 23:21:28:793 Coordinador/(9624:9624): IP: 127.0.0.1
+[INFO] 23:21:28:793 Coordinador/(9624:9624): PUERTO: 8000
+[INFO] 23:21:38:289 Coordinador/(9624:9688): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:21:38:327 Coordinador/(9624:9688): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:24:23:105 Coordinador/(9744:9744): Chequeo archivo de configuración
+[INFO] 23:24:23:105 Coordinador/(9744:9744): IP: 127.0.0.1
+[INFO] 23:24:23:105 Coordinador/(9744:9744): PUERTO: 8000
+[INFO] 23:24:31:7 Coordinador/(9744:9808): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:28:34:251 Coordinador/(9928:9928): Chequeo archivo de configuración
+[INFO] 23:28:34:252 Coordinador/(9928:9928): IP: 127.0.0.1
+[INFO] 23:28:34:252 Coordinador/(9928:9928): PUERTO: 8000
+[INFO] 23:28:42:11 Coordinador/(9928:9993): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:28:47:571 Coordinador/(9928:9993): El COORDINADOR recibió operación SET del ESI: , con clave: �dor y valor: x,i
+[INFO] 23:30:46:58 Coordinador/(10099:10099): Chequeo archivo de configuración
+[INFO] 23:30:46:64 Coordinador/(10099:10099): IP: 127.0.0.1
+[INFO] 23:30:46:64 Coordinador/(10099:10099): PUERTO: 8000
+[INFO] 23:30:52:998 Coordinador/(10099:10142): El COORDINADOR recibió operación GET del ESI: , con clave: jugador
+[INFO] 23:30:53:36 Coordinador/(10099:10142): El COORDINADOR recibió operación SET del ESI: , con clave: �kHdor y valor: x|Hi

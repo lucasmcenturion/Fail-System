@@ -1,4 +1,5 @@
 #include "sockets.h"
+#include <dirent.h>
 
 char *IP_COORDINADOR, *ALGORITMO_REEMPLAZO, *PUNTO_MONTAJE, *NOMBRE_INSTANCIA;
 int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA;
@@ -61,10 +62,43 @@ int getFirstIndex (int entradasValue){
 	}
 	return -1;
 }
+void verificarPuntoMontaje(){
+
+	DIR* dir = opendir(PUNTO_MONTAJE);
+	if (dir)
+	{
+	    /* Directory exists. */
+		/* El directorio existe. Hay que recorrer todos sus archivos y por cada uno de ellos
+		 *  verificar el nombre del archivo(clave) y lo que haya dentro es el value(valor)
+		 * Despues hay que añadirlo a la tabla de entradas y mandarle un mensaje a COORDINADOR con las entradas que tiene */
+	    closedir(dir);
+	}
+	else if (ENOENT == errno)
+	{
+		//el directorio no existe
+		mkdir(PUNTO_MONTAJE,0700);
+	}
+	else
+	{
+	    printf("Fallo el opendir \n");
+	    fflush(stdout);
+	}
+}
+void crearArchivo(char*key,char*value){
+	char *ruta=malloc(strlen(PUNTO_MONTAJE)+strlen("/")+strlen(key)+1);
+	strcpy(ruta,PUNTO_MONTAJE);
+	strcat(ruta,"/");
+	strcat(ruta,key);
+	FILE* f= fopen(ruta,"w");
+	fwrite(value,1,sizeof(value),f);
+	fclose(f);
+	free(ruta);
+}
 
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	verificarPuntoMontaje();
 	entradas_administrativa=list_create();
 	//socket que maneja la conexion con coordinador
 	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
@@ -92,7 +126,9 @@ int main(void) {
 					valueReturn+=TAMANIO_ENTRADA;
 				}
 				valueReturn-=esperada->tamanio;
-				printf("%s\n",valueReturn);
+				crearArchivo(key,valueReturn);
+				free(key);
+				free(valueReturn);
 			}
 			break;
 			case SETINST:{
@@ -122,7 +158,6 @@ int main(void) {
 				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,SETOK);
 				free(key);
 				free(value);
-				free(valueAux);
 
 			}
 			break;
