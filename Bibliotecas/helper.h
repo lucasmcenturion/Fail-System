@@ -60,6 +60,8 @@ typedef struct {
 typedef struct {
 	int socket;
 	char* id;
+	int rafagasRealesEjecutadas;
+	float rafagasEstimadas;
 }__attribute__((packed)) procesoEsi;
 
 typedef struct {

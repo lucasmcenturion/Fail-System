@@ -1,10 +1,11 @@
 #include "Consola.h"
 
 char *IP, *ALGORITMO_PLANIFICACION, *IP_COORDINADOR;
-int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR;
+int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR, ALFA_ESTIMACION;
 char **CLAVES_BLOQUEADAS;
 
 int socketCoordinador;
+int tiempo = 0; //Controlar arribos
 
 t_list* listaHilos;
 bool end;
@@ -30,6 +31,7 @@ void obtenerValoresArchivoConfiguracion() {
 	PUERTO = config_get_int_value(arch, "PUERTO");
 	ALGORITMO_PLANIFICACION = string_duplicate(
 			config_get_string_value(arch, "ALGORITMO_PLANIFICACION"));
+	ALFA_ESTIMACION = config_get_int_value(arch, "ALFA_ESTIMACION");
 	ESTIMACION_INICIAL = config_get_int_value(arch, "ESTIMACION_INICIAL");
 	IP_COORDINADOR = string_duplicate(
 			config_get_string_value(arch, "IP_COORDINADOR"));
@@ -43,10 +45,11 @@ void imprimirArchivoConfiguracion() {
 			"IP=%s\n"
 			"PUERTO=%d\n"
 			"ALGORITMO_PLANIFICACION=%s\n"
+			"ALFA_ESTIMACION=%d\n"
 			"ESTIMACION_INICIAL=%d\n"
 			"IP_COORDINADOR=%s\n"
 			"PUERTO_COORDINADOR=%d\n"
-			"CLAVES_BLOQUEADAS=\n", IP, PUERTO, ALGORITMO_PLANIFICACION,
+			"CLAVES_BLOQUEADAS=\n", IP, PUERTO, ALGORITMO_PLANIFICACION, ALFA_ESTIMACION,
 			ESTIMACION_INICIAL, IP_COORDINADOR, PUERTO_COORDINADOR);
 
 	string_iterate_lines(CLAVES_BLOQUEADAS,
@@ -239,6 +242,15 @@ void accion(void* socket) {
 	}
 }
 
+procesoEsi* CalcularEstimacion(procesoEsi* unEsi){
+	unEsi->rafagasEstimadas = (ALFA_ESTIMACION*ESTIMACION_INICIAL)+((1-ALFA_ESTIMACION)*(unEsi->rafagasRealesEjecutadas));
+	return unEsi;
+}
+
+bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor){
+	return esi->rafagasEstimadas < esiMenor->rafagasEstimadas;
+}
+
 void planificar() {
 	if (!planificacion_detenida) {
 		if (!list_is_empty(LISTOS)) {
@@ -248,7 +260,11 @@ void planificar() {
 				EnviarDatosTipo(esiAEjecutar->socket,
 				PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD")) {
-
+				t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
+				list_sort(AUX, (void*) ComparadorDeRafagas);
+				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX, 0);
+				EJECUCION = list_create();
+				list_add(EJECUCION, esiAEjecutar);
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
 
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
