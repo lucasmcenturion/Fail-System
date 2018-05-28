@@ -118,15 +118,16 @@ void dump(){
 
 		//Valor que va a tener la clave dentro de la tabla de entradas
 		char* valor=malloc(actual->tamanio);
+		int tamanioPegado = 0;
 
 		//Recorro tabla entradas para obtener clave completa
 		for (j = actual->index; j < (actual->index + actual->entradasOcupadas);j++) {
 			//Pregunto si tiene una sola entrada o utiliza más
 			if((actual->index + actual->entradasOcupadas) -1 == j){
-				strcpy(valor, tabla_entradas[j]);
+				strcpy(valor + tamanioPegado, tabla_entradas[j]);
 			}else{
-				strcpy(valor, tabla_entradas[j]);
-				valor += TAMANIO_ENTRADA;
+				strcpy(valor + tamanioPegado, tabla_entradas[j]);
+				tamanioPegado += TAMANIO_ENTRADA;
 			}
 		}
 
