@@ -97,7 +97,7 @@ void escuchaCoordinador() {
 										bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
 				list_add(LISTOS, esiAEstarReady);
 				//if (!strcmp(ALGORITMO_PLANIFICACION,"SJF/CD"))
-				//	planificar();
+				planificar();
 			}
 
 		}
@@ -146,6 +146,16 @@ void escuchaCoordinador() {
 			list_add(TERMINADOS, esiAAbortar);
 		}
 			break;
+		case SETOKPLANI:
+			{
+				planificar();
+			}
+			break;
+		case STOREOKPLANI:
+			{
+				planificar();
+
+			}
 		}
 
 		if (paquete.Payload != NULL) {
