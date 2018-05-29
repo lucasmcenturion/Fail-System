@@ -41,6 +41,10 @@
 void escribir_log(char* nombre_log,char* proceso,char* mensaje,char* tipo);
 char* integer_to_string(char*string,int x);
 size_t getFileSize(const char* filename);
+void planificar(void);
+void ejecutarEsi(void);
+void ChequearPlanificacionYSeguirEjecutando(void);
+void PasarESIMuertoAColaTerminados(char*);
 
 
 typedef struct {

@@ -19,7 +19,7 @@ t_log* vg_logger;
 
 /*Creación de Logger*/
 void crearLogger() {
-	vg_logger = log_create("ESILog.log", "Coordinador", true, LOG_LEVEL_INFO);
+	vg_logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
 }
 
 void obtenerValoresArchivoConfiguracion() {

@@ -184,6 +184,7 @@ void accion(void* socket) {
 				strcpy(idEsi,obtenerId((char*)paquete.Payload));
 				idEsi=realloc(idEsi,strlen(idEsi)+1);
 				EnviarDatosTipo(socketPlanificador,COORDINADOR,idEsi,strlen(idEsi)+1,SETOKPLANI);
+				log_info(vg_logger, "SET OK ESI: %s", idEsi);
 				free(idEsi);
 			}
 			break;
@@ -310,10 +311,12 @@ void accion(void* socket) {
 					sendPlanificador+=strlen(id)+1;
 					sendPlanificador-=tamSend;
 					EnviarDatosTipo(socketPlanificador,COORDINADOR,sendPlanificador,tamSend,GETPLANI);
+
 					free(sendPlanificador);
 				}
-				free(id);
 				log_info(vg_logger, "El COORDINADOR recibió operación GET del ESI: %s, con clave: %s", id, paquete.Payload);
+				free(id);
+
 			}
 			break;
 			case STORECOORD: {
