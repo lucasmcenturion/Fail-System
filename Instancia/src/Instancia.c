@@ -103,45 +103,48 @@ void crearArchivo(char*key,char*value){
 //No se puso en el SWITCH debido a que es PROPIO DE LA INSTANCIA! No depende del COORDINADOR.
 
 void dump(){
+	while(1){
+		usleep(20000000);//20 segundos
+			//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
+			int i,j;
+			for (i=0;  i< list_size(entradas_administrativa); i++) {
 
-	usleep(20000000);//20 segundos
-	//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
-	int i,j;
-	for (i=0;  i< list_size(entradas_administrativa); i++) {
+				/* Agarro las claves con list_get */
+				t_Entrada* actual = (t_Entrada*)list_get(entradas_administrativa, i);
 
-		/* Agarro las claves con list_get */
-		t_Entrada* actual = (t_Entrada*)list_get(entradas_administrativa, i);
+				/* Creo el directorio dinámico de la clave */
+				char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
+				strcpy(directorio_actual, PUNTO_MONTAJE);
+				strcpy(directorio_actual+strlen(PUNTO_MONTAJE),actual->clave);
 
-		/* Creo el directorio dinámico de la clave */
-		char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
-		strcpy(directorio_actual, PUNTO_MONTAJE);
-		strcpy(directorio_actual+strlen(PUNTO_MONTAJE),actual->clave);
+				//Valor que va a tener la clave dentro de la tabla de entradas
+				char* valor=malloc(actual->tamanio);
+				int tamanioPegado = 0;
 
-		//Valor que va a tener la clave dentro de la tabla de entradas
-		char* valor=malloc(actual->tamanio);
-		int tamanioPegado = 0;
+				//Recorro tabla entradas para obtener clave completa
+				for (j = actual->index; j < (actual->index + actual->entradasOcupadas);j++) {
+					//Pregunto si tiene una sola entrada o utiliza más
+					if((actual->index + actual->entradasOcupadas) -1 == j){
+						strcpy(valor + tamanioPegado, tabla_entradas[j]);
+					}else{
+						strcpy(valor + tamanioPegado, tabla_entradas[j]);
+						tamanioPegado += TAMANIO_ENTRADA;
+					}
+				}
 
-		//Recorro tabla entradas para obtener clave completa
-		for (j = actual->index; j < (actual->index + actual->entradasOcupadas);j++) {
-			//Pregunto si tiene una sola entrada o utiliza más
-			if((actual->index + actual->entradasOcupadas) -1 == j){
-				strcpy(valor + tamanioPegado, tabla_entradas[j]);
-			}else{
-				strcpy(valor + tamanioPegado, tabla_entradas[j]);
-				tamanioPegado += TAMANIO_ENTRADA;
+				//Creo archivo con dirección dinámica (directorio)
+				FILE* file_a_crear = fopen(directorio_actual,"w+");
+
+				//Escribo la clave en el archivo
+				fwrite(valor,actual->tamanio,sizeof(char),file_a_crear);
+
+				//Libero memoria
+				free(valor);
+				fclose(file_a_crear);
 			}
-		}
 
-		//Creo archivo con dirección dinámica (directorio)
-		FILE* file_a_crear = fopen(directorio_actual,"w+");
-
-		//Escribo la clave en el archivo
-		fwrite(valor,actual->tamanio,sizeof(char),file_a_crear);
-
-		//Libero memoria
-		free(valor);
-		fclose(file_a_crear);
 	}
+
 }
 
 
