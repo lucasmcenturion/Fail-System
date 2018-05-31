@@ -78,7 +78,7 @@ void verificarPuntoMontaje(){
 	else if (ENOENT == errno)
 	{
 		//el directorio no existe
-		log_info(vg_logger,"No existe el punto de montaje, se crea el directorio");
+//		log_info(vg_logger,"No existe el punto de montaje, se crea el directorio");
 		mkdir(PUNTO_MONTAJE,0700);
 	}
 	else
@@ -94,7 +94,7 @@ void crearArchivo(char*key,char*value){
 	strcat(ruta,"/");
 	strcat(ruta,key);
 	FILE* f= fopen(ruta,"w");
-	fwrite(value,1,sizeof(value),f);
+	fwrite(value,1,sizeof(value)+1,f);
 	fclose(f);
 	free(ruta);
 }
@@ -156,7 +156,7 @@ int main(void) {
 	entradas_administrativa=list_create();
 	//socket que maneja la conexion con coordinador
 	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
-	dump();
+	//dump();
 	Paquete paquete;
 	void* datos;
 	while (RecibirPaqueteCliente(socketCoordinador, INSTANCIA, &paquete)>0){
@@ -182,6 +182,7 @@ int main(void) {
 				}
 				valueReturn-=esperada->tamanio;
 				crearArchivo(key,valueReturn);
+				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,STOREOK);
 				free(key);
 				free(valueReturn);
 			}

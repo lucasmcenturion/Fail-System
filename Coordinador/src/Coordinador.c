@@ -91,7 +91,7 @@ int getProximo() {
 						void _(t_IdInstancia * elemento) { elemento->activo=false;}));
 		aux = list_get(instancias, 0);
 		aux->activo = true;
-		list_replace(instancias, 0, aux);
+		//list_replace(instancias, 0, aux);
 		return aux->socket;
 	}
 	int i = -1;
@@ -119,7 +119,7 @@ bool verificarGet(char *idEsi, char* keyEsi){
 	t_esiCoordinador *aux = list_find(esis, LAMBDA(int _(t_esiCoordinador *elemento) {  return !strcmp(elemento->id,idEsi);}));
 	return list_any_satisfy(aux->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,keyEsi);}));
 }
-bool obtenerSocket(char* keyEsi){
+int obtenerSocket(char* keyEsi){
 	bool compararClaves(t_IdInstancia*elemento){
 		return list_any_satisfy(elemento->claves,LAMBDA(int _(char *e) {  return !strcmp(e,keyEsi);}));
 	}
@@ -145,7 +145,7 @@ void accion(void* socket) {
 		if (!strcmp(paquete.header.emisor, INSTANCIA)) {
 			switch (paquete.header.tipoMensaje) {
 			case ESHANDSHAKE: {
-				EnviarDatosTipo(socketFD, COORDINADOR, 1, 0, SOLICITUDNOMBRE);
+				EnviarDatosTipo(socketFD, COORDINADOR, 1,0, SOLICITUDNOMBRE);
 				int tamanioDatosEntradas = sizeof(int) * 2;
 				void *datosEntradas = malloc(tamanioDatosEntradas);
 				*((int*) datosEntradas) = TAMANIO_ENTRADA;
@@ -176,9 +176,11 @@ void accion(void* socket) {
 				int tiene_socket(t_IdInstancia *e) {
 						return e->socket == socketFD;
 				}
+				char* claveNueva = malloc(strlen((char*)paquete.Payload)+1);
+				strcpy(claveNueva,paquete.Payload);
 				pthread_mutex_lock(&mutex_instancias);
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
-				list_add(aux->claves,(char*)paquete.Payload);
+				list_add(aux->claves,claveNueva);
 				pthread_mutex_unlock(&mutex_instancias);
 				char *idEsi = malloc(10);
 				strcpy(idEsi,obtenerId((char*)paquete.Payload));
@@ -186,6 +188,13 @@ void accion(void* socket) {
 				EnviarDatosTipo(socketPlanificador,COORDINADOR,idEsi,strlen(idEsi)+1,SETOKPLANI);
 				log_info(vg_logger, "SET OK ESI: %s", idEsi);
 				free(idEsi);
+			}
+			break;
+			case STOREOK: {
+				char *idEsi = malloc(10);
+				strcpy(idEsi,obtenerId((char*)paquete.Payload));
+				idEsi=realloc(idEsi,strlen(idEsi)+1);
+				EnviarDatosTipo(socketPlanificador,COORDINADOR,idEsi,strlen(idEsi)+1,STOREOKPLANI);
 			}
 			break;
 			}
@@ -329,7 +338,8 @@ void accion(void* socket) {
 					EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 				}else{
 					if(verificarGet(id,(char*)paquete.Payload)){
-						EnviarDatosTipo(obtenerSocket(paquete.Payload),COORDINADOR,paquete.Payload,strlen(paquete.Payload)+1,STOREINST);
+						int socketInstancia = obtenerSocket(paquete.Payload);
+						EnviarDatosTipo(socketInstancia,COORDINADOR,(char*)paquete.Payload,strlen((char*)paquete.Payload)+1,STOREINST);
 					}else{
 						printf("Se intenta hacer un STORE de una clave que nunca se hizo un GET \n");
 						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
@@ -360,9 +370,9 @@ void accion(void* socket) {
 			free(paquete.Payload);
 	}
 	close(socketFD);
-	pthread_mutex_lock(&mutex_instancias);
-	sacar_instancia(socketFD);
-	pthread_mutex_unlock(&mutex_instancias);
+//	pthread_mutex_lock(&mutex_instancias);
+//	sacar_instancia(socketFD);
+//	pthread_mutex_unlock(&mutex_instancias);
 }
 
 int main(void) {
