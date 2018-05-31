@@ -125,6 +125,7 @@ void parsear() {
 //				log_info(vg_logger,
 //						"ESI id: %s, se ejecutó operación GET, con clave: %s",
 //						ID, parsed.argumentos.GET.clave);
+
 				break;
 			case SET:
 				datos = malloc(

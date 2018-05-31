@@ -104,6 +104,7 @@ void crearArchivo(char*key,char*value){
 
 void dump(){
 
+	usleep(20000000);//20 segundos
 	//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
 	int i,j;
 	for (i=0;  i< list_size(entradas_administrativa); i++) {
@@ -152,6 +153,7 @@ int main(void) {
 	entradas_administrativa=list_create();
 	//socket que maneja la conexion con coordinador
 	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
+	dump();
 	Paquete paquete;
 	void* datos;
 	while (RecibirPaqueteCliente(socketCoordinador, INSTANCIA, &paquete)>0){
