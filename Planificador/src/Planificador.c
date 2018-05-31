@@ -218,8 +218,8 @@ void accion(void* socket) {
 			if (paquete.Payload != NULL)
 				free(paquete.Payload);
 		}
-		close(socketFD);
 	}
+	close(socketFD);
 }
 
 void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {

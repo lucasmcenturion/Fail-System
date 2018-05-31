@@ -154,7 +154,7 @@ void parsear() {
 //				log_info(vg_logger,
 //						"ESI id: %s, se ejecutó operación STORE, con clave: %s",
 //						ID, parsed.argumentos.STORE.clave);
-//				break;
+				break;
 			default:
 				fprintf(stderr, "No pude interpretar <%s>\n", line);
 				muerteEsi();
@@ -197,8 +197,9 @@ int main(int argc, char* argv[]) {
 	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
 	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
-	while (!terminar)
-		;
+	while (!terminar){
+
+	}
 	pthread_join(hiloCoordinador, NULL);
 	pthread_join(hiloPlanificador, NULL);
 	pthread_join(hiloParser, NULL);
