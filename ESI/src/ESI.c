@@ -7,9 +7,8 @@ int PUERTO_COORDINADOR, PUERTO_PLANIFICADOR;
 int socketPlanificador, socketCoordinador;
 
 char *programaAEjecutar;
-bool terminar = false;
 
-pthread_mutex_t binario_linea;
+pthread_mutex_t binario_linea, mutexFinalizar;
 
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
@@ -87,6 +86,7 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 			break;
 
 		case ABORTAR: {
+			printf("MUERTEESI1\n");
 			muerteEsi();
 		}
 			break;
@@ -108,6 +108,7 @@ void parsear() {
 	fp = fopen(programaAEjecutar, "r");
 	if (fp == NULL) {
 		perror("Error al abrir el archivo: ");
+		printf("MUERTEESI2\n");
 		muerteEsi();
 	}
 
@@ -158,12 +159,16 @@ void parsear() {
 				break;
 			default:
 				fprintf(stderr, "No pude interpretar <%s>\n", line);
+
+				printf("MUERTEESI3\n");
 				muerteEsi();
 			}
 
 			destruir_operacion(parsed);
 		} else {
 			fprintf(stderr, "La linea <%s> no es valida\n", line);
+
+			printf("MUERTEESI4\n");
 			muerteEsi();
 		}
 	}
@@ -171,16 +176,17 @@ void parsear() {
 	fclose(fp);
 	if (line)
 		free(line);
+
+	printf("MUERTEESI5\n");
 	muerteEsi();
 
 }
 
 void muerteEsi() {
 	close(socketCoordinador);
-
 	EnviarDatosTipo(socketPlanificador, ESI, ID, strlen(ID) + 1, MUERTEESI);
 	close(socketPlanificador);
-	terminar = true;
+	pthread_mutex_unlock(&mutexFinalizar);
 }
 
 int main(int argc, char* argv[]) {
@@ -190,6 +196,7 @@ int main(int argc, char* argv[]) {
 	printf("El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
+	pthread_mutex_init(&mutexFinalizar, NULL);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
 			IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake,
 			enviarHandshakeESI);
@@ -198,11 +205,14 @@ int main(int argc, char* argv[]) {
 	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
 	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
-	while (!terminar){
-
-	}
+	pthread_mutex_lock(&mutexFinalizar);
+	pthread_mutex_lock(&mutexFinalizar);
 	pthread_join(hiloCoordinador, NULL);
+	printf("join coord xD\n");
+	fflush(stdout);
 	pthread_join(hiloPlanificador, NULL);
+	printf("join plani xD\n");
 	pthread_join(hiloParser, NULL);
+	printf("join parser xD\n");
 	return EXIT_SUCCESS;
 }

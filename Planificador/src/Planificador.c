@@ -198,11 +198,23 @@ void accion(void* socket) {
 							list_remove_by_condition(BLOQUEADOS,
 									LAMBDA(
 											bool _(esiBloqueado* esiBloqueado ){ return !strcmp(esiBloqueado->clave, clavexEsiABorrar->clave);}));
-					printf(
+					if (esiADesbloquear != NULL)
+					{
+						printf(
 							"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 							esiADesbloquear->esi->id, esiADesbloquear->clave);
-					list_add(LISTOS, esiADesbloquear->esi);
-					free(esiADesbloquear->clave);
+						procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
+						esiAPonerReady->id = malloc(strlen(esiADesbloquear->esi->id)+1);
+						strcpy(esiAPonerReady->id, esiADesbloquear->esi->id);
+						esiAPonerReady->rafagasEstimadas = esiADesbloquear->esi->rafagasEstimadas;
+						esiAPonerReady->rafagasRealesEjecutadas = esiADesbloquear->esi->rafagasRealesEjecutadas;
+						esiAPonerReady->socket = esiADesbloquear->esi->socket;
+						list_add(LISTOS, esiAPonerReady);
+						free(esiADesbloquear->clave);
+						free(esiADesbloquear->esi->id);
+						free(esiADesbloquear->esi);
+						free(esiADesbloquear);
+					}
 					free(clavexEsiABorrar->clave);
 					free(clavexEsiABorrar->idEsi);
 					free(clavexEsiABorrar);
