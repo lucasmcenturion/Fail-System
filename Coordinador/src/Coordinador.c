@@ -8,6 +8,7 @@ t_list* listaHilos;
 bool end;
 t_list* instancias;
 t_list* esis;
+t_list* instancias_caidas;
 t_dictionary* clavesNuevas;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
@@ -108,11 +109,14 @@ int getProximo() {
 }
 
 void sacar_instancia(int socket) {
-	int tiene_socket(t_IdInstancia *instancia) {
+	bool tiene_socket(t_IdInstancia *instancia) {
 		if (instancia->socket == socket)
-			return instancia->socket != socket;
+			return true;
 	}
-	instancias = list_filter(instancias, (void*) tiene_socket);
+	t_IdInstancia*remove = list_remove_by_condition(instancias, (void*)tiene_socket);
+	if(remove){
+		list_add(instancias_caidas,remove);
+	}
 }
 
 bool verificarGet(char *idEsi, char* keyEsi){
@@ -134,6 +138,9 @@ char* obtenerId(char* key){
 	t_esiCoordinador*aux=list_find(esis,encontrarClave);
 	pthread_mutex_unlock(&mutex_esis);
 	return aux->id;
+}
+bool esInstanciaCaida(char* nombreInstancia){
+	return list_any_satisfy(instancias_caidas,LAMBDA(int _(t_IdInstancia *e) {  return !strcmp(e->nombre,nombreInstancia);}));
 }
 void accion(void* socket) {
 	int socketFD = *(int*) socket;
@@ -161,12 +168,20 @@ void accion(void* socket) {
 			case IDENTIFICACIONINSTANCIA: {
 				char *nombreInstancia = malloc(paquete.header.tamPayload);
 				strcpy(nombreInstancia, (char*) paquete.Payload);
-				t_IdInstancia *instancia = malloc(sizeof(t_IdInstancia));
+				t_IdInstancia *instancia;
+				if(esInstanciaCaida(nombreInstancia)){
+					bool mismoId(t_IdInstancia*e){
+						return !strcmp(e->nombre,nombreInstancia) ? true : false;
+					}
+					instancia=list_remove_by_condition(instancias_caidas, mismoId);
+				}else{
+					instancia = malloc(sizeof(t_IdInstancia));
+					instancia->nombre = malloc(strlen(nombreInstancia) + 1);
+					strcpy(instancia->nombre, nombreInstancia);
+					instancia->claves = list_create();
+				}
 				instancia->socket = socketFD;
-				instancia->nombre = malloc(strlen(nombreInstancia) + 1);
 				instancia->activo = false;
-				instancia->claves = list_create();
-				strcpy(instancia->nombre, nombreInstancia);
 				pthread_mutex_lock(&mutex_instancias);
 				list_add(instancias, instancia);
 				pthread_mutex_unlock(&mutex_instancias);
@@ -370,9 +385,9 @@ void accion(void* socket) {
 			free(paquete.Payload);
 	}
 	close(socketFD);
-//	pthread_mutex_lock(&mutex_instancias);
-//	sacar_instancia(socketFD);
-//	pthread_mutex_unlock(&mutex_instancias);
+	pthread_mutex_lock(&mutex_instancias);
+	sacar_instancia(socketFD);
+	pthread_mutex_unlock(&mutex_instancias);
 }
 
 int main(void) {
@@ -384,6 +399,7 @@ int main(void) {
 	pthread_mutex_init(&mutex_clavesNuevas,NULL);
 	esis=list_create();
 	instancias=list_create();
+	instancias_caidas=list_create();
 	clavesNuevas = dictionary_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 	finalizarLogger();
