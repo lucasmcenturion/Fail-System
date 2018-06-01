@@ -199,6 +199,7 @@ int main(void) {
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
 				nueva->tamanio = strlen(value);
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
+				nueva->atomico = TAMANIO_ENTRADA-nueva->tamanio >= 0 ? true : false;
 				list_add(entradas_administrativa,nueva);  //
 				int i;
 				char *valueAux=malloc(strlen(value)+1);
