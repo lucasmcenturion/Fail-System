@@ -147,8 +147,7 @@ void accion(void* socket) {
 				nuevoEsi->socket = socketFD;
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
-				if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")
-						|| list_size(LISTOS) == 1)
+				if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD") || list_size(LISTOS) == 1)
 					planificar();
 				break;
 
@@ -184,6 +183,8 @@ void accion(void* socket) {
 						free(esiADesbloquear->esi->id);
 						free(esiADesbloquear->esi);
 						free(esiADesbloquear);
+						if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD") || list_size(LISTOS) == 1)
+							planificar();
 					}
 					free(clavexEsiABorrar->clave);
 					free(clavexEsiABorrar->idEsi);
@@ -248,16 +249,35 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 
 void ejecutarEsi() {
 	procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
-	EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0,
-			SIGUIENTELINEA);
-
+	++esiAEjecutar->rafagasRealesEjecutadas;
+	EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 }
+
 void ChequearPlanificacionYSeguirEjecutando() {
 	if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
 		planificar();
 	} else {
 		ejecutarEsi();
 	}
+}
+
+void HacerSJF() {
+	//AUX: lista ordenada de esis por estimacion de rafaga
+	t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
+	list_sort(AUX, (void*) ComparadorDeRafagas);
+	procesoEsi* esiMenorEst = (procesoEsi*) list_get(AUX, 0);
+	//si hay ESIs con estimaciones repetidas
+	//AUX2: lista ordenada por orden de llegada de esis con igual estimacion
+	t_list* AUX2 = list_create();
+	for (int x = 0; x < list_size(AUX); x++) {
+		procesoEsi* unEsi = (procesoEsi*) list_get(AUX, x);
+		if (unEsi->rafagasEstimadas	== esiMenorEst->rafagasEstimadas) {
+			list_add(AUX2, unEsi);
+		}
+	}
+	procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX2, 0);
+	list_add(EJECUCION, esiAEjecutar);
+	ejecutarEsi();
 }
 
 void planificar() {
@@ -267,28 +287,14 @@ void planificar() {
 				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
 				list_add(EJECUCION, esiAEjecutar);
 				ejecutarEsi();
-
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD")) {
-				//AUX: lista ordenada de esis por estimacion de rafaga
-				t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
-				list_sort(AUX, (void*) ComparadorDeRafagas);
-
-				procesoEsi* esiMenorEst = (procesoEsi*) list_get(AUX, 0);
-				//si hay ESIs con estimaciones repetidas
-				//AUX2: lista ordenada por orden de llegada de esis con igual estimacion
-				t_list* AUX2 = list_create();
-				for (int x = 0; x < list_size(AUX); x++) {
-					procesoEsi* unEsi = (procesoEsi*) list_get(AUX, x);
-					if (unEsi->rafagasEstimadas
-							== esiMenorEst->rafagasEstimadas) {
-						list_add(AUX2, unEsi);
-					}
+				HacerSJF();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
+				if(list_size(EJECUCION) > 0){
+					procesoEsi* esiEnEjecucion = list_remove(EJECUCION, 0);
+					list_add(LISTOS, esiEnEjecucion);
 				}
-				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX2, 0);
-				list_add(EJECUCION, esiAEjecutar);
-				ejecutarEsi();
-//			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
-
+				HacerSJF();
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
 
 			}
