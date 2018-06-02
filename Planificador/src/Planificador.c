@@ -55,7 +55,7 @@ void imprimirArchivoConfiguracion() {
 
 	string_iterate_lines(CLAVES_BLOQUEADAS,
 			LAMBDA(
-					void _(char* item1) { clavexEsi* cxe = malloc(sizeof(clavexEsi)); cxe->idEsi = malloc(strlen("SYSTEM")+1); cxe->clave = malloc(strlen(item1)+1); cxe->borrar = false; strcpy(cxe->idEsi, "SYSTEM"); strcpy(cxe->clave, item1); list_add(clavesBloqueadas, cxe); printf("\t\t%s\n",item1); }));
+					void _(char* item1) { clavexEsi* cxe = malloc(sizeof(clavexEsi)); cxe->idEsi = malloc(strlen("SYSTEM")+1); cxe->clave = malloc(strlen(item1)+1); strcpy(cxe->idEsi, "SYSTEM"); strcpy(cxe->clave, item1); list_add(clavesBloqueadas, cxe); printf("\t\t%s\n",item1); }));
 	fflush(stdout);
 }
 
@@ -87,7 +87,6 @@ void escuchaCoordinador() {
 						strlen(paquete.Payload + strlen(paquete.Payload) + 1)
 								+ 1);
 				cxe->clave = malloc(strlen(paquete.Payload) + 1);
-				cxe->borrar = false;
 				strcpy(cxe->idEsi,
 						paquete.Payload + strlen(paquete.Payload) + 1);
 				strcpy(cxe->clave, paquete.Payload);
@@ -102,39 +101,6 @@ void escuchaCoordinador() {
 
 		}
 			break;
-			/* PARA EL CASO DEL STORE
-			 case MENSAJEQUEMEMANDEJULIPARASTORE:
-			 {
-			 //Se fija si la clave que recibio está en la lista de claves bloqueadas
-			 if(list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, paquete.Payload);})))
-			 {
-			 //Si está, bloquea al proceso ESI
-			 procesoEsi* esiABloquear = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
-			 esiBloqueado* esiBloqueado = malloc(sizeof(esiBloqueado));
-			 esiBloqueado->esi = esiABloquear;
-			 esiBloqueado->clave = malloc(strlen(paquete.Payload)+1);
-			 strcpy(esiBloqueado->clave, paquete.Payload);
-			 list_add(BLOQUEADOS, esiBloqueado);
-			 }
-			 else
-			 {
-			 //Sino, agrega la clave a claves bloqueadas
-			 clavexEsi* cxe = malloc(sizeof(clavexEsi));
-			 cxe->idEsi = malloc(strlen(paquete.Payload + strlen(paquete.Payload) + 1) + 1);
-			 cxe->clave = malloc(strlen(paquete.Payload) + 1);
-			 cxe->borrar = false;
-			 strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
-			 strcpy(cxe->clave, paquete.Payload);
-			 list_add(clavesBloqueadas, cxe);
-			 procesoEsi* esiAEstarReady = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
-			 list_add(LISTOS, esiAEstarReady);
-			 //if (!strcmp(ALGORITMO_PLANIFICACION,"SJF/CD"))
-			 //	planificar();
-			 }
-
-			 }
-			 break;
-			 */
 
 		case ABORTAR: { // VER SI CUANDO ABORTA LA OPERACION EL COORD. DEBERIAMOS HACER MUERTEESI PARA QUE LIBERE TODO OK
 			procesoEsi* esiAAbortar =
@@ -150,9 +116,13 @@ void escuchaCoordinador() {
 			ChequearPlanificacionYSeguirEjecutando();
 
 			break;
-		case STOREOKPLANI:
+		case STOREOKPLANI:{
+			char* idEsi = malloc(strlen(datos)+1);
+			strcpy(idEsi, datos);
+			char* clave = malloc(strlen(datos+strlen(idEsi)+1)+1);
+			strcpy(clave, datos+strlen(idEsi)+1);
 			ChequearPlanificacionYSeguirEjecutando();
-
+			}
 			break;
 		}
 
@@ -379,10 +349,8 @@ int main(void) {
 	NULL);
 	pthread_t hiloConsola;
 	pthread_create(&hiloConsola, NULL, (void*) consola, NULL);
-	pthread_t hiloPlanificador;
 	ServidorConcurrente(IP, PUERTO, PLANIFICADOR, &listaHilos, &end, accion);
 	pthread_join(hiloConsola, NULL);
-	pthread_join(hiloPlanificador, NULL);
 	pthread_join(hiloCoordinador, NULL);
 	return EXIT_SUCCESS;
 }

@@ -22,13 +22,16 @@ void Bloquear(char* clave, char* id){
 		else
 		{
 			//lo encontró en ejecucion, lo agrega a bloqueados.
-			list_add(BLOQUEADOS, esiABloquear);
+			esiBloqueado* esiBloqueado = malloc(sizeof(esiBloqueado));
+			esiBloqueado->esi = esiABloquear;
+			esiBloqueado->clave = malloc(strlen(clave) + 1);
+			strcpy(esiBloqueado->clave, clave);
+			list_add(BLOQUEADOS, esiBloqueado);
 			clavexEsi* claveXEsiABloquear = malloc(sizeof(clavexEsi));
 			claveXEsiABloquear->clave = malloc(strlen(clave)+1);
 			strcpy(claveXEsiABloquear->clave, clave);
 			claveXEsiABloquear->idEsi = malloc(strlen(id)+1);
 			strcpy(claveXEsiABloquear->idEsi, id);
-			claveXEsiABloquear->borrar = false;
 			list_add(clavesBloqueadas, claveXEsiABloquear);
 			printf("Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n", clave, id);
 		}
@@ -36,13 +39,16 @@ void Bloquear(char* clave, char* id){
 	else
 	{
 		//lo encontró en listos, lo agrega a bloqueados.
-		list_add(BLOQUEADOS, esiABloquear);
+		esiBloqueado* esiBloqueado = malloc(sizeof(esiBloqueado));
+		esiBloqueado->esi = esiABloquear;
+		esiBloqueado->clave = malloc(strlen(clave) + 1);
+		strcpy(esiBloqueado->clave, clave);
+		list_add(BLOQUEADOS, esiBloqueado);
 		clavexEsi* claveXEsiABloquear = malloc(sizeof(clavexEsi));
 		claveXEsiABloquear->clave = malloc(strlen(clave)+1);
 		strcpy(claveXEsiABloquear->clave, clave);
 		claveXEsiABloquear->idEsi = malloc(strlen(id)+1);
 		strcpy(claveXEsiABloquear->idEsi, id);
-		claveXEsiABloquear->borrar = false;
 		list_add(clavesBloqueadas, claveXEsiABloquear);
 		printf("Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n", clave, id);
 	}
@@ -50,11 +56,25 @@ void Bloquear(char* clave, char* id){
 }
 
 void Desbloquear(char* clave){
-	clavexEsi* clavexEsiABorrar = list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
-	clavexEsiABorrar->borrar = true;
-	clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave) && item1->borrar;}));
-	procesoEsi* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, clavexEsiABorrar->idEsi);}));
-	list_add(LISTOS, esiDesbloqueado);
+	clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
+	esiBloqueado* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, clavexEsiABorrar->clave);}));
+	if (esiDesbloqueado != NULL)
+	{
+		printf(
+			"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
+			esiDesbloqueado->esi->id, esiDesbloqueado->clave);
+		procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
+		esiAPonerReady->id = malloc(strlen(esiDesbloqueado->esi->id)+1);
+		strcpy(esiAPonerReady->id, esiDesbloqueado->esi->id);
+		esiAPonerReady->rafagasEstimadas = esiDesbloqueado->esi->rafagasEstimadas;
+		esiAPonerReady->rafagasRealesEjecutadas = esiDesbloqueado->esi->rafagasRealesEjecutadas;
+		esiAPonerReady->socket = esiDesbloqueado->esi->socket;
+		list_add(LISTOS, esiAPonerReady);
+		free(esiDesbloqueado->clave);
+		free(esiDesbloqueado->esi->id);
+		free(esiDesbloqueado->esi);
+		free(esiDesbloqueado);
+	}
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar);

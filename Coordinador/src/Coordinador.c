@@ -206,10 +206,10 @@ void accion(void* socket) {
 			}
 			break;
 			case STOREOK: {
-				char *idEsi = malloc(10);
-				strcpy(idEsi,obtenerId((char*)paquete.Payload));
-				idEsi=realloc(idEsi,strlen(idEsi)+1);
-				EnviarDatosTipo(socketPlanificador,COORDINADOR,idEsi,strlen(idEsi)+1,STOREOKPLANI);
+				void *datos = malloc(strlen(obtenerId((char*)paquete.Payload))+1+ paquete.header.tamPayload);
+				strcpy(datos,obtenerId((char*)paquete.Payload));
+				strcpy(datos+strlen(obtenerId((char*)paquete.Payload)),(char*)paquete.Payload);
+				EnviarDatosTipo(socketPlanificador,COORDINADOR,datos,strlen(obtenerId((char*)paquete.Payload))+1+ paquete.header.tamPayload,STOREOKPLANI);
 			}
 			break;
 			}
