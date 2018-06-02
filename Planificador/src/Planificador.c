@@ -248,9 +248,11 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
-	++esiAEjecutar->rafagasRealesEjecutadas;
-	EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+	if(list_size(EJECUCION)!=0){
+		procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
+		++esiAEjecutar->rafagasRealesEjecutadas;
+		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+	}
 }
 
 void ChequearPlanificacionYSeguirEjecutando() {

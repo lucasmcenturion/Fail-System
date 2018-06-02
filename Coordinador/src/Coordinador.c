@@ -136,6 +136,7 @@ char* obtenerId(char* key){
 	}
 	pthread_mutex_lock(&mutex_esis);
 	t_esiCoordinador*aux=list_find(esis,encontrarClave);
+	list_remove_by_condition(aux->claves,LAMBDA(int _(char *elem) {  return !strcmp(elem,key);}));
 	pthread_mutex_unlock(&mutex_esis);
 	return aux->id;
 }
@@ -305,23 +306,25 @@ void accion(void* socket) {
 							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 						}
 					}
+					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s \n", id, key, value);
 					free(key);
 					free(value);
 					free(id);
-					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s", id, key, value);
 			}
 			break;
 			case GETCOORD: {
 				usleep(RETARDO);
-				pthread_mutex_lock(&mutex_esis);
-				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
 				char * key=malloc(strlen((char*)paquete.Payload));
 				strcpy(key,(char*)paquete.Payload);
-				list_add(aux->claves,key);
+				pthread_mutex_lock(&mutex_esis);
+				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
+				if(!list_any_satisfy(aux->claves,LAMBDA(int _(char*elemento) {  return !strcmp(elemento,key);}))){
+					list_add(aux->claves,key);
+					pthread_mutex_lock(&mutex_clavesNuevas);
+					dictionary_put(clavesNuevas,(char*)paquete.Payload,true);
+					pthread_mutex_unlock(&mutex_clavesNuevas);
+				}
 				pthread_mutex_unlock(&mutex_esis);
-				pthread_mutex_lock(&mutex_clavesNuevas);
-				dictionary_put(clavesNuevas,(char*)paquete.Payload,true);
-				pthread_mutex_unlock(&mutex_clavesNuevas);
 				char*id=malloc(10);
 				strcpy(id,aux->id);
 				id=realloc(id,strlen(id)+1);
@@ -340,7 +343,7 @@ void accion(void* socket) {
 
 					free(sendPlanificador);
 				}
-				log_info(vg_logger, "El COORDINADOR recibió operación GET del ESI: %s, con clave: %s", id, paquete.Payload);
+				log_info(vg_logger, "El COORDINADOR recibió operación GET del ESI: %s, con clave: %s\n", id, key);
 				free(id);
 
 			}
@@ -362,7 +365,7 @@ void accion(void* socket) {
 						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}
 				}
-
+				log_info(vg_logger, "El COORDINADOR recibió operación STORE del ESI: %s, con clave: %s\n", id, paquete.Payload);
 				//log_info(vg_logger, "El COORDINADOR recibe operación STORE del ESI: %s"....);
 			}
 			break;
