@@ -265,6 +265,8 @@ void accion(void* socket) {
 										EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
 									}else{
 										//error, no hay instancias conectadas al sistema
+										printf("No hay instancias conectadas al sistema\n");
+										fflush(stdout);
 									}
 									pthread_mutex_unlock(&mutex_instancias);
 								}
