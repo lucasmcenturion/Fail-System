@@ -3,9 +3,10 @@
 #include <commons/collections/list.h>
 
 char *IP_COORDINADOR, *ALGORITMO_REEMPLAZO, *PUNTO_MONTAJE, *NOMBRE_INSTANCIA;
-int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA;
+int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA, ENTRADAS_LIBRES;
 char **tabla_entradas;
 t_list *entradas_administrativa;
+t_list *entradas_atomicas;
 t_log * vg_logger;
 
 void obtenerValoresArchivoConfiguracion() {
@@ -37,7 +38,18 @@ void imprimirArchivoConfiguracion(){
 				);
 	fflush(stdout);
 }
-
+void aplicarAlgoritmoReemplazo(int cantidadEntradas){
+	int i=0;
+	if(list_size(entradas_atomicas)>0){
+		t_Entrada *aux = list_get(entradas_atomicas,i);
+	}else{
+		if(ENTRADAS_LIBRES >= cantidadEntradas){
+			//compactacion();
+		}else{
+			printf("Nose\n");
+		}
+	}
+}
 int ceilDivision(int lengthValue) {
 	double cantidadEntradas;
 	cantidadEntradas = (lengthValue + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
@@ -62,6 +74,23 @@ int getFirstIndex (int entradasValue){
 				return i;
 		}
 	}
+	//no tiene espacio, aplicar algoritmo
+	//aplicarAlgoritmoReemplazo(entradasValue);
+//	for (i=0;  i< CANT_ENTRADA; i++) {
+//		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
+//			int aux;
+//			bool cumple=true;
+//			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
+//			for(aux=i+1; aux< entradasValue; aux++){
+//				if(strcmp(tabla_entradas[aux],"NaN")){
+//					cumple=false;
+//					break;
+//				}
+//			}
+//			if(cumple)
+//				return i;
+//		}
+//	}
 	return -1;
 }
 void verificarPuntoMontaje(){
@@ -94,7 +123,7 @@ void crearArchivo(char*key,char*value){
 	strcat(ruta,"/");
 	strcat(ruta,key);
 	FILE* f= fopen(ruta,"w");
-	fwrite(value,1,sizeof(value)+1,f);
+	fwrite(value,1,strlen(value)+1,f);
 	fclose(f);
 	free(ruta);
 }
@@ -152,8 +181,10 @@ void dump(){
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	ENTRADAS_LIBRES = CANT_ENTRADA;
 	verificarPuntoMontaje();
 	entradas_administrativa=list_create();
+	entradas_atomicas= list_create();
 	//socket que maneja la conexion con coordinador
 	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
 	//dump();
@@ -200,6 +231,8 @@ int main(void) {
 				nueva->tamanio = strlen(value);
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
 				nueva->atomico = TAMANIO_ENTRADA-nueva->tamanio >= 0 ? true : false;
+				if(nueva->atomico)
+					list_add(entradas_atomicas,nueva);
 				list_add(entradas_administrativa,nueva);  //
 				int i;
 				char *valueAux=malloc(strlen(value)+1);

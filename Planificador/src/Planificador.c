@@ -267,11 +267,10 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	if (!list_is_empty(EJECUCION)) {
+	if(list_size(EJECUCION)!=0){
 		procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 		++esiAEjecutar->rafagasRealesEjecutadas;
-		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0,
-				SIGUIENTELINEA);
+		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 	}
 }
 
