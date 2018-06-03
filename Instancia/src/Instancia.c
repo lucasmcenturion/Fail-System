@@ -3,7 +3,7 @@
 #include <commons/collections/list.h>
 
 char *IP_COORDINADOR, *ALGORITMO_REEMPLAZO, *PUNTO_MONTAJE, *NOMBRE_INSTANCIA;
-int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA, ENTRADAS_LIBRES;
+int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA, ENTRADAS_LIBRES, socketCoordinador;
 char **tabla_entradas;
 t_list *entradas_administrativa;
 t_list *entradas_atomicas;
@@ -38,13 +38,38 @@ void imprimirArchivoConfiguracion(){
 				);
 	fflush(stdout);
 }
+void compactacion(){
+	//todo
+}
 void aplicarAlgoritmoReemplazo(int cantidadEntradas){
 	int i=0;
 	if(list_size(entradas_atomicas)>0){
 		t_Entrada *aux = list_get(entradas_atomicas,i);
+		if(cantidadEntradas>1){
+			while(cantidadEntradas){
+				tabla_entradas[aux->index]="NaN";
+				list_remove_by_condition(entradas_atomicas,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
+				t_Entrada *elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
+				free(elem->clave);
+				free(elem);
+				if(cantidadEntradas-1 >0){
+					i++;
+					aux=list_get(entradas_atomicas,i);
+					cantidadEntradas--;
+				}
+			}
+		}else{
+			//borro entrada actual
+			tabla_entradas[aux->index]="NaN";
+			list_remove_by_condition(entradas_atomicas,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
+			t_Entrada *elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
+			EnviarDatosTipo(socketCoordinador,INSTANCIA,elem->clave,strlen(elem->clave)+1,ELIMINARCLAVE);
+			free(elem->clave);
+			free(elem);
+		}
 	}else{
 		if(ENTRADAS_LIBRES >= cantidadEntradas){
-			//compactacion();
+			compactacion();
 		}else{
 			printf("Nose\n");
 		}
@@ -75,22 +100,22 @@ int getFirstIndex (int entradasValue){
 		}
 	}
 	//no tiene espacio, aplicar algoritmo
-	//aplicarAlgoritmoReemplazo(entradasValue);
-//	for (i=0;  i< CANT_ENTRADA; i++) {
-//		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
-//			int aux;
-//			bool cumple=true;
-//			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
-//			for(aux=i+1; aux< entradasValue; aux++){
-//				if(strcmp(tabla_entradas[aux],"NaN")){
-//					cumple=false;
-//					break;
-//				}
-//			}
-//			if(cumple)
-//				return i;
-//		}
-//	}
+	aplicarAlgoritmoReemplazo(entradasValue);
+	for (i=0;  i< CANT_ENTRADA; i++) {
+		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
+			int aux;
+			bool cumple=true;
+			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
+			for(aux=i+1; aux< entradasValue; aux++){
+				if(strcmp(tabla_entradas[aux],"NaN")){
+					cumple=false;
+					break;
+				}
+			}
+			if(cumple)
+				return i;
+		}
+	}
 	return -1;
 }
 void verificarPuntoMontaje(){
@@ -186,7 +211,7 @@ int main(void) {
 	entradas_administrativa=list_create();
 	entradas_atomicas= list_create();
 	//socket que maneja la conexion con coordinador
-	int socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
+	socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
 	//dump();
 	Paquete paquete;
 	void* datos;
@@ -239,11 +264,15 @@ int main(void) {
 				strcpy(valueAux,value);
 				for(i=nueva->index;i<(nueva->index+nueva->entradasOcupadas);i++){
 					if((nueva->index+nueva->entradasOcupadas)-1 == i){
+						//Porque no puedo hacer un free de tabla_entradas[i]?
+						tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
 						strcpy(tabla_entradas[i],valueAux);
+						ENTRADAS_LIBRES--;
 						break;
 					}
 					strncpy(tabla_entradas[i],valueAux,TAMANIO_ENTRADA);
 					valueAux+=TAMANIO_ENTRADA;
+					ENTRADAS_LIBRES--;
 				}
 				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,SETOK);
 				free(key);
