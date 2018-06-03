@@ -15,7 +15,7 @@ extern t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 
 void PausarContinuar();
 void Bloquear(char* clave, char* id);
-void Desbloquear(char* clave);
+void Desbloquear(char* clave, bool flagPrint);
 void Listar(char* recurso);
 void Kill();
 void Status();

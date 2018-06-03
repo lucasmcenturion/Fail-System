@@ -178,8 +178,7 @@ void accion(void* socket) {
 					instancia=list_remove_by_condition(instancias_caidas, mismoId);
 				}else{
 					instancia = malloc(sizeof(t_IdInstancia));
-					instancia->nombre = malloc(strlen(nombreInstancia) + 1);
-					strcpy(instancia->nombre, nombreInstancia);
+					instancia->nombre = nombreInstancia;
 					instancia->claves = list_create();
 				}
 				instancia->socket = socketFD;
@@ -207,10 +206,7 @@ void accion(void* socket) {
 			}
 			break;
 			case STOREOK: {
-				void *datos = malloc(strlen(obtenerId((char*)paquete.Payload,0))+1+ paquete.header.tamPayload);
-				strcpy(datos,obtenerId((char*)paquete.Payload,0));
-				strcpy(datos+strlen(obtenerId((char*)paquete.Payload,0)),(char*)paquete.Payload);
-				EnviarDatosTipo(socketPlanificador,COORDINADOR,datos,strlen(obtenerId((char*)paquete.Payload,1))+1+ paquete.header.tamPayload,STOREOKPLANI);
+				EnviarDatosTipo(socketPlanificador,COORDINADOR,paquete.Payload,paquete.header.tamPayload,STOREOKPLANI);
 			}
 			break;
 			case ELIMINARCLAVE: {
@@ -299,7 +295,7 @@ void accion(void* socket) {
 										pthread_mutex_lock(&mutex_instancias);
 										int socketSiguiente = getProximo();
 										if(socketSiguiente!=0){
-											printf("%s\n",socketSiguiente);
+											printf("%d\n",socketSiguiente);
 											fflush(stdout);
 											EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
 										}else{
@@ -324,12 +320,12 @@ void accion(void* socket) {
 			break;
 			case GETCOORD: {
 				usleep(RETARDO);
-				char * key=malloc(strlen((char*)paquete.Payload));
-				strcpy(key,(char*)paquete.Payload);
+				char* lakey = malloc(strlen(paquete.Payload)+1);
+				strcpy(lakey,(char*)paquete.Payload);
 				pthread_mutex_lock(&mutex_esis);
 				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
-				if(!list_any_satisfy(aux->claves,LAMBDA(int _(char*elemento) {  return !strcmp(elemento,key);}))){
-					list_add(aux->claves,key);
+				if(!list_any_satisfy(aux->claves,LAMBDA(int _(char*elemento) {  return !strcmp(elemento,lakey);}))){
+					list_add(aux->claves,lakey);
 					pthread_mutex_lock(&mutex_clavesNuevas);
 					dictionary_put(clavesNuevas,(char*)paquete.Payload,true);
 					pthread_mutex_unlock(&mutex_clavesNuevas);
@@ -353,7 +349,7 @@ void accion(void* socket) {
 
 					free(sendPlanificador);
 				}
-				log_info(vg_logger, "El COORDINADOR recibió operación GET del ESI: %s, con clave: %s\n", id, key);
+				log_info(vg_logger, "El COORDINADOR recibió operación GET del ESI: %s, con clave: %s\n", id, lakey);
 				free(id);
 
 			}
@@ -381,6 +377,7 @@ void accion(void* socket) {
 					}
 				}
 				log_info(vg_logger, "El COORDINADOR recibió operación STORE del ESI: %s, con clave: %s\n", id, paquete.Payload);
+				free(id);
 				//log_info(vg_logger, "El COORDINADOR recibe operación STORE del ESI: %s"....);
 			}
 			break;

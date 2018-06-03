@@ -130,10 +130,7 @@ void escuchaCoordinador() {
 
 			break;
 		case STOREOKPLANI: {
-			char* idEsi = malloc(strlen(datos) + 1);
-			strcpy(idEsi, datos);
-			char* clave = malloc(strlen(datos + strlen(idEsi) + 1) + 1);
-			strcpy(clave, datos + strlen(idEsi) + 1);
+			Desbloquear(datos, false);
 			ChequearPlanificacionYSeguirEjecutando();
 		}
 			break;

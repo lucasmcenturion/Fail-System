@@ -55,12 +55,13 @@ void Bloquear(char* clave, char* id){
 	fflush(stdout);
 }
 
-void Desbloquear(char* clave){
+void Desbloquear(char* clave, bool flagPrint){
 	clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
 	esiBloqueado* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, clavexEsiABorrar->clave);}));
 	if (esiDesbloqueado != NULL)
 	{
-		printf(
+		if(flagPrint)
+			printf(
 			"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 			esiDesbloqueado->esi->id, esiDesbloqueado->clave);
 		procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
@@ -78,7 +79,6 @@ void Desbloquear(char* clave){
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar);
-	printf("Se desbloqueó el primer proceso ESI en la cola del recurso %s.\n", clave);
 }
 
 void Listar(char* recurso){
@@ -120,7 +120,7 @@ void consola() {
 		}
 		else if (!strncmp(linea, "desbloquear ", 12)) {
 			char **array_input = string_split(linea, " ");
-			Desbloquear(array_input[1]);
+			Desbloquear(array_input[1], true);
 			string_iterate_lines(array_input,free);
 			free(array_input);
 		}
