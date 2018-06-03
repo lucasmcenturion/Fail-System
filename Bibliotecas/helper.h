@@ -45,6 +45,8 @@ void planificar(void);
 void ejecutarEsi(void);
 void ChequearPlanificacionYSeguirEjecutando(void);
 void PasarESIMuertoAColaTerminados(char*);
+void parsear(void);
+void muerteEsi(void);
 
 
 typedef struct {

@@ -5,20 +5,20 @@ char *IP_COORDINADOR, *IP_PLANIFICADOR, *ID;
 int PUERTO_COORDINADOR, PUERTO_PLANIFICADOR;
 
 int socketPlanificador, socketCoordinador;
-
+bool flagTerminarEsi;
 char *programaAEjecutar;
 
-pthread_mutex_t binario_linea, mutexFinalizar;
+pthread_mutex_t binario_linea;
 
-pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
+pthread_t hiloParser; //hiloCoordinador, hiloPlanificador,
 
-t_log* vg_logger;
+t_log* logger;
 
 /* Creo el logger de ESI*/
 
 /*Creación de Logger*/
 void crearLogger() {
-	vg_logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
+	logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
 }
 
 void obtenerValoresArchivoConfiguracion() {
@@ -72,6 +72,7 @@ void escucharCoordinador(int socketFD, char emisor[13]) {
 			free(paquete.Payload);
 		}
 	}
+	printf("sale coord");
 }
 
 void escucharPlanificador(int socketFD, char emisor[13]) {
@@ -82,12 +83,14 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 		switch (paquete.header.tipoMensaje) {
 		case SIGUIENTELINEA: {
 			pthread_mutex_unlock(&binario_linea);
+
 		}
 			break;
 
 		case ABORTAR: {
 			printf("MUERTEESI1\n");
 			muerteEsi();
+
 		}
 			break;
 		}
@@ -99,120 +102,127 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 }
 
 void parsear() {
-	FILE * fp;
-	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
-	void* datos;
+	while (!flagTerminarEsi) {
+		FILE * fp;
+		char * line = NULL;
+		size_t len = 0;
+		ssize_t read;
+		void* datos;
 
-	fp = fopen(programaAEjecutar, "r");
-	if (fp == NULL) {
-		perror("Error al abrir el archivo: ");
-		printf("MUERTEESI2\n");
-		muerteEsi();
-	}
-
-	while ((read = getline(&line, &len, fp)) != -1) {
-		pthread_mutex_lock(&binario_linea);
-		t_esi_operacion parsed = parse(line);
-		if (parsed.valido) {
-			switch (parsed.keyword) {
-			case GET:
-				datos = malloc(strlen(parsed.argumentos.GET.clave) + 1);
-				strcpy(datos, parsed.argumentos.GET.clave);
-				EnviarDatosTipo(socketCoordinador, ESI, datos,
-						strlen(parsed.argumentos.GET.clave) + 1, GETCOORD);
-				printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
-//				log_info(vg_logger,
-//						"ESI id: %s, se ejecutó operación GET, con clave: %s",
-//						ID, parsed.argumentos.GET.clave);
-
-				break;
-			case SET:
-				datos = malloc(
-						strlen(parsed.argumentos.SET.clave)
-								+ strlen(parsed.argumentos.SET.valor) + 2);
-				strcpy(datos, parsed.argumentos.SET.clave);
-				strcpy(datos + strlen(parsed.argumentos.SET.clave) + 1,
-						parsed.argumentos.SET.valor);
-				EnviarDatosTipo(socketCoordinador, ESI, datos,
-						strlen(parsed.argumentos.SET.clave)
-								+ strlen(parsed.argumentos.SET.valor) + 2,
-						SETCOORD);
-				printf("SET\tclave: <%s>\tvalor: <%s>\n",
-						parsed.argumentos.SET.clave,
-						parsed.argumentos.SET.valor);
-//				log_info(vg_logger,
-//						"ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s",
-//						ID, parsed.argumentos.SET.clave,
-//						parsed.argumentos.SET.valor);
-				break;
-			case STORE:
-				datos = malloc(strlen(parsed.argumentos.STORE.clave) + 1);
-				strcpy(datos, parsed.argumentos.STORE.clave);
-				EnviarDatosTipo(socketCoordinador, ESI, datos,
-						strlen(parsed.argumentos.STORE.clave) + 1, STORECOORD);
-				printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
-//				log_info(vg_logger,
-//						"ESI id: %s, se ejecutó operación STORE, con clave: %s",
-//						ID, parsed.argumentos.STORE.clave);
-				break;
-			default:
-				fprintf(stderr, "No pude interpretar <%s>\n", line);
-
-				printf("MUERTEESI3\n");
-				muerteEsi();
-			}
-
-			destruir_operacion(parsed);
-		} else {
-			fprintf(stderr, "La linea <%s> no es valida\n", line);
-
-			printf("MUERTEESI4\n");
+		fp = fopen(programaAEjecutar, "r");
+		if (fp == NULL) {
+			perror("Error al abrir el archivo: ");
+			printf("MUERTEESI2\n");
 			muerteEsi();
 		}
+
+		while ((read = getline(&line, &len, fp)) != -1) {
+			pthread_mutex_lock(&binario_linea);
+			t_esi_operacion parsed = parse(line);
+			if (parsed.valido) {
+				switch (parsed.keyword) {
+				case GET:
+					datos = malloc(strlen(parsed.argumentos.GET.clave) + 1);
+					strcpy(datos, parsed.argumentos.GET.clave);
+					EnviarDatosTipo(socketCoordinador, ESI, datos,
+							strlen(parsed.argumentos.GET.clave) + 1, GETCOORD);
+					printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
+					log_info(logger,
+							"ESI id: %s, se ejecutó operación GET, con clave: %s",
+							ID, parsed.argumentos.GET.clave);
+
+					break;
+				case SET:
+					datos = malloc(
+							strlen(parsed.argumentos.SET.clave)
+									+ strlen(parsed.argumentos.SET.valor) + 2);
+					strcpy(datos, parsed.argumentos.SET.clave);
+					strcpy(datos + strlen(parsed.argumentos.SET.clave) + 1,
+							parsed.argumentos.SET.valor);
+					EnviarDatosTipo(socketCoordinador, ESI, datos,
+							strlen(parsed.argumentos.SET.clave)
+									+ strlen(parsed.argumentos.SET.valor) + 2,
+							SETCOORD);
+					printf("SET\tclave: <%s>\tvalor: <%s>\n",
+							parsed.argumentos.SET.clave,
+							parsed.argumentos.SET.valor);
+					log_info(logger,
+							"ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s",
+							ID, parsed.argumentos.SET.clave,
+							parsed.argumentos.SET.valor);
+					break;
+				case STORE:
+					datos = malloc(strlen(parsed.argumentos.STORE.clave) + 1);
+					strcpy(datos, parsed.argumentos.STORE.clave);
+					EnviarDatosTipo(socketCoordinador, ESI, datos,
+							strlen(parsed.argumentos.STORE.clave) + 1,
+							STORECOORD);
+					printf("STORE\tclave: <%s>\n",
+							parsed.argumentos.STORE.clave);
+					log_info(logger,
+							"ESI id: %s, se ejecutó operación STORE, con clave: %s",
+							ID, parsed.argumentos.STORE.clave);
+					break;
+				default:
+					fprintf(stderr, "No pude interpretar <%s>\n", line);
+
+					printf("MUERTEESI3\n");
+					muerteEsi();
+				}
+
+				destruir_operacion(parsed);
+			} else {
+				fprintf(stderr, "La linea <%s> no es valida\n", line);
+
+				printf("MUERTEESI4\n");
+				muerteEsi();
+			}
+		}
+
+		fclose(fp);
+		if (line)
+			free(line);
+
+		printf("Termino el archivo \n");
+		muerteEsi();
+
 	}
-
-	fclose(fp);
-	if (line)
-		free(line);
-
-	printf("MUERTEESI5\n");
-	muerteEsi();
-
 }
-
 void muerteEsi() {
-	close(socketCoordinador);
+
 	EnviarDatosTipo(socketPlanificador, ESI, ID, strlen(ID) + 1, MUERTEESI);
 	close(socketPlanificador);
-	pthread_mutex_unlock(&mutexFinalizar);
+	log_info(logger, "Cierro Conexión con Planificador");
+	close(socketCoordinador);
+	log_info(logger, "Cierro Conexión con Coordinador");
+
+	flagTerminarEsi = true;
+	//pthread_join(hiloParser, NULL);
+
 }
 
 int main(int argc, char* argv[]) {
+	flagTerminarEsi = false;
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
 	programaAEjecutar = argv[1];
-	printf("El programa a ejecutar es %s\n", programaAEjecutar);
+	crearLogger();
+	log_info(logger, "El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
-	pthread_mutex_init(&mutexFinalizar, NULL);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
 			IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake,
 			enviarHandshakeESI);
 	socketCoordinador = ConectarAServidorESI(PUERTO_COORDINADOR, IP_COORDINADOR,
 	COORDINADOR, ESI, RecibirHandshake, enviarHandshakeESI);
-	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
-	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
-	pthread_mutex_lock(&mutexFinalizar);
-	pthread_mutex_lock(&mutexFinalizar);
-	pthread_join(hiloCoordinador, NULL);
-	printf("join coord xD\n");
-	fflush(stdout);
-	pthread_join(hiloPlanificador, NULL);
-	printf("join plani xD\n");
-	pthread_join(hiloParser, NULL);
-	printf("join parser xD\n");
-	return EXIT_SUCCESS;
+
+	while (!flagTerminarEsi) {
+		escucharPlanificador(socketPlanificador, "ESI");
+	};
+
+	//
+	//pthread_mutex_destroy(&binario_linea);
+	log_info(logger, "Finalizó el Esi %s\n", (char*) ID);
+	return 0; //EXIT_SUCCESS;
 }

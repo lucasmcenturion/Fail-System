@@ -53,9 +53,22 @@ void imprimirArchivoConfiguracion() {
 			ALFA_ESTIMACION, ESTIMACION_INICIAL, IP_COORDINADOR,
 			PUERTO_COORDINADOR);
 
-	string_iterate_lines(CLAVES_BLOQUEADAS,
-			LAMBDA(
-					void _(char* item1) { clavexEsi* cxe = malloc(sizeof(clavexEsi)); cxe->idEsi = malloc(strlen("SYSTEM")+1); cxe->clave = malloc(strlen(item1)+1); strcpy(cxe->idEsi, "SYSTEM"); strcpy(cxe->clave, item1); list_add(clavesBloqueadas, cxe); printf("\t\t%s\n",item1); }));
+	string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char* item1) {
+		clavexEsi* cxe = malloc(sizeof(clavexEsi));
+		cxe->idEsi = malloc(strlen("SYSTEM") + 1)
+		;
+		cxe->clave = malloc(strlen(item1) + 1)
+		;
+		strcpy(cxe->idEsi, "SYSTEM")
+		;
+		strcpy(cxe->clave, item1)
+		;
+		list_add(clavesBloqueadas, cxe)
+		;
+		printf("\t\t%s\n", item1)
+		;
+	}
+	));
 	fflush(stdout);
 }
 
@@ -116,13 +129,13 @@ void escuchaCoordinador() {
 			ChequearPlanificacionYSeguirEjecutando();
 
 			break;
-		case STOREOKPLANI:{
-			char* idEsi = malloc(strlen(datos)+1);
+		case STOREOKPLANI: {
+			char* idEsi = malloc(strlen(datos) + 1);
 			strcpy(idEsi, datos);
-			char* clave = malloc(strlen(datos+strlen(idEsi)+1)+1);
-			strcpy(clave, datos+strlen(idEsi)+1);
+			char* clave = malloc(strlen(datos + strlen(idEsi) + 1) + 1);
+			strcpy(clave, datos + strlen(idEsi) + 1);
 			ChequearPlanificacionYSeguirEjecutando();
-			}
+		}
 			break;
 		}
 
@@ -145,9 +158,11 @@ void accion(void* socket) {
 				procesoEsi* nuevoEsi = malloc(sizeof(procesoEsi));
 				nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
 				nuevoEsi->socket = socketFD;
+				nuevoEsi->rafagasEstimadas = (float) ESTIMACION_INICIAL;
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
-				if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD") || list_size(LISTOS) == 1)
+				if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")
+						|| list_size(LISTOS) == 1)
 					planificar();
 				break;
 
@@ -167,23 +182,27 @@ void accion(void* socket) {
 							list_remove_by_condition(BLOQUEADOS,
 									LAMBDA(
 											bool _(esiBloqueado* esiBloqueado ){ return !strcmp(esiBloqueado->clave, clavexEsiABorrar->clave);}));
-					if (esiADesbloquear != NULL)
-					{
+					if (esiADesbloquear != NULL) {
 						printf(
-							"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
-							esiADesbloquear->esi->id, esiADesbloquear->clave);
+								"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
+								esiADesbloquear->esi->id,
+								esiADesbloquear->clave);
 						procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
-						esiAPonerReady->id = malloc(strlen(esiADesbloquear->esi->id)+1);
+						esiAPonerReady->id = malloc(
+								strlen(esiADesbloquear->esi->id) + 1);
 						strcpy(esiAPonerReady->id, esiADesbloquear->esi->id);
-						esiAPonerReady->rafagasEstimadas = esiADesbloquear->esi->rafagasEstimadas;
-						esiAPonerReady->rafagasRealesEjecutadas = esiADesbloquear->esi->rafagasRealesEjecutadas;
+						esiAPonerReady->rafagasEstimadas =
+								esiADesbloquear->esi->rafagasEstimadas;
+						esiAPonerReady->rafagasRealesEjecutadas =
+								esiADesbloquear->esi->rafagasRealesEjecutadas;
 						esiAPonerReady->socket = esiADesbloquear->esi->socket;
-						list_add(LISTOS, esiAPonerReady);
+						list_add(LISTOS, esiAPonerReady);//mandar func enviar a Listos
 						free(esiADesbloquear->clave);
 						free(esiADesbloquear->esi->id);
 						free(esiADesbloquear->esi);
 						free(esiADesbloquear);
-						if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD") || list_size(LISTOS) == 1)
+						if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")
+								|| list_size(LISTOS) == 1)
 							planificar();
 					}
 					free(clavexEsiABorrar->clave);
@@ -248,9 +267,12 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
-	++esiAEjecutar->rafagasRealesEjecutadas;
-	EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+	if (!list_is_empty(EJECUCION)) {
+		procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
+		++esiAEjecutar->rafagasRealesEjecutadas;
+		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0,
+				SIGUIENTELINEA);
+	}
 }
 
 void ChequearPlanificacionYSeguirEjecutando() {
@@ -271,7 +293,7 @@ void HacerSJF() {
 	t_list* AUX2 = list_create();
 	for (int x = 0; x < list_size(AUX); x++) {
 		procesoEsi* unEsi = (procesoEsi*) list_get(AUX, x);
-		if (unEsi->rafagasEstimadas	== esiMenorEst->rafagasEstimadas) {
+		if (unEsi->rafagasEstimadas == esiMenorEst->rafagasEstimadas) {
 			list_add(AUX2, unEsi);
 		}
 	}
@@ -290,7 +312,7 @@ void planificar() {
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/SD")) {
 				HacerSJF();
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD")) {
-				if(list_size(EJECUCION) > 0){
+				if (list_size(EJECUCION) > 0) {
 					procesoEsi* esiEnEjecucion = list_remove(EJECUCION, 0);
 					list_add(LISTOS, esiEnEjecucion);
 				}
