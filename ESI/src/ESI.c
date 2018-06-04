@@ -209,7 +209,7 @@ int main(int argc, char* argv[]) {
 	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
 	pthread_mutex_lock(&mutexFinalizar);
-//	pthread_mutex_lock(&mutexFinalizar);
+	pthread_mutex_lock(&mutexFinalizar);
 	close(socketCoordinador);
 	log_info(logger, "Cierro Conexión con Coordinador");
 	EnviarDatosTipo(socketPlanificador, ESI, ID, strlen(ID) + 1, MUERTEESI);

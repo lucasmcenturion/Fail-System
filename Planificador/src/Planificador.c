@@ -9,8 +9,8 @@ int tiempo = 0; //Controlar arribos
 
 t_list* listaHilos;
 bool end;
-//sem_t* semaforoESI;
-//sem_t* semaforoCoordinador;
+sem_t semaforoESI;
+//sem_t semaforoCoordinador;
 t_log* logger;
 
 /* Creo el logger de ESI*/
@@ -32,8 +32,8 @@ void inicializar() {
 	EJECUCION = list_create();
 	BLOQUEADOS = list_create();
 	TERMINADOS = list_create();
-//	sem_init(semaforoESI, 0, 1);
-//	sem_init(semaforoCoordinador, 0, 0);
+	sem_init(&semaforoESI, 0, 0);
+	//sem_init(&semaforoCoordinador, 0, 0);
 }
 
 void obtenerValoresArchivoConfiguracion() {
@@ -86,10 +86,12 @@ void imprimirArchivoConfiguracion() {
 }
 
 void escuchaCoordinador() {
-//	sem_wait(semaforoCoordinador);
+
 	Paquete paquete;
 	void* datos;
 	while (RecibirPaqueteCliente(socketCoordinador, PLANIFICADOR, &paquete) > 0) {
+		//sem_wait(&semaforoCoordinador);
+		//sem_wait(&semaforoESI);
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case GETPLANI: {
@@ -156,16 +158,18 @@ void escuchaCoordinador() {
 		if (paquete.Payload != NULL) {
 			free(paquete.Payload);
 		}
+		sem_post(&semaforoESI);
 	}
-//	sem_post(semaforoESI);
+
 }
 
 void EscucharESIyPlanificarlo(void* socket) {
-//	sem_wait(semaforoESI);
+
 	int socketFD = *(int*) socket;
 	Paquete paquete;
 	while (RecibirPaqueteServidorPlanificador(socketFD, PLANIFICADOR, &paquete)
 			> 0) {
+
 		if (!strcmp(paquete.header.emisor, ESI)) {
 			switch (paquete.header.tipoMensaje) {
 			case ESHANDSHAKE:
@@ -185,7 +189,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 					planificar();
 				break;
 
-			case MUERTEESI: {
+			case MUERTEESI: {sem_wait(&semaforoESI);
 				char* idEsiFinalizado = (char*) paquete.Payload;
 				printf("El proceso ESI finalizado es %s\n", idEsiFinalizado);
 				log_info(logger, "El proceso ESI finalizado es %s\n",
@@ -245,9 +249,9 @@ void EscucharESIyPlanificarlo(void* socket) {
 			if (paquete.Payload != NULL)
 				free(paquete.Payload);
 		}
+
 	}
 	close(socketFD);
-//	sem_post(semaforoCoordinador);
 }
 
 void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
@@ -280,6 +284,7 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 		list_add(TERMINADOS, esiTerminado);
 
 	}
+	//sem_post(&semaforoCoordinador);
 }
 
 procesoEsi* CalcularEstimacion(procesoEsi* unEsi) {
