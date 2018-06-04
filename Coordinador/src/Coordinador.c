@@ -116,6 +116,13 @@ void sacar_instancia(int socket) {
 	t_IdInstancia*remove = list_remove_by_condition(instancias, (void*)tiene_socket);
 	if(remove){
 		list_add(instancias_caidas,remove);
+	}else{
+		//termino un ESI
+		bool tiene_socket_esi(t_esiCoordinador *esi) {
+				if (esi->socket == socket)
+					return true;
+		}
+		list_remove_by_condition(esis,tiene_socket_esi);
 	}
 }
 
