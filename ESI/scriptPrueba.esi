@@ -1,6 +1,6 @@
 GET jugador
- SET jugador messi
- STORE jugador
+SET jugador messi
+STORE jugador
 GET materia
- SET materia so
-    STORE materia       
+SET materia so
+STORE materia

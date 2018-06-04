@@ -9,6 +9,17 @@ int tiempo = 0; //Controlar arribos
 
 t_list* listaHilos;
 bool end;
+//sem_t* semaforoESI;
+//sem_t* semaforoCoordinador;
+t_log* logger;
+
+/* Creo el logger de ESI*/
+
+/*Creación de Logger*/
+void crearLogger() {
+	logger = log_create("PlanificadorLog.log", "PLANIFICADOR", true,
+			LOG_LEVEL_INFO);
+}
 
 //COLAS
 
@@ -21,6 +32,8 @@ void inicializar() {
 	EJECUCION = list_create();
 	BLOQUEADOS = list_create();
 	TERMINADOS = list_create();
+//	sem_init(semaforoESI, 0, 1);
+//	sem_init(semaforoCoordinador, 0, 0);
 }
 
 void obtenerValoresArchivoConfiguracion() {
@@ -73,6 +86,7 @@ void imprimirArchivoConfiguracion() {
 }
 
 void escuchaCoordinador() {
+//	sem_wait(semaforoCoordinador);
 	Paquete paquete;
 	void* datos;
 	while (RecibirPaqueteCliente(socketCoordinador, PLANIFICADOR, &paquete) > 0) {
@@ -111,7 +125,7 @@ void escuchaCoordinador() {
 //				list_add(LISTOS, esiAEstarReady);
 				ChequearPlanificacionYSeguirEjecutando();
 			}
-
+			log_info(logger, "GET OK en Planificador");
 		}
 			break;
 
@@ -123,15 +137,18 @@ void escuchaCoordinador() {
 			EnviarDatosTipo(esiAAbortar->socket, PLANIFICADOR, NULL, 0,
 					ABORTAR);
 			list_add(TERMINADOS, esiAAbortar);
+			log_info(logger, "Aborta ESI");
 		}
 			break;
 		case SETOKPLANI:
 			ChequearPlanificacionYSeguirEjecutando();
+			log_info(logger, "SET OK en Planificador");
 
 			break;
 		case STOREOKPLANI: {
 			Desbloquear(datos, false);
 			ChequearPlanificacionYSeguirEjecutando();
+			log_info(logger, " STORE OK al Planificador");
 		}
 			break;
 		}
@@ -140,9 +157,11 @@ void escuchaCoordinador() {
 			free(paquete.Payload);
 		}
 	}
+//	sem_post(semaforoESI);
 }
 
-void accion(void* socket) {
+void EscucharESIyPlanificarlo(void* socket) {
+//	sem_wait(semaforoESI);
 	int socketFD = *(int*) socket;
 	Paquete paquete;
 	while (RecibirPaqueteServidorPlanificador(socketFD, PLANIFICADOR, &paquete)
@@ -151,10 +170,13 @@ void accion(void* socket) {
 			switch (paquete.header.tipoMensaje) {
 			case ESHANDSHAKE:
 				printf("El proceso ESI es %s\n", (char*) paquete.Payload);
+				log_info(logger, "El proceso ESI es %s\n",
+						(char*) paquete.Payload);
 				fflush(stdout);
 				procesoEsi* nuevoEsi = malloc(sizeof(procesoEsi));
 				nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
 				nuevoEsi->socket = socketFD;
+				nuevoEsi->rafagasRealesEjecutadas = 0;
 				nuevoEsi->rafagasEstimadas = (float) ESTIMACION_INICIAL;
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
@@ -166,6 +188,8 @@ void accion(void* socket) {
 			case MUERTEESI: {
 				char* idEsiFinalizado = (char*) paquete.Payload;
 				printf("El proceso ESI finalizado es %s\n", idEsiFinalizado);
+				log_info(logger, "El proceso ESI finalizado es %s\n",
+						idEsiFinalizado);
 				fflush(stdout);
 				//libero claves bloqueadas por ese ESI
 				while (list_any_satisfy(clavesBloqueadas,
@@ -184,6 +208,10 @@ void accion(void* socket) {
 								"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 								esiADesbloquear->esi->id,
 								esiADesbloquear->clave);
+						log_info(logger,
+								"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
+								esiADesbloquear->esi->id,
+								esiADesbloquear->clave);
 						procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
 						esiAPonerReady->id = malloc(
 								strlen(esiADesbloquear->esi->id) + 1);
@@ -193,7 +221,7 @@ void accion(void* socket) {
 						esiAPonerReady->rafagasRealesEjecutadas =
 								esiADesbloquear->esi->rafagasRealesEjecutadas;
 						esiAPonerReady->socket = esiADesbloquear->esi->socket;
-						list_add(LISTOS, esiAPonerReady);//mandar func enviar a Listos
+						list_add(LISTOS, esiAPonerReady); //mandar func enviar a Listos
 						free(esiADesbloquear->clave);
 						free(esiADesbloquear->esi->id);
 						free(esiADesbloquear->esi);
@@ -219,6 +247,7 @@ void accion(void* socket) {
 		}
 	}
 	close(socketFD);
+//	sem_post(semaforoCoordinador);
 }
 
 void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
@@ -264,10 +293,11 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	if(list_size(EJECUCION)!=0){
+	if (list_size(EJECUCION) != 0) {
 		procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 		++esiAEjecutar->rafagasRealesEjecutadas;
-		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0,
+				SIGUIENTELINEA);
 	}
 }
 
@@ -364,6 +394,7 @@ int main(void) {
 	inicializar();
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	crearLogger();
 	planificacion_detenida = false;
 	socketCoordinador = ConectarAServidorPlanificador(PUERTO_COORDINADOR,
 			IP_COORDINADOR, COORDINADOR,
@@ -373,7 +404,8 @@ int main(void) {
 	NULL);
 	pthread_t hiloConsola;
 	pthread_create(&hiloConsola, NULL, (void*) consola, NULL);
-	ServidorConcurrente(IP, PUERTO, PLANIFICADOR, &listaHilos, &end, accion);
+	ServidorConcurrente(IP, PUERTO, PLANIFICADOR, &listaHilos, &end,
+			EscucharESIyPlanificarlo);
 	pthread_join(hiloConsola, NULL);
 	pthread_join(hiloCoordinador, NULL);
 	return EXIT_SUCCESS;

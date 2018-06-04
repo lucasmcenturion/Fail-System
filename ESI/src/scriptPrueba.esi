@@ -3,4 +3,4 @@ GET jugador
  STORE jugador
 GET materia
  SET materia so
-    STORE materia       
+    STORE materia 

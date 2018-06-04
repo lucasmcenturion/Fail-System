@@ -12,13 +12,13 @@ pthread_mutex_t binario_linea, mutexFinalizar;
 
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
-t_log* vg_logger;
+t_log* logger;
 
 /* Creo el logger de ESI*/
 
 /*Creación de Logger*/
 void crearLogger() {
-	vg_logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
+	logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
 }
 
 void obtenerValoresArchivoConfiguracion() {
@@ -123,10 +123,9 @@ void parsear() {
 				EnviarDatosTipo(socketCoordinador, ESI, datos,
 						strlen(parsed.argumentos.GET.clave) + 1, GETCOORD);
 				printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
-//				log_info(vg_logger,
-//						"ESI id: %s, se ejecutó operación GET, con clave: %s",
-//						ID, parsed.argumentos.GET.clave);
-
+				log_info(logger,
+						"ESI id: %s, se ejecutó operación GET, con clave: %s",
+						ID, parsed.argumentos.GET.clave);
 				break;
 			case SET:
 				datos = malloc(
@@ -142,10 +141,10 @@ void parsear() {
 				printf("SET\tclave: <%s>\tvalor: <%s>\n",
 						parsed.argumentos.SET.clave,
 						parsed.argumentos.SET.valor);
-//				log_info(vg_logger,
-//						"ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s",
-//						ID, parsed.argumentos.SET.clave,
-//						parsed.argumentos.SET.valor);
+				log_info(logger,
+						"ESI id: %s, se ejecutó operación SET, con clave: %s y valor: %s",
+						ID, parsed.argumentos.SET.clave,
+						parsed.argumentos.SET.valor);
 				break;
 			case STORE:
 				datos = malloc(strlen(parsed.argumentos.STORE.clave) + 1);
@@ -153,9 +152,9 @@ void parsear() {
 				EnviarDatosTipo(socketCoordinador, ESI, datos,
 						strlen(parsed.argumentos.STORE.clave) + 1, STORECOORD);
 				printf("STORE\tclave: <%s>\n", parsed.argumentos.STORE.clave);
-//				log_info(vg_logger,
-//						"ESI id: %s, se ejecutó operación STORE, con clave: %s",
-//						ID, parsed.argumentos.STORE.clave);
+				log_info(logger,
+						"ESI id: %s, se ejecutó operación STORE, con clave: %s",
+						ID, parsed.argumentos.STORE.clave);
 				break;
 			default:
 				fprintf(stderr, "No pude interpretar <%s>\n", line);
@@ -180,13 +179,15 @@ void parsear() {
 	printf("MUERTEESI5\n");
 	muerteEsi();
 	printf(pthread_cancel(hiloPlanificador));
+
+	log_info(logger, "Cierro Hilo Planificador");
 	printf(pthread_cancel(hiloParser));
+
+	log_info(logger, "Cierro Hilo Parser");
 }
 
 void muerteEsi() {
-	close(socketCoordinador);
-	EnviarDatosTipo(socketPlanificador, ESI, ID, strlen(ID) + 1, MUERTEESI);
-	close(socketPlanificador);
+
 	pthread_mutex_unlock(&mutexFinalizar);
 }
 
@@ -194,7 +195,8 @@ int main(int argc, char* argv[]) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
 	programaAEjecutar = argv[1];
-	printf("El programa a ejecutar es %s\n", programaAEjecutar);
+	crearLogger();
+	log_info(logger, "El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
 	pthread_mutex_init(&mutexFinalizar, NULL);
@@ -207,6 +209,13 @@ int main(int argc, char* argv[]) {
 	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
 	pthread_mutex_lock(&mutexFinalizar);
-	pthread_mutex_lock(&mutexFinalizar);
+//	pthread_mutex_lock(&mutexFinalizar);
+	close(socketCoordinador);
+	log_info(logger, "Cierro Conexión con Coordinador");
+	EnviarDatosTipo(socketPlanificador, ESI, ID, strlen(ID) + 1, MUERTEESI);
+	close(socketPlanificador);
+	log_info(logger, "Cierro Conexión con Planificador");
+
+	log_info(logger, "Finalizó el Esi %s\n", (char*) ID);
 	return EXIT_SUCCESS;
 }
