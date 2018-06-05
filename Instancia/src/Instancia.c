@@ -324,6 +324,7 @@ int main(void) {
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
 					SETOK);
 			free(key);
+
 			free(value);
 
 		}
