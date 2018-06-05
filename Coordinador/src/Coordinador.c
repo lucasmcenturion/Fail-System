@@ -208,11 +208,13 @@ void accion(void* socket) {
 				char *idEsi = malloc(10);
 				strcpy(idEsi,obtenerId((char*)paquete.Payload,0));
 				idEsi=realloc(idEsi,strlen(idEsi)+1);
+				log_info(vg_logger, "Se hizo OK el SET");
 				EnviarDatosTipo(socketPlanificador,COORDINADOR,idEsi,strlen(idEsi)+1,SETOKPLANI);
 				free(idEsi);
 			}
 			break;
 			case STOREOK: {
+				log_info(vg_logger, "Se hizo OK el STORE");
 				EnviarDatosTipo(socketPlanificador,COORDINADOR,paquete.Payload,paquete.header.tamPayload,STOREOKPLANI);
 			}
 			break;

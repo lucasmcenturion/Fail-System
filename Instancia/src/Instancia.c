@@ -3,7 +3,8 @@
 #include <commons/collections/list.h>
 
 char *IP_COORDINADOR, *ALGORITMO_REEMPLAZO, *PUNTO_MONTAJE, *NOMBRE_INSTANCIA;
-int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA, ENTRADAS_LIBRES, socketCoordinador;
+int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA,
+		ENTRADAS_LIBRES, socketCoordinador;
 char **tabla_entradas;
 t_list *entradas_administrativa;
 t_list *entradas_atomicas;
@@ -11,71 +12,88 @@ t_log * logger;
 
 /*Creación de Logger*/
 void crearLogger() {
-	logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
+	logger = log_create("InstanciaLog.log", "INSTANCIA", true, LOG_LEVEL_INFO);
 }
 
 void obtenerValoresArchivoConfiguracion() {
-	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/instancia.cfg");
-	IP_COORDINADOR = string_duplicate(config_get_string_value(arch, "IP_COORDINADOR"));
+	t_config* arch =
+			config_create(
+					"/home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/instancia.cfg");
+	IP_COORDINADOR = string_duplicate(
+			config_get_string_value(arch, "IP_COORDINADOR"));
 	PUERTO_COORDINADOR = config_get_int_value(arch, "PUERTO_COORDINADOR");
-	ALGORITMO_REEMPLAZO = string_duplicate(config_get_string_value(arch, "ALGORITMO_REEMPLAZO"));
-	PUNTO_MONTAJE = string_duplicate(config_get_string_value(arch, "PUNTO_MONTAJE"));
-	NOMBRE_INSTANCIA = string_duplicate(config_get_string_value(arch, "NOMBRE_INSTANCIA"));
+	ALGORITMO_REEMPLAZO = string_duplicate(
+			config_get_string_value(arch, "ALGORITMO_REEMPLAZO"));
+	PUNTO_MONTAJE = string_duplicate(
+			config_get_string_value(arch, "PUNTO_MONTAJE"));
+	NOMBRE_INSTANCIA = string_duplicate(
+			config_get_string_value(arch, "NOMBRE_INSTANCIA"));
 	INTERVALO_DUMP = config_get_int_value(arch, "INTERVALO_DUMP");
 	config_destroy(arch);
 }
 
-void imprimirArchivoConfiguracion(){
-	printf(
-				"Configuración:\n"
-				"IP_COORDINADOR=%s\n"
-				"PUERTO_COORDINADOR=%d\n"
-				"ALGORITMO_REEMPLAZO=%s\n"
-				"PUNTO_MONTAJE=%s\n"
-				"NOMBRE_INSTANCIA=%s\n"
-				"INTERVALO_DUMP=%d\n",
-				IP_COORDINADOR,
-				PUERTO_COORDINADOR,
-				ALGORITMO_REEMPLAZO,
-				PUNTO_MONTAJE,
-				NOMBRE_INSTANCIA,
-				INTERVALO_DUMP
-				);
+void imprimirArchivoConfiguracion() {
+	printf("Configuración:\n"
+			"IP_COORDINADOR=%s\n"
+			"PUERTO_COORDINADOR=%d\n"
+			"ALGORITMO_REEMPLAZO=%s\n"
+			"PUNTO_MONTAJE=%s\n"
+			"NOMBRE_INSTANCIA=%s\n"
+			"INTERVALO_DUMP=%d\n", IP_COORDINADOR, PUERTO_COORDINADOR,
+			ALGORITMO_REEMPLAZO, PUNTO_MONTAJE, NOMBRE_INSTANCIA,
+			INTERVALO_DUMP);
 	fflush(stdout);
 }
-void compactacion(){
+void compactacion() {
 	//todo
 }
-void aplicarAlgoritmoReemplazo(int cantidadEntradas){
-	int i=0;
-	if(list_size(entradas_atomicas)>0){
-		t_Entrada *aux = list_get(entradas_atomicas,i);
-		if(cantidadEntradas>1){
-			while(cantidadEntradas){
-				tabla_entradas[aux->index]="NaN";
-				list_remove_by_condition(entradas_atomicas,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
-				t_Entrada *elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
+void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
+	int i = 0;
+	if (list_size(entradas_atomicas) > 0) {
+		t_Entrada *aux = list_get(entradas_atomicas, i);
+		if (cantidadEntradas > 1) {
+			while (cantidadEntradas) {
+				tabla_entradas[aux->index] = "NaN";
+				list_remove_by_condition(entradas_atomicas,
+						LAMBDA(int _(t_Entrada *e) {
+							return e->index == aux->index;
+						}
+				));
+				t_Entrada *elem = list_remove_by_condition(
+						entradas_administrativa, LAMBDA(int _(t_Entrada *e) {
+							return e->index == aux->index;
+						}
+				));
 				free(elem->clave);
 				free(elem);
-				if(cantidadEntradas-1 >0){
+				if (cantidadEntradas - 1 > 0) {
 					i++;
-					aux=list_get(entradas_atomicas,i);
+					aux = list_get(entradas_atomicas, i);
 					cantidadEntradas--;
 				}
 			}
-		}else{
+		} else {
 			//borro entrada actual
-			tabla_entradas[aux->index]="NaN";
-			list_remove_by_condition(entradas_atomicas,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
-			t_Entrada *elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {  return e->index==aux->index;}));
-			EnviarDatosTipo(socketCoordinador,INSTANCIA,elem->clave,strlen(elem->clave)+1,ELIMINARCLAVE);
+			tabla_entradas[aux->index] = "NaN";
+			list_remove_by_condition(entradas_atomicas,
+					LAMBDA(int _(t_Entrada *e) {
+						return e->index == aux->index;
+					}
+			));
+			t_Entrada *elem = list_remove_by_condition(entradas_administrativa,
+					LAMBDA(int _(t_Entrada *e) {
+						return e->index == aux->index;
+					}
+			));
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,
+					strlen(elem->clave) + 1, ELIMINARCLAVE);
 			free(elem->clave);
 			free(elem);
 		}
-	}else{
-		if(ENTRADAS_LIBRES >= cantidadEntradas){
+	} else {
+		if (ENTRADAS_LIBRES >= cantidadEntradas) {
 			compactacion();
-		}else{
+		} else {
 			printf("Nose\n");
 		}
 	}
@@ -87,126 +105,125 @@ int ceilDivision(int lengthValue) {
 
 }
 
-int getFirstIndex (int entradasValue){
+int getFirstIndex(int entradasValue) {
 	int i;
-	for (i=0;  i< CANT_ENTRADA; i++) {
-		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
+	for (i = 0; i < CANT_ENTRADA; i++) {
+		if (!strcmp(tabla_entradas[i], "NaN")
+				&& tabla_entradas[entradasValue - 1]) {
 			int aux;
-			bool cumple=true;
+			bool cumple = true;
 			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
-			for(aux=i+1; aux< entradasValue; aux++){
-				if(strcmp(tabla_entradas[aux],"NaN")){
-					cumple=false;
+			for (aux = i + 1; aux < entradasValue; aux++) {
+				if (strcmp(tabla_entradas[aux], "NaN")) {
+					cumple = false;
 					break;
 				}
 			}
-			if(cumple)
+			if (cumple)
 				return i;
 		}
 	}
 	//no tiene espacio, aplicar algoritmo
 	aplicarAlgoritmoReemplazo(entradasValue);
-	for (i=0;  i< CANT_ENTRADA; i++) {
-		if(!strcmp(tabla_entradas[i],"NaN") &&  tabla_entradas[entradasValue-1]){
+	for (i = 0; i < CANT_ENTRADA; i++) {
+		if (!strcmp(tabla_entradas[i], "NaN")
+				&& tabla_entradas[entradasValue - 1]) {
 			int aux;
-			bool cumple=true;
+			bool cumple = true;
 			//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
-			for(aux=i+1; aux< entradasValue; aux++){
-				if(strcmp(tabla_entradas[aux],"NaN")){
-					cumple=false;
+			for (aux = i + 1; aux < entradasValue; aux++) {
+				if (strcmp(tabla_entradas[aux], "NaN")) {
+					cumple = false;
 					break;
 				}
 			}
-			if(cumple)
+			if (cumple)
 				return i;
 		}
 	}
 	return -1;
 }
-void verificarPuntoMontaje(){
+void verificarPuntoMontaje() {
 
 	DIR* dir = opendir(PUNTO_MONTAJE);
-	if (dir)
-	{
-	    /* Directory exists. */
+	if (dir) {
+		/* Directory exists. */
 		/* El directorio existe. Hay que recorrer todos sus archivos y por cada uno de ellos
 		 *  verificar el nombre del archivo(clave) y lo que haya dentro es el value(valor)
 		 * Despues hay que añadirlo a la tabla de entradas y mandarle un mensaje a COORDINADOR con las entradas que tiene */
-	    closedir(dir);
-	}
-	else if (ENOENT == errno)
-	{
+		closedir(dir);
+	} else if (ENOENT == errno) {
 		//el directorio no existe
 //		log_info(vg_logger,"No existe el punto de montaje, se crea el directorio");
-		mkdir(PUNTO_MONTAJE,0700);
-	}
-	else
-	{
-		log_error(logger, "Se detectó el siguiente error al abrir el directorio: %s", strerror(errno));
-	    printf("Fallo el opendir \n");
-	    fflush(stdout);
+		mkdir(PUNTO_MONTAJE, 0700);
+	} else {
+		log_error(logger,
+				"Se detectó el siguiente error al abrir el directorio: %s",
+				strerror(errno));
+		printf("Fallo el opendir \n");
+		fflush(stdout);
 	}
 }
-void crearArchivo(char*key,char*value){
-	char *ruta=malloc(strlen(PUNTO_MONTAJE)+strlen("/")+strlen(key)+1);
-	strcpy(ruta,PUNTO_MONTAJE);
-	strcat(ruta,"/");
-	strcat(ruta,key);
-	FILE* f= fopen(ruta,"w");
-	fwrite(value,1,strlen(value)+1,f);
+void crearArchivo(char*key, char*value) {
+	char *ruta = malloc(strlen(PUNTO_MONTAJE) + strlen("/") + strlen(key) + 1);
+	strcpy(ruta, PUNTO_MONTAJE);
+	strcat(ruta, "/");
+	strcat(ruta, key);
+	FILE* f = fopen(ruta, "w");
+	fwrite(value, 1, strlen(value) + 1, f);
 	fclose(f);
 	free(ruta);
 }
 
-
 //No se puso en el SWITCH debido a que es PROPIO DE LA INSTANCIA! No depende del COORDINADOR.
 
-void dump(){
-	while(1){
-		usleep(20000000);//20 segundos
-			//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
-			int i,j;
-			for (i=0;  i< list_size(entradas_administrativa); i++) {
+void dump() {
+	while (1) {
+		usleep(20000000); //20 segundos
+		//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
+		int i, j;
+		for (i = 0; i < list_size(entradas_administrativa); i++) {
 
-				/* Agarro las claves con list_get */
-				t_Entrada* actual = (t_Entrada*)list_get(entradas_administrativa, i);
+			/* Agarro las claves con list_get */
+			t_Entrada* actual = (t_Entrada*) list_get(entradas_administrativa,
+					i);
 
-				/* Creo el directorio dinámico de la clave */
-				char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
-				strcpy(directorio_actual, PUNTO_MONTAJE);
-				strcpy(directorio_actual+strlen(PUNTO_MONTAJE),actual->clave);
+			/* Creo el directorio dinámico de la clave */
+			char* directorio_actual = malloc(
+					strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
+			strcpy(directorio_actual, PUNTO_MONTAJE);
+			strcpy(directorio_actual + strlen(PUNTO_MONTAJE), actual->clave);
 
-				//Valor que va a tener la clave dentro de la tabla de entradas
-				char* valor=malloc(actual->tamanio);
-				int tamanioPegado = 0;
+			//Valor que va a tener la clave dentro de la tabla de entradas
+			char* valor = malloc(actual->tamanio);
+			int tamanioPegado = 0;
 
-				//Recorro tabla entradas para obtener clave completa
-				for (j = actual->index; j < (actual->index + actual->entradasOcupadas);j++) {
-					//Pregunto si tiene una sola entrada o utiliza más
-					if((actual->index + actual->entradasOcupadas) -1 == j){
-						strcpy(valor + tamanioPegado, tabla_entradas[j]);
-					}else{
-						strcpy(valor + tamanioPegado, tabla_entradas[j]);
-						tamanioPegado += TAMANIO_ENTRADA;
-					}
+			//Recorro tabla entradas para obtener clave completa
+			for (j = actual->index;
+					j < (actual->index + actual->entradasOcupadas); j++) {
+				//Pregunto si tiene una sola entrada o utiliza más
+				if ((actual->index + actual->entradasOcupadas) - 1 == j) {
+					strcpy(valor + tamanioPegado, tabla_entradas[j]);
+				} else {
+					strcpy(valor + tamanioPegado, tabla_entradas[j]);
+					tamanioPegado += TAMANIO_ENTRADA;
 				}
-
-				//Creo archivo con dirección dinámica (directorio)
-				FILE* file_a_crear = fopen(directorio_actual,"w+");
-
-				//Escribo la clave en el archivo
-				fwrite(valor,actual->tamanio,sizeof(char),file_a_crear);
-
-				//Libero memoria
-				free(valor);
-				fclose(file_a_crear);
 			}
+
+			//Creo archivo con dirección dinámica (directorio)
+			FILE* file_a_crear = fopen(directorio_actual, "w+");
+
+			//Escribo la clave en el archivo
+			fwrite(valor, actual->tamanio, sizeof(char), file_a_crear);
+
+			//Libero memoria
+			free(valor);
+			fclose(file_a_crear);
+		}
 
 	}
 
 }
-
-
 
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
@@ -214,121 +231,115 @@ int main(void) {
 	crearLogger();
 	ENTRADAS_LIBRES = CANT_ENTRADA;
 	verificarPuntoMontaje();
-	entradas_administrativa=list_create();
-	entradas_atomicas= list_create();
+	entradas_administrativa = list_create();
+	entradas_atomicas = list_create();
 	//socket que maneja la conexion con coordinador
-	socketCoordinador=ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, INSTANCIA, RecibirHandshake);
+	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR,
+			COORDINADOR, INSTANCIA, RecibirHandshake);
 	//dump();
 	Paquete paquete;
 	void* datos;
-	while (RecibirPaqueteCliente(socketCoordinador, INSTANCIA, &paquete)>0){
-		datos=paquete.Payload;
-		switch(paquete.header.tipoMensaje){
-			case SOLICITUDNOMBRE:{
-				EnviarDatosTipo(socketCoordinador,INSTANCIA,NOMBRE_INSTANCIA,strlen(NOMBRE_INSTANCIA)+1,IDENTIFICACIONINSTANCIA);
-			}
+	while (RecibirPaqueteCliente(socketCoordinador, INSTANCIA, &paquete) > 0) {
+		datos = paquete.Payload;
+		switch (paquete.header.tipoMensaje) {
+		case SOLICITUDNOMBRE: {
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, NOMBRE_INSTANCIA,
+					strlen(NOMBRE_INSTANCIA) + 1, IDENTIFICACIONINSTANCIA);
+		}
 			break;
-			case STOREINST:{
-				char *key = malloc(strlen(datos)+1);
-				strcpy(key,datos);
-				t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {  return !strcmp(key,elemento->clave);}));
-				char *valueReturn = malloc(esperada->tamanio+1);
-				for (int var = esperada->index; var < esperada->index+esperada->entradasOcupadas; var++) {
-					if((esperada->index+esperada->entradasOcupadas)-1 == var){
-						strcpy(valueReturn,tabla_entradas[var]);
-						valueReturn+=strlen(tabla_entradas[var]);
-						break;
+		case STOREINST: {
+			char *key = malloc(strlen(datos) + 1);
+			strcpy(key, datos);
+			t_Entrada *esperada = list_find(entradas_administrativa,
+					LAMBDA(int _(t_Entrada *elemento) {
+						return !strcmp(key, elemento->clave);
 					}
-					strncpy(valueReturn,tabla_entradas[var],TAMANIO_ENTRADA);
-					valueReturn+=TAMANIO_ENTRADA;
+			));
+			char *valueReturn = malloc(esperada->tamanio + 1);
+			for (int var = esperada->index;
+					var < esperada->index + esperada->entradasOcupadas; var++) {
+				if ((esperada->index + esperada->entradasOcupadas) - 1 == var) {
+					strcpy(valueReturn, tabla_entradas[var]);
+					valueReturn += strlen(tabla_entradas[var]);
+					break;
 				}
-				valueReturn-=esperada->tamanio;
-				crearArchivo(key,valueReturn);
-				log_info(logger, "STORE OK se creo archivo con clave %s y valor %s", key, valueReturn);
-				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,STOREOK);
-				free(key);
-				free(valueReturn);
+				strncpy(valueReturn, tabla_entradas[var], TAMANIO_ENTRADA);
+				valueReturn += TAMANIO_ENTRADA;
 			}
-			break;
-			case SETINST:{
-				char*key=malloc(strlen(datos)+1);
-				strcpy(key,datos);
-				datos+=strlen(datos)+1;
-				char* value=malloc(strlen(datos)+1);
-				strcpy(value,datos);
-				t_Entrada *nueva=malloc(sizeof(t_Entrada));
-				nueva->clave=malloc(strlen(key)+1);
-				strcpy(nueva->clave,key);
-				nueva->entradasOcupadas = ceilDivision(strlen(value));
-				nueva->tamanio = strlen(value);
-				nueva->index = getFirstIndex(nueva->entradasOcupadas);
-				nueva->atomico = TAMANIO_ENTRADA-nueva->tamanio >= 0 ? true : false;
-				if(nueva->atomico)
-					list_add(entradas_atomicas,nueva);
-				list_add(entradas_administrativa,nueva);  //
-				int i;
-				char *valueAux=malloc(strlen(value)+1);
-				strcpy(valueAux,value);
-				for(i=nueva->index;i<(nueva->index+nueva->entradasOcupadas);i++){
-					if((nueva->index+nueva->entradasOcupadas)-1 == i){
-						//Porque no puedo hacer un free de tabla_entradas[i]?
-						tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
-						strcpy(tabla_entradas[i],valueAux);
-						ENTRADAS_LIBRES--;
-						break;
+			valueReturn -= esperada->tamanio;
+			crearArchivo(key, valueReturn);
+			log_info(logger, "STORE OK se creo archivo con clave %s y valor %s",
+					key, valueReturn);
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
+					STOREOK);
+			list_remove_by_condition(entradas_administrativa,
+					LAMBDA(int _(t_Entrada *elemento) {
+						return !strcmp(key, elemento->clave);
 					}
-					strncpy(tabla_entradas[i],valueAux,TAMANIO_ENTRADA);
-					valueAux+=TAMANIO_ENTRADA;
+			));
+			free(key);
+			free(valueReturn);
+		}
+			break;
+		case SETINST: {
+			char*key = malloc(strlen(datos) + 1);
+			strcpy(key, datos);
+			datos += strlen(datos) + 1;
+			char* value = malloc(strlen(datos) + 1);
+			strcpy(value, datos);
+			t_Entrada *nueva = malloc(sizeof(t_Entrada));
+			nueva->clave = malloc(strlen(key) + 1);
+			strcpy(nueva->clave, key);
+			nueva->entradasOcupadas = ceilDivision(strlen(value));
+			nueva->tamanio = strlen(value);
+			nueva->index = getFirstIndex(nueva->entradasOcupadas);
+			nueva->atomico =
+					TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
+			if (nueva->atomico)
+				list_add(entradas_atomicas, nueva);
+			list_add(entradas_administrativa, nueva);  //
+			int i;
+			char *valueAux = malloc(strlen(value) + 1);
+			strcpy(valueAux, value);
+			for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);
+					i++) {
+				if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
+					//Porque no puedo hacer un free de tabla_entradas[i]?
+					tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+					strcpy(tabla_entradas[i], valueAux);
 					ENTRADAS_LIBRES--;
+					break;
 				}
-				log_info(logger, "se hizo un SET de clave %s" ,key);
-				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,SETOK);
-				free(key);
-				free(value);
+				strncpy(tabla_entradas[i], valueAux, TAMANIO_ENTRADA);
+				valueAux += TAMANIO_ENTRADA;
+				ENTRADAS_LIBRES--;
+			}
+			log_info(logger, "se hizo un SET de clave %s", key);
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
+					SETOK);
+			free(key);
+			free(value);
 
-			}
+		}
 			break;
-			case GETENTRADAS:{
-				TAMANIO_ENTRADA=*((int*)datos);
-				datos+=sizeof(int);
-				CANT_ENTRADA=*((int*)datos);
-				datos+=sizeof(int);
-				tabla_entradas=malloc(CANT_ENTRADA*sizeof(char*)); //CANT_ENTRADA * TAMANIO_ENTRADA
-				int i;
-				for(i=0;i<CANT_ENTRADA;i++){
-					tabla_entradas[i]=malloc(TAMANIO_ENTRADA);
-					strcpy(tabla_entradas[i],"NaN");
-				}
+		case GETENTRADAS: {
+			TAMANIO_ENTRADA = *((int*) datos);
+			datos += sizeof(int);
+			CANT_ENTRADA = *((int*) datos);
+			datos += sizeof(int);
+			tabla_entradas = malloc(CANT_ENTRADA * sizeof(char*)); //CANT_ENTRADA * TAMANIO_ENTRADA
+			int i;
+			for (i = 0; i < CANT_ENTRADA; i++) {
+				tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+				strcpy(tabla_entradas[i], "NaN");
 			}
+		}
 			break;
 		}
-		if (paquete.Payload != NULL){
+		if (paquete.Payload != NULL) {
 			free(paquete.Payload);
 		}
 	}
 	return EXIT_SUCCESS;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

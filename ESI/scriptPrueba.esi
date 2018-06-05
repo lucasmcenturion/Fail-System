@@ -1,6 +1,6 @@
-GET jugador
- SET jugador messi
-   STORE jugador
-GET materia
- SET materia so
-  STORE materia
+GET futbol:messi
+SET futbol:messi PorqueMessi
+STORE futbol:messi
+GET futbol:messi
+SET futbol:messi SeLoMeressi
+STORE futbol:messi
