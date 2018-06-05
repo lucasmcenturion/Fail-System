@@ -8,7 +8,7 @@ int socketPlanificador, socketCoordinador;
 
 char *programaAEjecutar;
 
-pthread_mutex_t binario_linea, mutexFinalizar;
+pthread_mutex_t binario_linea, mutexFinalizar, binarioOrden;
 
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
@@ -99,6 +99,7 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 }
 
 void parsear() {
+	pthread_mutex_lock(&binario_linea);
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
@@ -113,7 +114,6 @@ void parsear() {
 	}
 
 	while ((read = getline(&line, &len, fp)) != -1) {
-		pthread_mutex_lock(&binario_linea);
 		t_esi_operacion parsed = parse(line);
 		if (parsed.valido) {
 			switch (parsed.keyword) {
@@ -162,6 +162,7 @@ void parsear() {
 				printf("MUERTEESI3\n");
 				muerteEsi();
 			}
+			pthread_mutex_lock(&binario_linea);
 
 			destruir_operacion(parsed);
 		} else {
@@ -199,6 +200,7 @@ int main(int argc, char* argv[]) {
 	log_info(logger, "El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
+	pthread_mutex_init(&binarioOrden, NULL);
 	pthread_mutex_init(&mutexFinalizar, NULL);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
 			IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake,
@@ -206,8 +208,8 @@ int main(int argc, char* argv[]) {
 	socketCoordinador = ConectarAServidorESI(PUERTO_COORDINADOR, IP_COORDINADOR,
 	COORDINADOR, ESI, RecibirHandshake, enviarHandshakeESI);
 	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
-	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
+	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_mutex_lock(&mutexFinalizar);
 	pthread_mutex_lock(&mutexFinalizar);
 	close(socketCoordinador);

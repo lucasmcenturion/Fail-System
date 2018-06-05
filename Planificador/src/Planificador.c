@@ -4,6 +4,8 @@ char *IP, *ALGORITMO_PLANIFICACION, *IP_COORDINADOR;
 int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR, ALFA_ESTIMACION;
 char **CLAVES_BLOQUEADAS;
 
+pthread_mutex_t mutexOperaciones;
+
 int socketCoordinador;
 int tiempo = 0; //Controlar arribos
 
@@ -33,6 +35,7 @@ void inicializar() {
 	BLOQUEADOS = list_create();
 	TERMINADOS = list_create();
 	sem_init(&semaforoESI, 0, 0);
+	pthread_mutex_init(&mutexOperaciones, NULL);
 	//sem_init(&semaforoCoordinador, 0, 0);
 }
 
@@ -93,6 +96,7 @@ void escuchaCoordinador() {
 		//sem_wait(&semaforoCoordinador);
 		//sem_wait(&semaforoESI);
 		datos = paquete.Payload;
+		pthread_mutex_lock(&mutexOperaciones);
 		switch (paquete.header.tipoMensaje) {
 		case GETPLANI: {
 			//Se fija si la clave que recibio está en la lista de claves bloqueadas
@@ -154,6 +158,7 @@ void escuchaCoordinador() {
 		}
 			break;
 		}
+		pthread_mutex_unlock(&mutexOperaciones);
 
 		if (paquete.Payload != NULL) {
 			free(paquete.Payload);
