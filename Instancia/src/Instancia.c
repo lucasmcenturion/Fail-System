@@ -276,6 +276,12 @@ int main(void) {
 					LAMBDA(int _(t_Entrada *elemento) {
 						return !strcmp(key, elemento->clave);
 					}
+			int i=esperada->index;
+			for (i; i < esperada->entradasOcupadas; i++) {
+				strcpy(tabla_entradas[i],"NaN");
+			}
+			free(key);
+			free(valueReturn);
 			));
 			free(key);
 			free(valueReturn);
