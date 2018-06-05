@@ -7,7 +7,12 @@ int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA, ENTRADAS_
 char **tabla_entradas;
 t_list *entradas_administrativa;
 t_list *entradas_atomicas;
-t_log * vg_logger;
+t_log * logger;
+
+/*Creación de Logger*/
+void crearLogger() {
+	logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
+}
 
 void obtenerValoresArchivoConfiguracion() {
 	t_config* arch = config_create("/home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/instancia.cfg");
@@ -137,7 +142,7 @@ void verificarPuntoMontaje(){
 	}
 	else
 	{
-		log_error(vg_logger, "Se detectó el siguiente error al abrir el directorio: %s", strerror(errno));
+		log_error(logger, "Se detectó el siguiente error al abrir el directorio: %s", strerror(errno));
 	    printf("Fallo el opendir \n");
 	    fflush(stdout);
 	}
@@ -206,6 +211,7 @@ void dump(){
 int main(void) {
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	crearLogger();
 	ENTRADAS_LIBRES = CANT_ENTRADA;
 	verificarPuntoMontaje();
 	entradas_administrativa=list_create();
@@ -238,6 +244,7 @@ int main(void) {
 				}
 				valueReturn-=esperada->tamanio;
 				crearArchivo(key,valueReturn);
+				log_info(logger, "STORE OK se creo archivo con clave %s y valor %s", key, valueReturn);
 				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,STOREOK);
 				free(key);
 				free(valueReturn);
@@ -274,6 +281,7 @@ int main(void) {
 					valueAux+=TAMANIO_ENTRADA;
 					ENTRADAS_LIBRES--;
 				}
+				log_info(logger, "se hizo un SET de clave %s" ,key);
 				EnviarDatosTipo(socketCoordinador,INSTANCIA,key,strlen(key)+1,SETOK);
 				free(key);
 				free(value);

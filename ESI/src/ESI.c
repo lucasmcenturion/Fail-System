@@ -8,7 +8,7 @@ int socketPlanificador, socketCoordinador;
 
 char *programaAEjecutar;
 
-pthread_mutex_t binario_linea, mutexFinalizar, binarioOrden;
+pthread_mutex_t binario_linea, mutexFinalizar;
 
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
@@ -200,7 +200,6 @@ int main(int argc, char* argv[]) {
 	log_info(logger, "El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
-	pthread_mutex_init(&binarioOrden, NULL);
 	pthread_mutex_init(&mutexFinalizar, NULL);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
 			IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake,
