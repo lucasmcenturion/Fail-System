@@ -272,11 +272,17 @@ int main(void) {
 					key, valueReturn);
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
 					STOREOK);
-			list_remove_by_condition(entradas_administrativa,
-					LAMBDA(int _(t_Entrada *elemento) {
-						return !strcmp(key, elemento->clave);
-					}
-			));
+//			list_remove_by_condition(entradas_administrativa,
+//					LAMBDA(int _(t_Entrada *elemento) {
+//						return !strcmp(key, elemento->clave);
+//					}
+//			int i=esperada->index;
+//			for (i; i < esperada->entradasOcupadas; i++) {
+//				strcpy(tabla_entradas[i],"NaN");
+//			}
+//			free(key);
+//			free(valueReturn);
+//			));
 			free(key);
 			free(valueReturn);
 		}
