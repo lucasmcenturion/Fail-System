@@ -79,6 +79,7 @@ void Desbloquear(char* clave, bool flagPrint){
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar);
+	ChequearPlanificacionYSeguirEjecutando();
 }
 
 void Listar(char* recurso){
