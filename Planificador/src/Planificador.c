@@ -309,6 +309,13 @@ void ejecutarEsi() {
 		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0,
 				SIGUIENTELINEA);
 	}
+	else if (list_size(LISTOS)!=0){
+		procesoEsi* esiAEjecutar = list_remove(LISTOS,0);
+		if (esiAEjecutar != NULL){
+			list_add(EJECUCION, esiAEjecutar);
+			ejecutarEsi();
+		}
+	}
 }
 
 void ChequearPlanificacionYSeguirEjecutando() {
