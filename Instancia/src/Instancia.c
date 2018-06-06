@@ -9,6 +9,7 @@ char **tabla_entradas;
 t_list *entradas_administrativa;
 t_list *entradas_atomicas;
 t_log * logger;
+pthread_mutex_t mutex_dump;
 
 /*Creación de Logger*/
 void crearLogger() {
@@ -178,30 +179,18 @@ void crearArchivo(char*key, char*value) {
 //No se puso en el SWITCH debido a que es PROPIO DE LA INSTANCIA! No depende del COORDINADOR.
 
 void dump() {
-	while (1) {
-		usleep(20000000); //20 segundos
+	pthread_mutex_lock(&mutex_dump);
 		//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
 		int i, j;
 		for (i = 0; i < list_size(entradas_administrativa); i++) {
 
-			/* Agarro las claves con list_get */
-			t_Entrada* actual = (t_Entrada*) list_get(entradas_administrativa,
-					i);
-
-			/* Creo el directorio dinámico de la clave */
-			char* directorio_actual = malloc(
-					strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
+			t_Entrada* actual = (t_Entrada*) list_get(entradas_administrativa,i);
+			char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
 			strcpy(directorio_actual, PUNTO_MONTAJE);
 			strcpy(directorio_actual + strlen(PUNTO_MONTAJE), actual->clave);
-
-			//Valor que va a tener la clave dentro de la tabla de entradas
 			char* valor = malloc(actual->tamanio);
 			int tamanioPegado = 0;
-
-			//Recorro tabla entradas para obtener clave completa
-			for (j = actual->index;
-					j < (actual->index + actual->entradasOcupadas); j++) {
-				//Pregunto si tiene una sola entrada o utiliza más
+			for (j = actual->index;j < (actual->index + actual->entradasOcupadas); j++) {
 				if ((actual->index + actual->entradasOcupadas) - 1 == j) {
 					strcpy(valor + tamanioPegado, tabla_entradas[j]);
 				} else {
@@ -209,20 +198,20 @@ void dump() {
 					tamanioPegado += TAMANIO_ENTRADA;
 				}
 			}
-
-			//Creo archivo con dirección dinámica (directorio)
 			FILE* file_a_crear = fopen(directorio_actual, "w+");
-
-			//Escribo la clave en el archivo
-			fwrite(valor, actual->tamanio, sizeof(char), file_a_crear);
-
-			//Libero memoria
+			fwrite(valor, 1, strlen(actual->tamanio)+1, file_a_crear);
 			free(valor);
 			fclose(file_a_crear);
+			free(directorio_actual);
 		}
+		pthread_mutex_unlock(&mutex_dump);
+}
 
+void ejecutarDump(){
+	while(1){
+		sleep(INTERVALO_DUMP);
+		dump();
 	}
-
 }
 
 int main(void) {
@@ -233,13 +222,14 @@ int main(void) {
 	verificarPuntoMontaje();
 	entradas_administrativa = list_create();
 	entradas_atomicas = list_create();
-	//socket que maneja la conexion con coordinador
-	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR,
-			COORDINADOR, INSTANCIA, RecibirHandshake);
-	//dump();
+	pthread_mutex_init(&mutex_dump,NULL);
+	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR,COORDINADOR, INSTANCIA, RecibirHandshake);
+//	pthread_t hiloDump;
+//	pthread_create(&hiloDump, NULL, (void*) ejecutarDump, NULL);
 	Paquete paquete;
 	void* datos;
 	while (RecibirPaqueteCliente(socketCoordinador, INSTANCIA, &paquete) > 0) {
+		pthread_mutex_lock(&mutex_dump);
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case SOLICITUDNOMBRE: {
@@ -255,9 +245,9 @@ int main(void) {
 						return !strcmp(key, elemento->clave);
 					}
 			));
+			esperada->activo=false;
 			char *valueReturn = malloc(esperada->tamanio + 1);
-			for (int var = esperada->index;
-					var < esperada->index + esperada->entradasOcupadas; var++) {
+			for (int var = esperada->index;var < esperada->index + esperada->entradasOcupadas; var++) {
 				if ((esperada->index + esperada->entradasOcupadas) - 1 == var) {
 					strcpy(valueReturn, tabla_entradas[var]);
 					valueReturn += strlen(tabla_entradas[var]);
@@ -268,21 +258,9 @@ int main(void) {
 			}
 			valueReturn -= esperada->tamanio;
 			crearArchivo(key, valueReturn);
-			log_info(logger, "STORE OK se creo archivo con clave %s y valor %s",
-					key, valueReturn);
+			log_info(logger, "STORE OK se creo archivo con clave %s y valor %s",key, valueReturn);
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
 					STOREOK);
-//			list_remove_by_condition(entradas_administrativa,
-//					LAMBDA(int _(t_Entrada *elemento) {
-//						return !strcmp(key, elemento->clave);
-//					}
-//			int i=esperada->index;
-//			for (i; i < esperada->entradasOcupadas; i++) {
-//				strcpy(tabla_entradas[i],"NaN");
-//			}
-//			free(key);
-//			free(valueReturn);
-//			));
 			free(key);
 			free(valueReturn);
 		}
@@ -301,8 +279,8 @@ int main(void) {
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
 				nueva->tamanio = strlen(value);
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
-				nueva->atomico =
-						TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
+				nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
+				nueva->activo=true;
 				if (nueva->atomico)
 					list_add(entradas_atomicas, nueva);
 				list_add(entradas_administrativa, nueva);  //
@@ -335,8 +313,8 @@ int main(void) {
 				entrada->entradasOcupadas = ceilDivision(strlen(value));
 				entrada->tamanio = strlen(value);
 				entrada->index = getFirstIndex(entrada->entradasOcupadas);
-				entrada->atomico =
-						TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
+				entrada->atomico =TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
+				entrada->activo = true;
 				if (entrada->atomico)
 				{
 					if (NULL == list_find(entradas_atomicas,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(entrada->clave, elemento->clave);})))
@@ -386,6 +364,7 @@ int main(void) {
 		if (paquete.Payload != NULL) {
 			free(paquete.Payload);
 		}
+		pthread_mutex_unlock(&mutex_dump);
 	}
 	return EXIT_SUCCESS;
 }
