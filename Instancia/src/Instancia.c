@@ -53,7 +53,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 		t_Entrada *aux = list_get(entradas_atomicas, i);
 		if (cantidadEntradas > 1) {
 			while (cantidadEntradas) {
-				tabla_entradas[aux->index] = "NaN";
+				strcpy(tabla_entradas[aux->index],"NaN");
 				list_remove_by_condition(entradas_atomicas,
 						LAMBDA(int _(t_Entrada *e) {
 							return e->index == aux->index;
@@ -74,7 +74,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 			}
 		} else {
 			//borro entrada actual
-			tabla_entradas[aux->index] = "NaN";
+			strcpy(tabla_entradas[aux->index], "NaN");
 			list_remove_by_condition(entradas_atomicas,
 					LAMBDA(int _(t_Entrada *e) {
 						return e->index == aux->index;
@@ -287,32 +287,72 @@ int main(void) {
 			datos += strlen(datos) + 1;
 			char* value = malloc(strlen(datos) + 1);
 			strcpy(value, datos);
-			t_Entrada *nueva = malloc(sizeof(t_Entrada));
-			nueva->clave = malloc(strlen(key) + 1);
-			strcpy(nueva->clave, key);
-			nueva->entradasOcupadas = ceilDivision(strlen(value));
-			nueva->tamanio = strlen(value);
-			nueva->index = getFirstIndex(nueva->entradasOcupadas);
-			nueva->atomico =
-					TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
-			if (nueva->atomico)
-				list_add(entradas_atomicas, nueva);
-			list_add(entradas_administrativa, nueva);  //
-			int i;
-			char *valueAux = malloc(strlen(value) + 1);
-			strcpy(valueAux, value);
-			for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);
-					i++) {
-				if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
-					//Porque no puedo hacer un free de tabla_entradas[i]?
-					tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
-					strcpy(tabla_entradas[i], valueAux);
+			if (NULL == list_find(entradas_administrativa,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(key, elemento->clave);})))
+			{
+				t_Entrada *nueva = malloc(sizeof(t_Entrada));
+				nueva->clave = malloc(strlen(key) + 1);
+				strcpy(nueva->clave, key);
+				nueva->entradasOcupadas = ceilDivision(strlen(value));
+				nueva->tamanio = strlen(value);
+				nueva->index = getFirstIndex(nueva->entradasOcupadas);
+				nueva->atomico =
+						TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
+				if (nueva->atomico)
+					list_add(entradas_atomicas, nueva);
+				list_add(entradas_administrativa, nueva);  //
+				int i;
+				char *valueAux = malloc(strlen(value) + 1);
+				strcpy(valueAux, value);
+				for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);
+						i++) {
+					if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
+						//Porque no puedo hacer un free de tabla_entradas[i]?
+						tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+						strcpy(tabla_entradas[i], valueAux);
+						ENTRADAS_LIBRES--;
+						break;
+					}
+					strncpy(tabla_entradas[i], valueAux, TAMANIO_ENTRADA);
+					valueAux += TAMANIO_ENTRADA;
 					ENTRADAS_LIBRES--;
-					break;
 				}
-				strncpy(tabla_entradas[i], valueAux, TAMANIO_ENTRADA);
-				valueAux += TAMANIO_ENTRADA;
-				ENTRADAS_LIBRES--;
+			}
+			else
+			{
+				t_Entrada* entrada = list_find(entradas_administrativa,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(key, elemento->clave);}));
+				int i;
+				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
+						i++) {
+					strcpy(tabla_entradas[i],"NaN");
+				}
+
+				entrada->entradasOcupadas = ceilDivision(strlen(value));
+				entrada->tamanio = strlen(value);
+				entrada->index = getFirstIndex(entrada->entradasOcupadas);
+				entrada->atomico =
+						TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
+				if (entrada->atomico)
+				{
+					if (NULL == list_find(entradas_atomicas,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(entrada->clave, elemento->clave);})))
+						list_add(entradas_atomicas, entrada);
+				}
+				list_add(entradas_administrativa, entrada);  //
+
+				char *valueAux = malloc(strlen(value) + 1);
+				strcpy(valueAux, value);
+				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
+						i++) {
+					if ((entrada->index + entrada->entradasOcupadas) - 1 == i) {
+						//Porque no puedo hacer un free de tabla_entradas[i]?
+						tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+						strcpy(tabla_entradas[i], valueAux);
+						ENTRADAS_LIBRES--;
+						break;
+					}
+					strncpy(tabla_entradas[i], valueAux, TAMANIO_ENTRADA);
+					valueAux += TAMANIO_ENTRADA;
+					ENTRADAS_LIBRES--;
+				}
 			}
 			log_info(logger, "se hizo un SET de clave %s", key);
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
