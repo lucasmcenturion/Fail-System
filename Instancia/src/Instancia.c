@@ -7,9 +7,8 @@ int PUERTO_COORDINADOR, INTERVALO_DUMP, TAMANIO_ENTRADA, CANT_ENTRADA,
 		ENTRADAS_LIBRES, socketCoordinador;
 char **tabla_entradas;
 t_list *entradas_administrativa;
-t_list *entradas_atomicas;
 t_log * logger;
-pthread_mutex_t mutex_dump;
+pthread_mutex_t mutex_entradas;
 
 /*Creación de Logger*/
 void crearLogger() {
@@ -50,44 +49,27 @@ void compactacion() {
 }
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 	int i = 0;
-	if (list_size(entradas_atomicas) > 0) {
-		t_Entrada *aux = list_get(entradas_atomicas, i);
+	t_list*atomicos=list_create();
+	atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico;}));
+	if (list_size(atomicos) > 0) {
+		t_Entrada *aux = list_get(atomicos, i);
 		if (cantidadEntradas > 1) {
 			while (cantidadEntradas) {
 				strcpy(tabla_entradas[aux->index],"NaN");
-				list_remove_by_condition(entradas_atomicas,
-						LAMBDA(int _(t_Entrada *e) {
-							return e->index == aux->index;
-						}
-				));
-				t_Entrada *elem = list_remove_by_condition(
-						entradas_administrativa, LAMBDA(int _(t_Entrada *e) {
-							return e->index == aux->index;
-						}
-				));
+				t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				free(elem->clave);
 				free(elem);
 				if (cantidadEntradas - 1 > 0) {
 					i++;
-					aux = list_get(entradas_atomicas, i);
+					aux = list_get(atomicos, i);
 					cantidadEntradas--;
 				}
 			}
 		} else {
 			//borro entrada actual
 			strcpy(tabla_entradas[aux->index], "NaN");
-			list_remove_by_condition(entradas_atomicas,
-					LAMBDA(int _(t_Entrada *e) {
-						return e->index == aux->index;
-					}
-			));
-			t_Entrada *elem = list_remove_by_condition(entradas_administrativa,
-					LAMBDA(int _(t_Entrada *e) {
-						return e->index == aux->index;
-					}
-			));
-			EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,
-					strlen(elem->clave) + 1, ELIMINARCLAVE);
+			t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
 			free(elem->clave);
 			free(elem);
 		}
@@ -179,16 +161,19 @@ void crearArchivo(char*key, char*value) {
 //No se puso en el SWITCH debido a que es PROPIO DE LA INSTANCIA! No depende del COORDINADOR.
 
 void dump() {
-	pthread_mutex_lock(&mutex_dump);
-		//Hago un for con la cantidad de entradas administrativas para saber claves que tengo
-		int i, j;
-		for (i = 0; i < list_size(entradas_administrativa); i++) {
+	pthread_mutex_lock(&mutex_entradas);
 
-			t_Entrada* actual = (t_Entrada*) list_get(entradas_administrativa,i);
-			char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 2);
+		t_list*atomicos=list_create();
+		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico;}));
+		int i, j;
+		for (i = 0; i < list_size(atomicos); i++) {
+
+			t_Entrada* actual = (t_Entrada*) list_get(atomicos,i);
+			char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 3);
 			strcpy(directorio_actual, PUNTO_MONTAJE);
-			strcpy(directorio_actual + strlen(PUNTO_MONTAJE), actual->clave);
-			char* valor = malloc(actual->tamanio);
+			strcat(directorio_actual,"/");
+			strcat(directorio_actual, actual->clave);
+			char* valor = malloc(actual->tamanio+1);
 			int tamanioPegado = 0;
 			for (j = actual->index;j < (actual->index + actual->entradasOcupadas); j++) {
 				if ((actual->index + actual->entradasOcupadas) - 1 == j) {
@@ -198,13 +183,13 @@ void dump() {
 					tamanioPegado += TAMANIO_ENTRADA;
 				}
 			}
-			FILE* file_a_crear = fopen(directorio_actual, "w+");
-			fwrite(valor, 1, strlen(actual->tamanio)+1, file_a_crear);
+			FILE* file_a_crear = fopen(directorio_actual, "w");
+			fwrite(valor, 1, strlen(valor)+1, file_a_crear);
 			free(valor);
 			fclose(file_a_crear);
 			free(directorio_actual);
 		}
-		pthread_mutex_unlock(&mutex_dump);
+		pthread_mutex_unlock(&mutex_entradas);
 }
 
 void ejecutarDump(){
@@ -221,15 +206,13 @@ int main(void) {
 	ENTRADAS_LIBRES = CANT_ENTRADA;
 	verificarPuntoMontaje();
 	entradas_administrativa = list_create();
-	entradas_atomicas = list_create();
-	pthread_mutex_init(&mutex_dump,NULL);
+	pthread_mutex_init(&mutex_entradas,NULL);
 	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR,COORDINADOR, INSTANCIA, RecibirHandshake);
-//	pthread_t hiloDump;
-//	pthread_create(&hiloDump, NULL, (void*) ejecutarDump, NULL);
+	pthread_t hiloDump;
+	pthread_create(&hiloDump, NULL, (void*) ejecutarDump, NULL);
 	Paquete paquete;
 	void* datos;
 	while (RecibirPaqueteCliente(socketCoordinador, INSTANCIA, &paquete) > 0) {
-		pthread_mutex_lock(&mutex_dump);
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case SOLICITUDNOMBRE: {
@@ -240,6 +223,7 @@ int main(void) {
 		case STOREINST: {
 			char *key = malloc(strlen(datos) + 1);
 			strcpy(key, datos);
+			pthread_mutex_lock(&mutex_entradas);
 			t_Entrada *esperada = list_find(entradas_administrativa,
 					LAMBDA(int _(t_Entrada *elemento) {
 						return !strcmp(key, elemento->clave);
@@ -257,6 +241,7 @@ int main(void) {
 				valueReturn += TAMANIO_ENTRADA;
 			}
 			valueReturn -= esperada->tamanio;
+			pthread_mutex_unlock(&mutex_entradas);
 			crearArchivo(key, valueReturn);
 			log_info(logger, "STORE OK se creo archivo con clave %s y valor %s",key, valueReturn);
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
@@ -271,6 +256,7 @@ int main(void) {
 			datos += strlen(datos) + 1;
 			char* value = malloc(strlen(datos) + 1);
 			strcpy(value, datos);
+			pthread_mutex_lock(&mutex_entradas);
 			if (NULL == list_find(entradas_administrativa,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(key, elemento->clave);})))
 			{
 				t_Entrada *nueva = malloc(sizeof(t_Entrada));
@@ -281,8 +267,6 @@ int main(void) {
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
 				nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
 				nueva->activo=true;
-				if (nueva->atomico)
-					list_add(entradas_atomicas, nueva);
 				list_add(entradas_administrativa, nueva);  //
 				int i;
 				char *valueAux = malloc(strlen(value) + 1);
@@ -315,11 +299,6 @@ int main(void) {
 				entrada->index = getFirstIndex(entrada->entradasOcupadas);
 				entrada->atomico =TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
 				entrada->activo = true;
-				if (entrada->atomico)
-				{
-					if (NULL == list_find(entradas_atomicas,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(entrada->clave, elemento->clave);})))
-						list_add(entradas_atomicas, entrada);
-				}
 				list_add(entradas_administrativa, entrada);  //
 
 				char *valueAux = malloc(strlen(value) + 1);
@@ -338,6 +317,7 @@ int main(void) {
 					ENTRADAS_LIBRES--;
 				}
 			}
+			pthread_mutex_unlock(&mutex_entradas);
 			log_info(logger, "se hizo un SET de clave %s", key);
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
 					SETOK);
@@ -364,7 +344,6 @@ int main(void) {
 		if (paquete.Payload != NULL) {
 			free(paquete.Payload);
 		}
-		pthread_mutex_unlock(&mutex_dump);
 	}
 	return EXIT_SUCCESS;
 }
