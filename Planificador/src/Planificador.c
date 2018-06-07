@@ -128,7 +128,6 @@ void escuchaCoordinador() {
 			break;
 		case STOREOKPLANI: {
 			Desbloquear(datos, false);
-			ChequearPlanificacionYSeguirEjecutando();
 			log_info(logger, " STORE OK al Planificador");
 		}
 			break;
@@ -250,12 +249,8 @@ void ejecutarEsi() {
 		++esiAEjecutar->rafagasRealesEjecutadas;
 		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 	}
-	else if (list_size(LISTOS)!=0){
-		procesoEsi* esiAEjecutar = list_remove(LISTOS,0);
-		if (esiAEjecutar != NULL){
-			list_add(EJECUCION, esiAEjecutar);
-			ejecutarEsi();
-		}
+	else {
+		planificar();
 	}
 }
 

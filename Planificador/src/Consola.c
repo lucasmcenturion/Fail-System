@@ -70,6 +70,12 @@ void Desbloquear(char* clave, bool flagPrint){
 		esiAPonerReady->rafagasEstimadas = esiDesbloqueado->esi->rafagasEstimadas;
 		esiAPonerReady->rafagasRealesEjecutadas = esiDesbloqueado->esi->rafagasRealesEjecutadas;
 		esiAPonerReady->socket = esiDesbloqueado->esi->socket;
+		clavexEsi* clavexEsiAAgregar = malloc(sizeof(clavexEsi));
+		clavexEsiAAgregar->clave = malloc(strlen(clave)+1);
+		strcpy(clavexEsiAAgregar->clave, clave);
+		clavexEsiAAgregar->idEsi = malloc(strlen(esiDesbloqueado->esi->id)+1);
+		strcpy(clavexEsiAAgregar->idEsi, esiDesbloqueado->esi->id);
+		list_add(clavesBloqueadas, clavexEsiAAgregar);
 		list_add(LISTOS, esiAPonerReady);
 		free(esiDesbloqueado->clave);
 		free(esiDesbloqueado->esi->id);
