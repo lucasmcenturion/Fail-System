@@ -14,6 +14,8 @@ pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
 t_log* logger;
 
+
+
 /* Creo el logger de ESI*/
 
 /*Creación de Logger*/
