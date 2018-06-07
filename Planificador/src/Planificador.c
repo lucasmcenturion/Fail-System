@@ -184,19 +184,27 @@ void EscucharESIyPlanificarlo(void* socket) {
 						esiAPonerReady->rafagasEstimadas = esiADesbloquear->esi->rafagasEstimadas;
 						esiAPonerReady->rafagasRealesEjecutadas = esiADesbloquear->esi->rafagasRealesEjecutadas;
 						esiAPonerReady->socket = esiADesbloquear->esi->socket;
+						clavexEsi* clavexEsiAAgregar = malloc(sizeof(clavexEsi));
+						clavexEsiAAgregar->clave = malloc(strlen(clavexEsiABorrar->clave)+1);
+						strcpy(clavexEsiAAgregar->clave, clavexEsiABorrar->clave);
+						clavexEsiAAgregar->idEsi = malloc(strlen(esiADesbloquear->esi->id)+1);
+						strcpy(clavexEsiAAgregar->idEsi, esiADesbloquear->esi->id);
+						list_add(clavesBloqueadas, clavexEsiAAgregar);
 						list_add(LISTOS, esiAPonerReady); //mandar func enviar a Listos
 						free(esiADesbloquear->clave);
 						free(esiADesbloquear->esi->id);
 						free(esiADesbloquear->esi);
 						free(esiADesbloquear);
-						if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD") || list_size(LISTOS) == 1)
-							planificar();
+						//if (!strcmp(ALGORITMO_PLANIFICACION, "SJF/CD") || list_size(LISTOS) == 1)
+							//planificar();
 					}
 					free(clavexEsiABorrar->clave);
 					free(clavexEsiABorrar->idEsi);
 					free(clavexEsiABorrar);
+					ChequearPlanificacionYSeguirEjecutando();
 				}
 				PasarESIMuertoAColaTerminados(idEsiFinalizado); //Busco en que cola esta y paso el ESI a la cola de TERMINADOS
+				ChequearPlanificacionYSeguirEjecutando();
 				break;
 
 			}
