@@ -287,7 +287,10 @@ void accion(void* socket) {
 									pthread_mutex_unlock(&mutex_instancias);
 								}
 							}else{
-								if(!list_any_satisfy(instancias, verificarClave)){
+								pthread_mutex_lock(&mutex_instancias);
+								t_IdInstancia *aux=list_find(instancias,verificarClave);
+								pthread_mutex_unlock(&mutex_instancias);
+								if(!aux){
 									//clave existe en el sistema, pero la instancia esta caida
 									printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
 									fflush(stdout);
@@ -300,18 +303,7 @@ void accion(void* socket) {
 									strcpy(sendInstancia,value);
 									sendInstancia+=strlen(value)+1;
 									sendInstancia-=tam;
-									if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
-										pthread_mutex_lock(&mutex_instancias);
-										int socketSiguiente = getProximo();
-										if(socketSiguiente!=0){
-											printf("%d\n",socketSiguiente);
-											fflush(stdout);
-											EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
-										}else{
-											//error, no hay instancias conectadas al sistema
-										}
-										pthread_mutex_unlock(&mutex_instancias);
-									}
+									EnviarDatosTipo(aux->socket,COORDINADOR,sendInstancia,tam,SETINST);
 								}
 							}
 							dictionary_remove(clavesNuevas,key);
