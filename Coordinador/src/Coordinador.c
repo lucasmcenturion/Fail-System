@@ -10,6 +10,7 @@ t_list* instancias;
 t_list* esis;
 t_list* instancias_caidas;
 t_dictionary* clavesNuevas;
+t_dictionary* clavesReemplazadas;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
 pthread_mutex_t mutex_clavesNuevas;
@@ -226,6 +227,9 @@ void accion(void* socket) {
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
 				list_remove_by_condition(aux->claves,LAMBDA(int _(char *clave) {  return !strcmp(clave,(char*)paquete.Payload);}));
 				pthread_mutex_unlock(&mutex_instancias);
+				char*claveReemplazada=malloc(strlen(paquete.Payload)+1);
+				strcpy(claveReemplazada,paquete.Payload);
+				dictionary_put(clavesReemplazadas,claveReemplazada,true);
 			}
 			break;
 			}
@@ -260,8 +264,9 @@ void accion(void* socket) {
 					char*id=malloc(10);
 					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
 					id=realloc(id,strlen(id)+1);
+					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s \n", id, key, value);
 					if(strlen(key)>40){
-						printf("Se quiere hacer un SET de una clave que excede los 40 caracteres\n");
+						log_info(vg_logger,"Se quiere hacer un SET de una clave que excede los 40 caracteres");
 						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}else{
 						if(verificarGet(id,key)){
@@ -281,7 +286,7 @@ void accion(void* socket) {
 										EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
 									}else{
 										//error, no hay instancias conectadas al sistema
-										printf("No hay instancias conectadas al sistema\n");
+										log_info(vg_logger,"No hay instancias conectadas al sistema");
 										fflush(stdout);
 									}
 									pthread_mutex_unlock(&mutex_instancias);
@@ -292,7 +297,7 @@ void accion(void* socket) {
 								pthread_mutex_unlock(&mutex_instancias);
 								if(!aux){
 									//clave existe en el sistema, pero la instancia esta caida
-									printf("Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
+									log_info(vg_logger,"Se intenta bloquear la clave %s pero en este momento no esta disponible",key);
 									fflush(stdout);
 									EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 								}else{
@@ -309,11 +314,10 @@ void accion(void* socket) {
 							dictionary_remove(clavesNuevas,key);
 							pthread_mutex_unlock(&mutex_clavesNuevas);
 						}else{
-							printf("Se intenta hacer un SET de una clave que nunca se hizo un GET \n");
+							log_info(vg_logger,"Se intenta hacer un SET de la clave %s pero nunca se hizo un GET",key);
 							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 						}
 					}
-					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s \n", id, key, value);
 					free(key);
 					free(value);
 					free(id);
@@ -364,20 +368,28 @@ void accion(void* socket) {
 					printf("Se quiere hacer un SET de una clave que excede los 40 caracteres\n");
 					EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 				}else{
+					log_info(vg_logger, "El COORDINADOR recibió operación STORE del ESI: %s, con clave: %s\n", id, paquete.Payload);
 					if(verificarGet(id,(char*)paquete.Payload)){
 						int socketInstancia = obtenerSocket(paquete.Payload);
 						if(socketInstancia!=0)
 							EnviarDatosTipo(socketInstancia,COORDINADOR,(char*)paquete.Payload,strlen((char*)paquete.Payload)+1,STOREINST);
 						else{
+							if(dictionary_has_key(clavesReemplazadas,(char*)paquete.Payload)){
+								log_info(vg_logger,"Se intenta hacer un STORE de la clave %s pero fue reemplazada",(char*)paquete.Payload);
+							}else{
+								log_info(vg_logger,"Se intenta hacer un STORE de la clave %s pero no se hizo un GET",(char*)paquete.Payload);
+							}
 							EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
-							printf("Se intenta hacer un STORE de una clave que nunca se hizo un GET \n");
 						}
 					}else{
-						printf("Se intenta hacer un STORE de una clave que nunca se hizo un GET \n");
+						if(dictionary_has_key(clavesReemplazadas,(char*)paquete.Payload)){
+							log_info(vg_logger,"Se intenta hacer un STORE de la clave %s pero fue reemplazada",(char*)paquete.Payload);
+						}else{
+							log_info(vg_logger,"Se intenta hacer un STORE de la clave %s pero no se hizo un GET",(char*)paquete.Payload);
+						}
 						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}
 				}
-				log_info(vg_logger, "El COORDINADOR recibió operación STORE del ESI: %s, con clave: %s\n", id, paquete.Payload);
 				free(id);
 				//log_info(vg_logger, "El COORDINADOR recibe operación STORE del ESI: %s"....);
 			}
@@ -419,6 +431,7 @@ int main(void) {
 	instancias=list_create();
 	instancias_caidas=list_create();
 	clavesNuevas = dictionary_create();
+	clavesReemplazadas = dictionary_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 	finalizarLogger();
 	return EXIT_SUCCESS;

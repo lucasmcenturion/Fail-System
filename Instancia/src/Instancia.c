@@ -51,37 +51,39 @@ void compactacion() {
 }
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 	int i = 0;
+	int entradasAux=cantidadEntradas;
 	t_list*atomicos=list_create();
 	atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico;}));
-	if (list_size(atomicos) > 0) {
+	if (list_size(atomicos) > 0 && cantidadEntradas<=list_size(atomicos)) {
 		t_Entrada *aux = list_get(atomicos, i);
-		if (cantidadEntradas > 1) {
-			while (cantidadEntradas) {
+		if (entradasAux > 1) {
+			while (entradasAux) {
 				strcpy(tabla_entradas[aux->index],"NaN");
 				t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+				entradasAux--;
+				i++;
+				aux = list_get(atomicos, i);
 				free(elem->clave);
 				free(elem);
-				if (cantidadEntradas - 1 > 0) {
-					i++;
-					aux = list_get(atomicos, i);
-					cantidadEntradas--;
-				}
 			}
 		} else {
 			//borro entrada actual
 			strcpy(tabla_entradas[aux->index], "NaN");
-			t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+			//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+			t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
 			free(elem->clave);
 			free(elem);
 		}
 	} else {
-		if (ENTRADAS_LIBRES >= cantidadEntradas) {
+		if (ENTRADAS_LIBRES >= entradasAux) {
 			compactacion();
 		} else {
 			printf("Nose\n");
 		}
 	}
+	list_destroy(atomicos);
 }
 int ceilDivision(int lengthValue) {
 	double cantidadEntradas;
@@ -197,7 +199,7 @@ void dump() {
 void ejecutarDump(){
 	while(1){
 		sleep(INTERVALO_DUMP);
-		dump();
+		//dump();
 	}
 }
 
