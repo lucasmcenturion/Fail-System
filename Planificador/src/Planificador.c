@@ -5,14 +5,14 @@ int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR, ALFA_ESTIMACION;
 char **CLAVES_BLOQUEADAS;
 
 pthread_mutex_t mutexOperaciones;
-
+pthread_mutex_t ordenPlanificacionDetenida;
 int socketCoordinador;
 int tiempo = 0; //Controlar arribos
 
 t_list* listaHilos;
 bool end;
 sem_t semaforoESI;
-//sem_t semaforoCoordinador;
+sem_t semPlanificacionDetenida;
 t_log* logger;
 
 /* Creo el logger de ESI*/
@@ -34,8 +34,9 @@ void inicializar() {
 	BLOQUEADOS = list_create();
 	TERMINADOS = list_create();
 	sem_init(&semaforoESI, 0, 0);
+	sem_init(&semPlanificacionDetenida,1,0);
 	pthread_mutex_init(&mutexOperaciones, NULL);
-	//sem_init(&semaforoCoordinador, 0, 0);
+	pthread_mutex_init(&ordenPlanificacionDetenida,NULL);
 }
 
 void obtenerValoresArchivoConfiguracion() {
@@ -151,8 +152,6 @@ void EscucharESIyPlanificarlo(void* socket) {
 				printf("El proceso ESI es %s\n", (char*) paquete.Payload);
 				log_info(logger, "El proceso ESI es %s\n", (char*) paquete.Payload);
 				fflush(stdout);
-				if(!strcmp(paquete.Payload,"ESI1"))
-					int a=2;
 				procesoEsi* nuevoEsi = malloc(sizeof(procesoEsi));
 				nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
 				nuevoEsi->socket = socketFD;
@@ -160,9 +159,13 @@ void EscucharESIyPlanificarlo(void* socket) {
 				nuevoEsi->rafagasEstimadas = (float) ESTIMACION_INICIAL;
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
-				ChequearPlanificacionYSeguirEjecutando();
-				//if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
-				//	planificar();
+				//ChequearPlanificacionYSeguirEjecutando();
+				if(!planificacion_detenida != 0){
+					printf("entre\n");
+					fflush(stdout);
+					if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
+						planificar();
+				}
 				break;
 
 			case MUERTEESI: {sem_wait(&semaforoESI);
@@ -254,13 +257,16 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	if (list_size(EJECUCION) != 0) {
-		procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
-		++esiAEjecutar->rafagasRealesEjecutadas;
-		EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
-	}
-	else {
-		planificar();
+	int b=4;
+	int a=3;
+	if(!planificacion_detenida){
+		if (list_size(EJECUCION) != 0) {
+			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
+			++esiAEjecutar->rafagasRealesEjecutadas;
+			EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
+		}else {
+			planificar();
+		}
 	}
 }
 
@@ -274,60 +280,38 @@ void ChequearPlanificacionYSeguirEjecutando() {
 
 void HacerSJF() {
 
-	//NUEVO
-	//lista con los valores estimados
 	list_iterate(LISTOS, (void*) CalcularEstimacion);
 	t_list* listaAuxAOrdenar = list_take(LISTOS, list_size(LISTOS));
 	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
 	procesoEsi* esiMenorEst = (procesoEsi*) list_get(listaAuxAOrdenar, 0);
 	list_destroy(listaAuxAOrdenar);
 	t_list* listaConLosMenoresOrdenadosPorOrdenDeLlegada = list_filter(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return item1->rafagasEstimadas == esiMenorEst->rafagasEstimadas;}));
-	procesoEsi esiMenoryPrimeroEnLlegar = list_get(listaConLosMenoresOrdenadosPorOrdenDeLlegada,0);
+	procesoEsi* esiMenoryPrimeroEnLlegar = list_get(listaConLosMenoresOrdenadosPorOrdenDeLlegada,0);
 	list_destroy(listaConLosMenoresOrdenadosPorOrdenDeLlegada);
 	procesoEsi* esiAEjecutar = list_remove_by_condition(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return !strcmp(item1->id,esiMenoryPrimeroEnLlegar->id);}));
     list_add(EJECUCION, esiAEjecutar);
     ejecutarEsi();
-    //ANTIGUO
-    /*
-	//AUX: lista ordenada de esis por estimacion de rafaga
-	t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
-	list_sort(AUX, (void*) ComparadorDeRafagas);
-	procesoEsi* esiMenorEst = (procesoEsi*) list_get(AUX, 0);
-	//si hay ESIs con estimaciones repetidas
-	//AUX2: lista ordenada por orden de llegada de esis con igual estimacion
-	t_list* AUX2 = list_create();
-	for (int x = 0; x < list_size(AUX); x++) {
-		procesoEsi* unEsi = (procesoEsi*) list_get(AUX, x);
-		if (unEsi->rafagasEstimadas == esiMenorEst->rafagasEstimadas) {
-			list_add(AUX2, unEsi);
-		}
-	}
-	procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX2, 0);
-	list_add(EJECUCION, esiAEjecutar);
-	ejecutarEsi();
-	*/
 }
 
 void planificar() {
-	if (!planificacion_detenida) {
-		if (!list_is_empty(LISTOS)) {
-			if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
-				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
-				list_add(EJECUCION, esiAEjecutar);
-				ejecutarEsi();
-			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
-				HacerSJF();
-			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
-				if (list_size(EJECUCION) > 0) {
-					procesoEsi* esiEnEjecucion = list_remove(EJECUCION, 0);
-					list_add(LISTOS, esiEnEjecucion);
-				}
-				HacerSJF();
-			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
-
+	if (!list_is_empty(LISTOS)) {
+		if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
+			procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
+			list_add(EJECUCION, esiAEjecutar);
+			ejecutarEsi();
+		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
+			HacerSJF();
+		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
+			if (list_size(EJECUCION) > 0) {
+				procesoEsi* esiEnEjecucion = list_remove(EJECUCION, 0);
+				list_add(LISTOS, esiEnEjecucion);
 			}
+			HacerSJF();
+		} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
+
 		}
 	}
+
 }
 
 void EnviarHandshakePlani(int socketFD, char emisor[13]) {

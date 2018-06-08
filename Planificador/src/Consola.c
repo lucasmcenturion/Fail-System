@@ -2,10 +2,18 @@
 
 bool planificacion_detenida;
 t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
-
+t_log* logger;
+sem_t semPlanificacionDetenida;
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
-	planificacion_detenida ? printf("La planificación se detuvo.\n") : printf("La planificación se reanudó.\n");
+	if(planificacion_detenida){
+		log_info(logger,"La planificación se detuvo.\n");
+		planificacion_detenida=true;
+	}else{
+		log_info(logger,"La planificacion se renaudó.\n");
+		planificacion_detenida=false;
+	}
+	//planificacion_detenida ? printf("La planificación se detuvo.\n") : printf("La planificación se reanudó.\n");
 }
 
 void Bloquear(char* clave, char* id){

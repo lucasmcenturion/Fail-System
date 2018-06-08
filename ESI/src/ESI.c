@@ -84,6 +84,7 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case SIGUIENTELINEA: {
+			int i=0;
 			pthread_mutex_unlock(&binario_linea);
 		}
 			break;
@@ -102,6 +103,7 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 }
 
 void parsear() {
+	pthread_mutex_lock(&binario_linea);
 	pthread_mutex_lock(&binario_linea);
 	FILE * fp;
 	char * line = NULL;
