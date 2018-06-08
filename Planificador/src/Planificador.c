@@ -281,7 +281,7 @@ void ChequearPlanificacionYSeguirEjecutando() {
 void HacerSJF() {
 
 	list_iterate(LISTOS, (void*) CalcularEstimacion);
-	t_list* listaAuxAOrdenar = list_take(LISTOS, list_size(LISTOS));
+	t_list* listaAuxAOrdenar = list_duplicate(LISTOS);
 	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
 	procesoEsi* esiMenorEst = (procesoEsi*) list_get(listaAuxAOrdenar, 0);
 	list_destroy(listaAuxAOrdenar);
