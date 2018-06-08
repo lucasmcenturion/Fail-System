@@ -151,6 +151,8 @@ void EscucharESIyPlanificarlo(void* socket) {
 				printf("El proceso ESI es %s\n", (char*) paquete.Payload);
 				log_info(logger, "El proceso ESI es %s\n", (char*) paquete.Payload);
 				fflush(stdout);
+				if(!strcmp(paquete.Payload,"ESI1"))
+					int a=2;
 				procesoEsi* nuevoEsi = malloc(sizeof(procesoEsi));
 				nuevoEsi->id = malloc(strlen(paquete.Payload) + 1);
 				nuevoEsi->socket = socketFD;
@@ -158,8 +160,9 @@ void EscucharESIyPlanificarlo(void* socket) {
 				nuevoEsi->rafagasEstimadas = (float) ESTIMACION_INICIAL;
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
-				if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
-					planificar();
+				ChequearPlanificacionYSeguirEjecutando();
+				//if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
+				//	planificar();
 				break;
 
 			case MUERTEESI: {sem_wait(&semaforoESI);
@@ -237,14 +240,13 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 	//sem_post(&semaforoCoordinador);
 }
 
-procesoEsi* CalcularEstimacion(procesoEsi* unEsi) {
+void CalcularEstimacion(procesoEsi* unEsi) {
 	if(unEsi->rafagasRealesEjecutadas == 0){
 		unEsi->rafagasEstimadas = ESTIMACION_INICIAL;
 	}
 	else{
 		unEsi->rafagasEstimadas = ((ALFA_ESTIMACION/100) * unEsi->rafagasEstimadas) + ((1 - (ALFA_ESTIMACION)/100) * (unEsi->rafagasRealesEjecutadas));
 	}
-	return unEsi;
 }
 
 bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
@@ -271,6 +273,22 @@ void ChequearPlanificacionYSeguirEjecutando() {
 }
 
 void HacerSJF() {
+
+	//NUEVO
+	//lista con los valores estimados
+	list_iterate(LISTOS, (void*) CalcularEstimacion);
+	t_list* listaAuxAOrdenar = list_take(LISTOS, list_size(LISTOS));
+	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
+	procesoEsi* esiMenorEst = (procesoEsi*) list_get(listaAuxAOrdenar, 0);
+	list_destroy(listaAuxAOrdenar);
+	t_list* listaConLosMenoresOrdenadosPorOrdenDeLlegada = list_filter(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return item1->rafagasEstimadas == esiMenorEst->rafagasEstimadas;}));
+	procesoEsi esiMenoryPrimeroEnLlegar = list_get(listaConLosMenoresOrdenadosPorOrdenDeLlegada,0);
+	list_destroy(listaConLosMenoresOrdenadosPorOrdenDeLlegada);
+	procesoEsi* esiAEjecutar = list_remove_by_condition(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return !strcmp(item1->id,esiMenoryPrimeroEnLlegar->id);}));
+    list_add(EJECUCION, esiAEjecutar);
+    ejecutarEsi();
+    //ANTIGUO
+    /*
 	//AUX: lista ordenada de esis por estimacion de rafaga
 	t_list* AUX = list_map(LISTOS, (void*) CalcularEstimacion);
 	list_sort(AUX, (void*) ComparadorDeRafagas);
@@ -287,6 +305,7 @@ void HacerSJF() {
 	procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(AUX2, 0);
 	list_add(EJECUCION, esiAEjecutar);
 	ejecutarEsi();
+	*/
 }
 
 void planificar() {
