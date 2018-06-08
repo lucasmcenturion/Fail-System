@@ -160,9 +160,8 @@ void EscucharESIyPlanificarlo(void* socket) {
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
 				//ChequearPlanificacionYSeguirEjecutando();
-				if(!planificacion_detenida != 0){
-					printf("entre\n");
-					fflush(stdout);
+				if(!planificacion_detenida){
+					log_info(logger, "ENTRE EN EL IF %s\n");
 					if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
 						planificar();
 				}
@@ -257,12 +256,12 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	int b=4;
-	int a=3;
+	//log_info(logger, "ESTOY EN EJECUTAR ESI");
 	if(!planificacion_detenida){
 		if (list_size(EJECUCION) != 0) {
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 			++esiAEjecutar->rafagasRealesEjecutadas;
+			log_info(logger, "EJECUTAR ESI, SIGUIENTE LINEA");
 			EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 		}else {
 			planificar();
@@ -279,7 +278,7 @@ void ChequearPlanificacionYSeguirEjecutando() {
 }
 
 void HacerSJF() {
-
+	//log_info(logger, "ESTOY EN SJF");
 	list_iterate(LISTOS, (void*) CalcularEstimacion);
 	t_list* listaAuxAOrdenar = list_duplicate(LISTOS);
 	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
@@ -294,18 +293,21 @@ void HacerSJF() {
 }
 
 void planificar() {
+	//log_info(logger, "ENTRE EN PLANIFICAR");
 	if (!list_is_empty(LISTOS)) {
 		if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
 			list_add(EJECUCION, esiAEjecutar);
 			ejecutarEsi();
 		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
+			//log_info(logger, "ENTRE HACER SJF POR SJF-SD");
 			HacerSJF();
 		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
 			if (list_size(EJECUCION) > 0) {
 				procesoEsi* esiEnEjecucion = list_remove(EJECUCION, 0);
 				list_add(LISTOS, esiEnEjecucion);
 			}
+			//log_info(logger, "ENTRE EN EL SJF POR SJF-CD");
 			HacerSJF();
 		} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
 
@@ -352,8 +354,8 @@ int main(void) {
 	inicializar();
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
+	planificacion_detenida=false;
 	crearLogger();
-	planificacion_detenida = false;
 	socketCoordinador = ConectarAServidorPlanificador(PUERTO_COORDINADOR,
 			IP_COORDINADOR, COORDINADOR,
 			PLANIFICADOR, RecibirHandshake, EnviarHandshakePlani);

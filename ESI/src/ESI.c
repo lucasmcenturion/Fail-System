@@ -9,7 +9,7 @@ int socketPlanificador, socketCoordinador;
 char *programaAEjecutar;
 
 pthread_mutex_t binario_linea, mutexFinalizar;
-
+sem_t binario;
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
 t_log* logger;
@@ -84,8 +84,10 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case SIGUIENTELINEA: {
-			int i=0;
-			pthread_mutex_unlock(&binario_linea);
+			log_info(logger,"ME LLEGO SIGUIENTE LINEA");
+			sem_post(&binario);
+			//pthread_mutex_unlock(&binario_linea);
+			log_info(logger,"YA DESBLOQUEE EL SEMAFORO");
 		}
 			break;
 
@@ -103,8 +105,11 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 }
 
 void parsear() {
+	//pthread_mutex_lock(&binario_linea);
+	sem_wait(&binario);
+	//log_info(logger,"LE CHUPO UN HUEVO EL SEM WAIT");
 	pthread_mutex_lock(&binario_linea);
-	pthread_mutex_lock(&binario_linea);
+	log_info(logger,"YA SE DESBLOQUEO EL SEMAFORO");
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
@@ -119,6 +124,7 @@ void parsear() {
 	}
 
 	while ((read = getline(&line, &len, fp)) != -1) {
+		log_info(logger,"ESTOY VIENDO QUE OPERACION VIENE EN EL GETLINE");
 		t_esi_operacion parsed = parse(line);
 		if (parsed.valido) {
 			switch (parsed.keyword) {
@@ -167,7 +173,8 @@ void parsear() {
 				printf("MUERTEESI3\n");
 				muerteEsi();
 			}
-			pthread_mutex_lock(&binario_linea);
+			//pthread_mutex_lock(&binario_linea);
+			sem_wait(&binario);
 
 			destruir_operacion(parsed);
 		} else {
@@ -206,6 +213,7 @@ int main(int argc, char* argv[]) {
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
 	pthread_mutex_init(&mutexFinalizar, NULL);
+	sem_init(&binario,0,0);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
 			IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake,
 			enviarHandshakeESI);

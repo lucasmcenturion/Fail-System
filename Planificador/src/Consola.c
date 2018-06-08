@@ -8,12 +8,10 @@ void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
 	if(planificacion_detenida){
 		log_info(logger,"La planificación se detuvo.\n");
-		planificacion_detenida=true;
 	}else{
 		log_info(logger,"La planificacion se renaudó.\n");
-		planificacion_detenida=false;
+		planificar();
 	}
-	//planificacion_detenida ? printf("La planificación se detuvo.\n") : printf("La planificación se reanudó.\n");
 }
 
 void Bloquear(char* clave, char* id){
