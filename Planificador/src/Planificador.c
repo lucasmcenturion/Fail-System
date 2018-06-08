@@ -277,7 +277,7 @@ void HacerSJF() {
 	//NUEVO
 	//lista con los valores estimados
 	list_iterate(LISTOS, (void*) CalcularEstimacion);
-	t_list* listaAuxAOrdenar = list_take(LISTOS, list_size(LISTOS));
+	t_list* listaAuxAOrdenar = list_duplicate(LISTOS);
 	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
 	procesoEsi* esiMenorEst = (procesoEsi*) list_get(listaAuxAOrdenar, 0);
 	list_destroy(listaAuxAOrdenar);
@@ -287,6 +287,7 @@ void HacerSJF() {
 	procesoEsi* esiAEjecutar = list_remove_by_condition(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return !strcmp(item1->id,esiMenoryPrimeroEnLlegar->id);}));
     list_add(EJECUCION, esiAEjecutar);
     ejecutarEsi();
+
     //ANTIGUO
     /*
 	//AUX: lista ordenada de esis por estimacion de rafaga
