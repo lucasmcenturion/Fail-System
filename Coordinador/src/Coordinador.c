@@ -127,9 +127,13 @@ void sacar_instancia(int socket) {
 	}
 }
 
+
+
 bool verificarGet(char *idEsi, char* keyEsi){
-	t_esiCoordinador *aux = list_find(esis, LAMBDA(int _(t_esiCoordinador *elemento) {  return !strcmp(elemento->id,idEsi);}));
-	return list_any_satisfy(aux->claves,LAMBDA(int _(char *elemento) {  return !strcmp(elemento,keyEsi);}));
+	int f1(t_esiCoordinador* algo){  return !strcmp(algo->id,idEsi);}
+	int f2 (char*algo){return !strcmp(algo,keyEsi);}
+	t_esiCoordinador *aux = list_find(esis, f1);
+	return list_any_satisfy(aux->claves,f2);
 }
 int obtenerSocket(char* keyEsi){
 	bool compararClaves(t_IdInstancia*elemento){
