@@ -1,0 +1,294 @@
+[INFO] 23:23:09:79 Coordinador/(10373:10373): Chequeo archivo de configuración
+[INFO] 23:23:09:79 Coordinador/(10373:10373): IP: 127.0.0.1
+[INFO] 23:23:09:79 Coordinador/(10373:10373): PUERTO: 8000
+[INFO] 23:26:04:760 Coordinador/(10373:10959): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 23:26:04:799 Coordinador/(10373:10592): Se hizo OK el SET
+[INFO] 23:26:04:799 Coordinador/(10373:10959): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 23:26:04:800 Coordinador/(10373:10959): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:26:10:709 Coordinador/(10373:10965): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:29:29:628 Coordinador/(11016:11016): Chequeo archivo de configuración
+[INFO] 23:29:29:628 Coordinador/(11016:11016): IP: 127.0.0.1
+[INFO] 23:29:29:628 Coordinador/(11016:11016): PUERTO: 8000
+[INFO] 23:30:16:732 Coordinador/(11016:11064): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 23:30:16:771 Coordinador/(11016:11047): Se hizo OK el SET
+[INFO] 23:30:16:771 Coordinador/(11016:11064): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 23:30:16:772 Coordinador/(11016:11064): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:30:19:639 Coordinador/(11016:11070): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:31:01:394 Coordinador/(11161:11161): Chequeo archivo de configuración
+[INFO] 23:31:01:394 Coordinador/(11161:11161): IP: 127.0.0.1
+[INFO] 23:31:01:394 Coordinador/(11161:11161): PUERTO: 8000
+[INFO] 23:31:37:877 Coordinador/(11177:11177): Chequeo archivo de configuración
+[INFO] 23:31:37:877 Coordinador/(11177:11177): IP: 127.0.0.1
+[INFO] 23:31:37:877 Coordinador/(11177:11177): PUERTO: 8000
+[INFO] 23:32:14:817 Coordinador/(11177:11200): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 23:32:14:856 Coordinador/(11177:11194): Se hizo OK el SET
+[INFO] 23:32:14:856 Coordinador/(11177:11200): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 23:32:14:857 Coordinador/(11177:11200): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:32:17:790 Coordinador/(11177:11206): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:33:35:550 Coordinador/(11221:11221): Chequeo archivo de configuración
+[INFO] 23:33:35:550 Coordinador/(11221:11221): IP: 127.0.0.1
+[INFO] 23:33:35:551 Coordinador/(11221:11221): PUERTO: 8000
+[INFO] 23:34:25:742 Coordinador/(11221:11276): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 23:34:25:780 Coordinador/(11221:11269): Se hizo OK el SET
+[INFO] 23:34:25:780 Coordinador/(11221:11276): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 23:34:25:781 Coordinador/(11221:11276): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:34:27:47 Coordinador/(11221:11282): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:39:22:440 Coordinador/(11333:11333): Chequeo archivo de configuración
+[INFO] 23:39:22:440 Coordinador/(11333:11333): IP: 127.0.0.1
+[INFO] 23:39:22:440 Coordinador/(11333:11333): PUERTO: 8000
+[INFO] 23:40:07:444 Coordinador/(11360:11360): Chequeo archivo de configuración
+[INFO] 23:40:07:444 Coordinador/(11360:11360): IP: 127.0.0.1
+[INFO] 23:40:07:444 Coordinador/(11360:11360): PUERTO: 8000
+[INFO] 23:40:18:809 Coordinador/(11368:11368): Chequeo archivo de configuración
+[INFO] 23:40:18:810 Coordinador/(11368:11368): IP: 127.0.0.1
+[INFO] 23:40:18:810 Coordinador/(11368:11368): PUERTO: 8000
+[INFO] 23:40:47:416 Coordinador/(11368:11414): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 23:40:47:464 Coordinador/(11368:11405): Se hizo OK el SET
+[INFO] 23:40:47:464 Coordinador/(11368:11414): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 23:40:47:465 Coordinador/(11368:11414): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:40:50:794 Coordinador/(11368:11425): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:49:25:862 Coordinador/(11633:11633): Chequeo archivo de configuración
+[INFO] 23:49:25:863 Coordinador/(11633:11633): IP: 127.0.0.1
+[INFO] 23:49:25:863 Coordinador/(11633:11633): PUERTO: 8000
+[INFO] 23:49:49:287 Coordinador/(11633:11651): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 23:49:49:328 Coordinador/(11633:11643): Se hizo OK el SET
+[INFO] 23:49:49:328 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 23:49:49:329 Coordinador/(11633:11651): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:49:53:27 Coordinador/(11633:11657): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 23:50:02:801 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 23:50:02:801 Coordinador/(11633:11648): Se hizo OK el SET
+[INFO] 23:50:02:802 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 23:50:02:803 Coordinador/(11633:11643): Se hizo OK el SET
+[INFO] 23:50:02:804 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 23:50:02:804 Coordinador/(11633:11648): Se hizo OK el SET
+[INFO] 23:50:02:805 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 23:50:02:805 Coordinador/(11633:11643): Se hizo OK el SET
+[INFO] 23:50:02:807 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 23:50:02:807 Coordinador/(11633:11648): Se hizo OK el SET
+[INFO] 23:50:02:808 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 23:50:02:809 Coordinador/(11633:11643): Se hizo OK el SET
+[INFO] 23:50:02:810 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 23:50:02:810 Coordinador/(11633:11648): Se hizo OK el SET
+[INFO] 23:50:02:814 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 23:50:02:814 Coordinador/(11633:11643): Se hizo OK el SET
+[INFO] 23:50:02:816 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: PorqueMessi 
+
+[INFO] 23:50:02:816 Coordinador/(11633:11648): Se hizo OK el SET
+[INFO] 23:50:02:817 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: SeLoMeressi 
+
+[INFO] 23:50:02:817 Coordinador/(11633:11643): Se hizo OK el SET
+[INFO] 23:50:02:818 Coordinador/(11633:11651): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 23:50:02:818 Coordinador/(11633:11648): Se hizo OK el SET
+[INFO] 23:50:02:821 Coordinador/(11633:11643): Se hizo OK el STORE
+[INFO] 23:50:02:821 Coordinador/(11633:11651): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:01:56:342 Coordinador/(13065:13065): Chequeo archivo de configuración
+[INFO] 09:01:56:344 Coordinador/(13065:13065): IP: 127.0.0.1
+[INFO] 09:01:56:344 Coordinador/(13065:13065): PUERTO: 8000
+[INFO] 09:02:33:148 Coordinador/(13065:13119): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 09:02:33:185 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 09:02:33:186 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:33:188 Coordinador/(13065:13119): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:33:189 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:33:189 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:33:191 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:33:191 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:33:192 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:33:192 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:33:194 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:33:194 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:33:195 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:33:195 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:33:197 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:33:197 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:33:198 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:33:198 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:33:199 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:33:200 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:33:201 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:33:201 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: PorqueMessi 
+
+[INFO] 09:02:33:203 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:33:203 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: SeLoMeressi 
+
+[INFO] 09:02:33:215 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:33:216 Coordinador/(13065:13119): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:33:219 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:33:223 Coordinador/(13065:13119): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:33:224 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:33:225 Coordinador/(13065:13119): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 09:02:36:89 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:129 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:36:130 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:36:132 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:132 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:133 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:134 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:36:135 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:36:138 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:138 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:139 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:141 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:36:141 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:36:144 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:153 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:159 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:160 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:36:160 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:36:167 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:167 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:168 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:169 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:36:169 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:36:171 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:172 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:174 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:186 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:36:187 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:36:196 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:196 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:198 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:199 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 09:02:36:200 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:36:201 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:202 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:209 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:210 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:36:211 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 09:02:36:214 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:218 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:219 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:221 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: PorqueMessi 
+
+[INFO] 09:02:36:221 Coordinador/(13065:13114): Se hizo OK el SET
+[INFO] 09:02:36:225 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:230 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 09:02:36:232 Coordinador/(13065:13125): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:233 Coordinador/(13065:13116): Se hizo OK el SET
+[INFO] 09:02:36:233 Coordinador/(13065:13125): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: SeLoMeressi 
+
+[INFO] 09:02:36:234 Coordinador/(13065:13125): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 09:02:36:235 Coordinador/(13065:13114): Se hizo OK el STORE
+[INFO] 15:13:03:699 Coordinador/(13631:13631): Chequeo archivo de configuración
+[INFO] 15:13:03:699 Coordinador/(13631:13631): IP: 127.0.0.1
+[INFO] 15:13:03:699 Coordinador/(13631:13631): PUERTO: 8000
+[INFO] 15:13:24:298 Coordinador/(13631:13644): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:ansaldi
+
+[INFO] 15:13:24:336 Coordinador/(13631:13639): Se hizo OK el SET
+[INFO] 15:13:24:337 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:ansaldi y valor: TraeVodka 
+
+[INFO] 15:13:24:338 Coordinador/(13631:13644): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 15:13:25:793 Coordinador/(13631:13650): El COORDINADOR recibió operación GET del ESI: ESI1, con clave: futbol:messi
+
+[INFO] 15:13:37:420 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 15:13:37:421 Coordinador/(13631:13641): Se hizo OK el SET
+[INFO] 15:13:37:423 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 15:13:37:423 Coordinador/(13631:13639): Se hizo OK el SET
+[INFO] 15:13:37:425 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 15:13:37:425 Coordinador/(13631:13641): Se hizo OK el SET
+[INFO] 15:13:37:426 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 15:13:37:426 Coordinador/(13631:13639): Se hizo OK el SET
+[INFO] 15:13:37:427 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 15:13:37:427 Coordinador/(13631:13641): Se hizo OK el SET
+[INFO] 15:13:37:429 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 15:13:37:429 Coordinador/(13631:13639): Se hizo OK el SET
+[INFO] 15:13:37:433 Coordinador/(13631:13641): Se hizo OK el SET
+[INFO] 15:13:37:434 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 15:13:37:436 Coordinador/(13631:13639): Se hizo OK el SET
+[INFO] 15:13:37:436 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCo 
+
+[INFO] 15:13:37:437 Coordinador/(13631:13641): Se hizo OK el SET
+[INFO] 15:13:37:437 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: PorqueMessi 
+
+[INFO] 15:13:37:439 Coordinador/(13631:13639): Se hizo OK el SET
+[INFO] 15:13:37:439 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: SeLoMeressi 
+
+[INFO] 15:13:37:440 Coordinador/(13631:13641): Se hizo OK el SET
+[INFO] 15:13:37:440 Coordinador/(13631:13644): El COORDINADOR recibió operación SET del ESI: ESI1, con clave: futbol:messi y valor: TraemeLaCopa 
+
+[INFO] 15:13:37:443 Coordinador/(13631:13639): Se hizo OK el STORE
+[INFO] 15:13:37:443 Coordinador/(13631:13644): El COORDINADOR recibió operación STORE del ESI: ESI1, con clave: futbol:messi
+

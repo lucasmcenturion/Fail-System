@@ -1,0 +1,65 @@
+[INFO] 23:26:04:798 INSTANCIA/(10591:10591): se hizo un SET de clave futbol:ansaldi
+[INFO] 23:30:16:771 INSTANCIA/(11046:11046): se hizo un SET de clave futbol:ansaldi
+[INFO] 23:32:14:855 INSTANCIA/(11193:11193): se hizo un SET de clave futbol:ansaldi
+[INFO] 23:34:25:779 INSTANCIA/(11268:11268): se hizo un SET de clave futbol:ansaldi
+[INFO] 23:40:47:462 INSTANCIA/(11404:11404): se hizo un SET de clave futbol:ansaldi
+[INFO] 23:49:49:328 INSTANCIA/(11642:11642): se hizo un SET de clave futbol:ansaldi
+[INFO] 23:50:02:801 INSTANCIA/(11647:11647): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:802 INSTANCIA/(11642:11642): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:804 INSTANCIA/(11647:11647): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:805 INSTANCIA/(11642:11642): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:807 INSTANCIA/(11647:11647): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:808 INSTANCIA/(11642:11642): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:810 INSTANCIA/(11647:11647): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:814 INSTANCIA/(11642:11642): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:816 INSTANCIA/(11647:11647): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:817 INSTANCIA/(11642:11642): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:818 INSTANCIA/(11647:11647): se hizo un SET de clave futbol:messi
+[INFO] 23:50:02:820 INSTANCIA/(11642:11642): STORE OK se creo archivo con clave futbol:messi y valor SeLoMeressi
+[INFO] 09:02:33:185 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:ansaldi
+[INFO] 09:02:33:189 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:191 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:192 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:194 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:195 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:197 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:198 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:199 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:201 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:202 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:215 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:33:217 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor SeLoMeressi
+[INFO] 09:02:33:224 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:ansaldi y valor TraeVodka
+[INFO] 09:02:36:129 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:131 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:134 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:136 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:141 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:143 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:159 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:163 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:169 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:171 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:186 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:191 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:200 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:201 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:210 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:217 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor TraemeLaCopa
+[INFO] 09:02:36:221 INSTANCIA/(13113:13113): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:225 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor PorqueMessi
+[INFO] 09:02:36:233 INSTANCIA/(13115:13115): se hizo un SET de clave futbol:messi
+[INFO] 09:02:36:234 INSTANCIA/(13113:13113): STORE OK se creo archivo con clave futbol:messi y valor PorqueMessi
+[INFO] 15:13:24:336 INSTANCIA/(13638:13638): se hizo un SET de clave futbol:ansaldi
+[INFO] 15:13:37:420 INSTANCIA/(13640:13640): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:423 INSTANCIA/(13638:13638): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:425 INSTANCIA/(13640:13640): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:426 INSTANCIA/(13638:13638): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:427 INSTANCIA/(13640:13640): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:429 INSTANCIA/(13638:13638): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:433 INSTANCIA/(13640:13640): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:435 INSTANCIA/(13638:13638): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:437 INSTANCIA/(13640:13640): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:438 INSTANCIA/(13638:13638): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:440 INSTANCIA/(13640:13640): se hizo un SET de clave futbol:messi
+[INFO] 15:13:37:441 INSTANCIA/(13638:13638): STORE OK se creo archivo con clave futbol:messi y valor SeLoMeressi

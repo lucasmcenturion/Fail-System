@@ -1,0 +1,979 @@
+[INFO] 23:26:04:756 ESI/(10957:10957): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 23:26:04:759 ESI/(10957:10961): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 23:26:04:760 ESI/(10957:10961): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 23:26:04:799 ESI/(10957:10961): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:26:10:706 ESI/(10963:10963): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 23:26:10:708 ESI/(10963:10967): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:30:16:729 ESI/(11062:11062): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 23:30:16:731 ESI/(11062:11066): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 23:30:16:732 ESI/(11062:11066): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 23:30:16:771 ESI/(11062:11066): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:30:19:637 ESI/(11068:11068): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 23:30:19:638 ESI/(11068:11072): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:32:14:815 ESI/(11198:11198): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 23:32:14:817 ESI/(11198:11202): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 23:32:14:818 ESI/(11198:11202): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 23:32:14:856 ESI/(11198:11202): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:32:17:787 ESI/(11204:11204): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 23:32:17:789 ESI/(11204:11208): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:34:25:735 ESI/(11274:11274): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 23:34:25:741 ESI/(11274:11278): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 23:34:25:743 ESI/(11274:11278): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 23:34:25:780 ESI/(11274:11278): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:34:27:35 ESI/(11280:11280): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 23:34:27:46 ESI/(11280:11284): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:40:47:403 ESI/(11412:11412): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 23:40:47:415 ESI/(11412:11416): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 23:40:47:416 ESI/(11412:11416): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 23:40:47:464 ESI/(11412:11416): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:40:50:783 ESI/(11423:11423): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 23:40:50:793 ESI/(11423:11427): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:49:49:284 ESI/(11649:11649): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 23:49:49:286 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 23:49:49:287 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 23:49:49:328 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:49:53:24 ESI/(11655:11655): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 23:49:53:26 ESI/(11655:11659): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 23:50:02:800 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 23:50:02:801 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 23:50:02:803 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 23:50:02:804 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 23:50:02:806 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 23:50:02:807 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 23:50:02:809 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 23:50:02:812 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 23:50:02:814 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 23:50:02:816 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 23:50:02:817 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 23:50:02:819 ESI/(11649:11653): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:33:145 ESI/(13117:13117): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 09:02:33:147 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 09:02:33:148 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 09:02:33:187 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:33:188 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:33:190 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:33:191 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:33:193 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:33:194 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:33:196 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:33:197 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:33:198 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:33:200 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 09:02:33:201 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 09:02:33:203 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:33:215 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:33:219 ESI/(13117:13121): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:ansaldi
+[INFO] 09:02:33:224 ESI/(13117:13117): Cierro Conexión con Coordinador
+[INFO] 09:02:33:224 ESI/(13117:13117): Cierro Conexión con Planificador
+[INFO] 09:02:33:224 ESI/(13117:13117): Finalizó el Esi ESI1
+
+[INFO] 09:02:36:86 ESI/(13123:13123): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 09:02:36:88 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:89 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:36:130 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:133 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:134 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:36:135 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:138 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:139 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:36:142 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:158 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:159 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:36:160 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:167 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:168 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:36:169 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:173 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:174 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:36:186 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:196 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:198 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 09:02:36:200 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:202 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:205 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 09:02:36:211 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:218 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:219 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 09:02:36:221 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:230 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 09:02:36:232 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 09:02:36:233 ESI/(13123:13127): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 09:02:36:236 ESI/(13123:13127): Cierro Hilo Planificador
+[INFO] 09:02:36:236 ESI/(13123:13123): Cierro Conexión con Coordinador
+[INFO] 09:02:36:236 ESI/(13123:13127): Cierro Hilo Parser
+[INFO] 09:02:36:236 ESI/(13123:13123): Cierro Conexión con Planificador
+[INFO] 09:02:36:236 ESI/(13123:13123): Finalizó el Esi ESI1
+
+[INFO] 15:13:24:295 ESI/(13642:13642): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 15:13:24:297 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 15:13:24:298 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 15:13:24:337 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 15:13:25:789 ESI/(13648:13648): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 15:13:25:792 ESI/(13648:13652): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 15:13:37:419 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:13:37:422 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:13:37:424 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:13:37:425 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:13:37:426 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:13:37:427 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:13:37:432 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:13:37:434 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:13:37:436 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 15:13:37:437 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 15:13:37:439 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:13:37:440 ESI/(13642:13646): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 15:17:38:887 ESI/(13796:13796): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 15:17:38:900 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 15:17:38:901 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 15:17:38:901 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 15:17:38:946 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:17:50:462 ESI/(13802:13802): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 15:17:50:467 ESI/(13802:13806): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 15:21:13:890 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:21:25:63 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:21:25:65 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:21:26:589 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:21:26:591 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:21:26:593 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:21:27:564 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 15:21:28:966 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 15:21:30:299 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 15:21:30:300 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 15:21:30:301 ESI/(13796:13800): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:17:45:628 ESI/(3949:3949): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:17:45:688 ESI/(3949:3953): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:17:49:996 ESI/(3955:3955): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:17:49:998 ESI/(3955:3959): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:18:06:321 ESI/(3966:3966): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:18:06:324 ESI/(3966:3970): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:21:29:180 ESI/(4354:4354): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:21:29:227 ESI/(4354:4358): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:41:616 ESI/(4427:4427): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:22:41:623 ESI/(4427:4432): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:41:626 ESI/(4427:4432): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:22:41:683 ESI/(4427:4432): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:22:41:709 ESI/(4427:4427): Cierro Conexión con Coordinador
+[INFO] 21:22:41:709 ESI/(4427:4427): Cierro Conexión con Planificador
+[INFO] 21:22:41:709 ESI/(4427:4427): Finalizó el Esi ESI1
+
+[INFO] 21:22:48:694 ESI/(4436:4436): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:22:48:700 ESI/(4436:4441): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:48:701 ESI/(4436:4441): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:22:48:740 ESI/(4436:4441): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:22:48:743 ESI/(4436:4436): Cierro Conexión con Coordinador
+[INFO] 21:22:48:743 ESI/(4436:4436): Cierro Conexión con Planificador
+[INFO] 21:22:48:743 ESI/(4436:4436): Finalizó el Esi ESI1
+
+[INFO] 21:22:54:146 ESI/(4444:4444): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:22:54:147 ESI/(4444:4448): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:54:151 ESI/(4444:4448): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:22:54:188 ESI/(4444:4448): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:22:54:193 ESI/(4444:4444): Cierro Conexión con Coordinador
+[INFO] 21:22:54:193 ESI/(4444:4444): Cierro Conexión con Planificador
+[INFO] 21:22:54:193 ESI/(4444:4444): Finalizó el Esi ESI1
+
+[INFO] 21:22:56:702 ESI/(4450:4450): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:22:56:703 ESI/(4450:4454): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:56:705 ESI/(4450:4454): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:22:56:742 ESI/(4450:4454): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:22:56:745 ESI/(4450:4450): Cierro Conexión con Coordinador
+[INFO] 21:22:56:745 ESI/(4450:4450): Cierro Conexión con Planificador
+[INFO] 21:22:56:745 ESI/(4450:4450): Finalizó el Esi ESI1
+
+[INFO] 21:22:58:227 ESI/(4456:4456): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:22:58:228 ESI/(4456:4460): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:58:230 ESI/(4456:4460): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:22:58:270 ESI/(4456:4460): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:22:58:274 ESI/(4456:4456): Cierro Conexión con Coordinador
+[INFO] 21:22:58:274 ESI/(4456:4456): Cierro Conexión con Planificador
+[INFO] 21:22:58:274 ESI/(4456:4456): Finalizó el Esi ESI1
+
+[INFO] 21:22:59:594 ESI/(4463:4463): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:22:59:597 ESI/(4463:4467): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:22:59:598 ESI/(4463:4467): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:22:59:645 ESI/(4463:4467): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:22:59:646 ESI/(4463:4467): Cierro Hilo Planificador
+[INFO] 21:22:59:646 ESI/(4463:4463): Cierro Conexión con Coordinador
+[INFO] 21:22:59:646 ESI/(4463:4467): Cierro Hilo Parser
+[INFO] 21:22:59:647 ESI/(4463:4463): Cierro Conexión con Planificador
+[INFO] 21:22:59:647 ESI/(4463:4463): Finalizó el Esi ESI1
+
+[INFO] 21:23:00:738 ESI/(4469:4469): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:23:00:756 ESI/(4469:4473): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:00:757 ESI/(4469:4473): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:00:794 ESI/(4469:4473): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:00:798 ESI/(4469:4473): Cierro Hilo Planificador
+[INFO] 21:23:00:798 ESI/(4469:4469): Cierro Conexión con Coordinador
+[INFO] 21:23:00:798 ESI/(4469:4473): Cierro Hilo Parser
+[INFO] 21:23:00:798 ESI/(4469:4469): Cierro Conexión con Planificador
+[INFO] 21:23:00:798 ESI/(4469:4469): Finalizó el Esi ESI1
+
+[INFO] 21:23:01:676 ESI/(4475:4475): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:23:01:678 ESI/(4475:4479): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:01:680 ESI/(4475:4479): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:01:719 ESI/(4475:4479): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:01:723 ESI/(4475:4479): Cierro Hilo Planificador
+[INFO] 21:23:01:723 ESI/(4475:4475): Cierro Conexión con Coordinador
+[INFO] 21:23:01:723 ESI/(4475:4479): Cierro Hilo Parser
+[INFO] 21:23:01:723 ESI/(4475:4475): Cierro Conexión con Planificador
+[INFO] 21:23:01:723 ESI/(4475:4475): Finalizó el Esi ESI1
+
+[INFO] 21:23:03:106 ESI/(4481:4481): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:23:03:107 ESI/(4481:4485): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:03:108 ESI/(4481:4485): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:03:146 ESI/(4481:4485): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:03:150 ESI/(4481:4481): Cierro Conexión con Coordinador
+[INFO] 21:23:03:150 ESI/(4481:4481): Cierro Conexión con Planificador
+[INFO] 21:23:03:150 ESI/(4481:4481): Finalizó el Esi ESI1
+
+[INFO] 21:23:04:108 ESI/(4488:4488): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:23:04:110 ESI/(4488:4492): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:04:111 ESI/(4488:4492): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:04:150 ESI/(4488:4492): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:04:154 ESI/(4488:4492): Cierro Hilo Planificador
+[INFO] 21:23:04:154 ESI/(4488:4488): Cierro Conexión con Coordinador
+[INFO] 21:23:04:154 ESI/(4488:4488): Cierro Conexión con Planificador
+[INFO] 21:23:04:155 ESI/(4488:4488): Finalizó el Esi ESI1
+
+[INFO] 21:23:05:77 ESI/(4494:4494): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_1
+
+[INFO] 21:23:05:79 ESI/(4494:4498): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:05:80 ESI/(4494:4498): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:05:118 ESI/(4494:4498): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:05:121 ESI/(4494:4494): Cierro Conexión con Coordinador
+[INFO] 21:23:05:121 ESI/(4494:4494): Cierro Conexión con Planificador
+[INFO] 21:23:05:121 ESI/(4494:4494): Finalizó el Esi ESI1
+
+[INFO] 21:23:09:457 ESI/(4503:4503): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:09:459 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:461 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:09:498 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:502 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:503 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:09:505 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:511 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:512 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:09:514 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:519 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:522 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:09:524 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:526 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:527 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:09:528 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:534 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:534 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:09:536 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:539 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:540 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:09:542 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:545 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:547 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:09:548 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:557 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:559 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:09:571 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:574 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:09:575 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:09:577 ESI/(4503:4507): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:09:589 ESI/(4503:4507): Cierro Hilo Planificador
+[INFO] 21:23:09:589 ESI/(4503:4503): Cierro Conexión con Coordinador
+[INFO] 21:23:09:589 ESI/(4503:4507): Cierro Hilo Parser
+[INFO] 21:23:09:589 ESI/(4503:4503): Cierro Conexión con Planificador
+[INFO] 21:23:09:589 ESI/(4503:4503): Finalizó el Esi ESI1
+
+[INFO] 21:23:12:22 ESI/(4509:4509): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:12:23 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:25 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:12:62 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:65 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:66 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:12:67 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:71 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:72 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:12:74 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:77 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:78 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:12:83 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:88 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:90 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:12:93 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:95 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:96 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:12:98 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:100 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:102 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:12:104 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:107 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:108 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:12:110 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:116 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:117 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:12:119 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:122 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:12:123 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:12:125 ESI/(4509:4513): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:12:129 ESI/(4509:4513): Cierro Hilo Planificador
+[INFO] 21:23:12:129 ESI/(4509:4509): Cierro Conexión con Coordinador
+[INFO] 21:23:12:130 ESI/(4509:4513): Cierro Hilo Parser
+[INFO] 21:23:12:130 ESI/(4509:4509): Cierro Conexión con Planificador
+[INFO] 21:23:12:130 ESI/(4509:4509): Finalizó el Esi ESI1
+
+[INFO] 21:23:16:441 ESI/(4516:4516): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:16:447 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:451 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:16:488 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:492 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:495 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:16:497 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:500 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:502 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:16:505 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:507 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:508 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:16:509 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:513 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:514 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:16:515 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:518 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:519 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:16:520 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:523 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:524 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:16:527 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:532 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:534 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:16:544 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:554 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:556 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:16:558 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:566 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:16:570 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:16:573 ESI/(4516:4521): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:16:580 ESI/(4516:4516): Cierro Conexión con Coordinador
+[INFO] 21:23:16:580 ESI/(4516:4516): Cierro Conexión con Planificador
+[INFO] 21:23:16:580 ESI/(4516:4516): Finalizó el Esi ESI1
+
+[INFO] 21:23:16:581 ESI/(4516:4521): Cierro Hilo Planificador
+[INFO] 21:23:18:42 ESI/(4523:4523): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:18:44 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:45 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:18:84 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:88 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:89 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:18:91 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:98 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:98 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:18:100 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:110 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:111 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:18:112 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:115 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:116 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:18:118 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:121 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:122 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:18:123 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:126 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:127 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:18:128 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:132 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:139 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:18:140 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:147 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:150 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:18:152 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:156 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:18:158 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:18:161 ESI/(4523:4527): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:18:167 ESI/(4523:4527): Cierro Hilo Planificador
+[INFO] 21:23:18:167 ESI/(4523:4523): Cierro Conexión con Coordinador
+[INFO] 21:23:18:168 ESI/(4523:4527): Cierro Hilo Parser
+[INFO] 21:23:18:168 ESI/(4523:4523): Cierro Conexión con Planificador
+[INFO] 21:23:18:168 ESI/(4523:4523): Finalizó el Esi ESI1
+
+[INFO] 21:23:19:265 ESI/(4529:4529): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:19:266 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:267 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:19:305 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:309 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:310 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:19:312 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:318 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:318 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:19:319 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:322 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:326 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:19:328 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:331 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:332 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:19:333 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:336 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:338 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:19:340 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:344 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:345 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:19:347 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:350 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:351 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:19:352 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:360 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:373 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:19:375 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:378 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:19:379 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:19:381 ESI/(4529:4533): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:19:384 ESI/(4529:4533): Cierro Hilo Planificador
+[INFO] 21:23:19:384 ESI/(4529:4529): Cierro Conexión con Coordinador
+[INFO] 21:23:19:384 ESI/(4529:4533): Cierro Hilo Parser
+[INFO] 21:23:19:385 ESI/(4529:4529): Cierro Conexión con Planificador
+[INFO] 21:23:19:385 ESI/(4529:4529): Finalizó el Esi ESI1
+
+[INFO] 21:23:20:476 ESI/(4535:4535): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:20:479 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:480 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:20:519 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:523 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:523 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:20:525 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:531 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:532 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:20:534 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:538 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:540 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:20:544 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:547 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:550 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:20:552 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:557 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:558 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:20:560 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:563 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:564 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:20:566 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:576 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:578 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:20:579 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:586 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:587 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:20:589 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:592 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:20:594 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:20:596 ESI/(4535:4539): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:20:601 ESI/(4535:4539): Cierro Hilo Planificador
+[INFO] 21:23:20:601 ESI/(4535:4535): Cierro Conexión con Coordinador
+[INFO] 21:23:20:601 ESI/(4535:4539): Cierro Hilo Parser
+[INFO] 21:23:20:601 ESI/(4535:4535): Cierro Conexión con Planificador
+[INFO] 21:23:20:602 ESI/(4535:4535): Finalizó el Esi ESI1
+
+[INFO] 21:23:21:533 ESI/(4542:4542): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:21:537 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:538 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:21:578 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:582 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:583 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:21:598 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:602 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:603 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:21:604 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:608 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:609 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:21:611 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:615 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:616 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:21:618 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:621 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:622 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:21:624 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:634 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:635 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:21:637 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:641 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:642 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:21:643 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:648 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:649 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:21:650 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:654 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:21:656 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:21:661 ESI/(4542:4546): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:21:665 ESI/(4542:4546): Cierro Hilo Planificador
+[INFO] 21:23:21:665 ESI/(4542:4542): Cierro Conexión con Coordinador
+[INFO] 21:23:21:665 ESI/(4542:4546): Cierro Hilo Parser
+[INFO] 21:23:21:665 ESI/(4542:4542): Cierro Conexión con Planificador
+[INFO] 21:23:21:665 ESI/(4542:4542): Finalizó el Esi ESI1
+
+[INFO] 21:23:22:491 ESI/(4548:4548): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:22:492 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:493 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:22:537 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:540 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:541 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:22:543 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:546 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:552 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:22:556 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:560 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:562 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:22:564 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:567 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:568 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:22:570 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:574 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:576 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:22:577 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:587 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:588 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:22:590 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:594 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:596 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:22:597 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:601 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:604 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:22:606 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:610 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:22:615 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:22:617 ESI/(4548:4552): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:22:625 ESI/(4548:4552): Cierro Hilo Planificador
+[INFO] 21:23:22:625 ESI/(4548:4548): Cierro Conexión con Coordinador
+[INFO] 21:23:22:625 ESI/(4548:4552): Cierro Hilo Parser
+[INFO] 21:23:22:625 ESI/(4548:4548): Cierro Conexión con Planificador
+[INFO] 21:23:22:625 ESI/(4548:4548): Finalizó el Esi ESI1
+
+[INFO] 21:23:23:792 ESI/(4554:4554): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:23:797 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:799 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:23:839 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:842 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:843 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:23:847 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:854 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:855 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:23:857 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:860 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:862 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:23:863 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:867 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:870 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:23:872 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:875 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:877 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:23:879 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:889 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:890 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:23:894 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:904 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:905 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:23:907 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:911 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:913 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:23:918 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:922 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:23:924 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:23:926 ESI/(4554:4558): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:23:929 ESI/(4554:4558): Cierro Hilo Planificador
+[INFO] 21:23:23:929 ESI/(4554:4554): Cierro Conexión con Coordinador
+[INFO] 21:23:23:929 ESI/(4554:4558): Cierro Hilo Parser
+[INFO] 21:23:23:929 ESI/(4554:4554): Cierro Conexión con Planificador
+[INFO] 21:23:23:929 ESI/(4554:4554): Finalizó el Esi ESI1
+
+[INFO] 21:23:25:161 ESI/(4561:4561): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:25:163 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:164 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:25:202 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:205 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:206 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:25:207 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:211 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:212 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:25:224 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:228 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:229 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:25:232 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:236 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:237 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:25:239 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:242 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:243 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:25:246 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:250 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:257 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:25:262 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:268 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:270 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:25:271 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:275 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:276 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:25:284 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:290 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:25:291 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:25:292 ESI/(4561:4565): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:25:300 ESI/(4561:4565): Cierro Hilo Planificador
+[INFO] 21:23:25:300 ESI/(4561:4561): Cierro Conexión con Coordinador
+[INFO] 21:23:25:301 ESI/(4561:4565): Cierro Hilo Parser
+[INFO] 21:23:25:301 ESI/(4561:4561): Cierro Conexión con Planificador
+[INFO] 21:23:25:301 ESI/(4561:4561): Finalizó el Esi ESI1
+
+[INFO] 21:23:26:350 ESI/(4567:4567): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:26:351 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:352 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:26:390 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:394 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:395 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:26:397 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:400 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:401 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:26:405 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:411 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:412 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:26:413 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:416 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:417 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:26:418 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:421 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:422 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:26:424 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:428 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:429 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:26:430 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:433 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:434 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:26:436 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:444 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:445 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:26:447 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:450 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:26:455 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:26:459 ESI/(4567:4571): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:26:462 ESI/(4567:4571): Cierro Hilo Planificador
+[INFO] 21:23:26:462 ESI/(4567:4567): Cierro Conexión con Coordinador
+[INFO] 21:23:26:462 ESI/(4567:4571): Cierro Hilo Parser
+[INFO] 21:23:26:462 ESI/(4567:4567): Cierro Conexión con Planificador
+[INFO] 21:23:26:462 ESI/(4567:4567): Finalizó el Esi ESI1
+
+[INFO] 21:23:27:978 ESI/(4574:4574): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:27:980 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:27:981 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:28:22 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:25 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:27 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:28:28 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:33 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:34 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:28:36 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:38 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:42 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:28:43 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:46 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:47 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:28:49 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:51 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:52 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:28:53 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:56 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:57 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:28:59 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:62 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:63 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:28:65 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:68 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:69 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:28:76 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:85 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:28:86 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:28:88 ESI/(4574:4578): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:28:92 ESI/(4574:4578): Cierro Hilo Planificador
+[INFO] 21:23:28:92 ESI/(4574:4574): Cierro Conexión con Coordinador
+[INFO] 21:23:28:92 ESI/(4574:4578): Cierro Hilo Parser
+[INFO] 21:23:28:92 ESI/(4574:4574): Cierro Conexión con Planificador
+[INFO] 21:23:28:92 ESI/(4574:4574): Finalizó el Esi ESI1
+
+[INFO] 21:23:39:914 ESI/(4581:4581): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:23:39:920 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:39:925 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:39:962 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:39:972 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:39:972 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:39:977 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:39:983 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:39:984 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:39:986 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:39:997 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:39:998 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:39:999 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:39:2 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:40:4 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:40:7 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:40:10 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:40:11 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:40:12 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:40:16 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:40:17 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:23:40:19 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:40:22 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:40:24 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:23:40:26 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:40:29 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:40:30 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:23:40:32 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:40:39 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:23:40:40 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:23:40:42 ESI/(4581:4586): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:23:40:45 ESI/(4581:4586): Cierro Hilo Planificador
+[INFO] 21:23:40:45 ESI/(4581:4581): Cierro Conexión con Coordinador
+[INFO] 21:23:40:45 ESI/(4581:4586): Cierro Hilo Parser
+[INFO] 21:23:40:45 ESI/(4581:4581): Cierro Conexión con Planificador
+[INFO] 21:23:40:45 ESI/(4581:4581): Finalizó el Esi ESI1
+
+[INFO] 21:32:22:24 ESI/(4904:4904): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 21:32:22:82 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 21:32:22:84 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 21:32:22:122 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:34:06:103 ESI/(4951:4951): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:34:06:114 ESI/(4951:4956): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:35:03:15 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:35:03:17 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:35:03:19 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:35:03:21 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:35:03:24 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:35:03:28 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:35:03:30 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:35:03:32 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:35:03:35 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:35:03:36 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:35:03:38 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:35:03:39 ESI/(4904:4908): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:38:41:455 ESI/(5129:5129): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 21:38:41:461 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 21:38:41:462 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 21:38:41:502 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:38:44:656 ESI/(5137:5137): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 21:38:44:658 ESI/(5137:5141): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:39:09:576 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:39:09:577 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:39:09:579 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:39:09:584 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:39:09:588 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:39:09:590 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:39:09:592 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:39:09:594 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 21:39:09:596 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 21:39:09:598 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 21:39:09:600 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:39:09:604 ESI/(5129:5134): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 21:53:42:283 ESI/(5640:5640): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 21:53:42:316 ESI/(5640:5645): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 21:54:05:373 ESI/(5640:5645): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 21:54:08:602 ESI/(5640:5645): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:54:08:603 ESI/(5640:5645): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 21:57:26:704 ESI/(5785:5785): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 21:57:26:732 ESI/(5785:5790): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 21:57:31:997 ESI/(5785:5790): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 21:57:33:611 ESI/(5785:5790): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 21:57:33:612 ESI/(5785:5790): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:42:07:749 ESI/(5937:5937): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 10:42:07:829 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 10:42:07:830 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 10:42:07:876 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 10:42:07:876 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:42:07:878 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:42:07:881 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:42:07:883 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:42:07:884 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:42:07:886 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:42:07:887 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:42:07:888 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:42:07:890 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 10:42:07:892 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 10:42:07:893 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:42:07:895 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 10:42:17:219 ESI/(5937:5941): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:ansaldi
+[INFO] 10:42:18:462 ESI/(5937:5941): Cierro Hilo Planificador
+[INFO] 10:42:18:462 ESI/(5937:5937): Cierro Conexión con Coordinador
+[INFO] 10:42:18:463 ESI/(5937:5941): Cierro Hilo Parser
+[INFO] 10:42:18:463 ESI/(5937:5937): Cierro Conexión con Planificador
+[INFO] 10:42:18:463 ESI/(5937:5937): Finalizó el Esi ESI1
+
+[INFO] 10:44:13:547 ESI/(6016:6016): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 10:44:13:549 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 10:44:13:551 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 10:44:13:591 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 10:44:46:470 ESI/(6037:6037): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 10:44:46:500 ESI/(6037:6041): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 10:45:05:509 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:45:05:510 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:45:05:512 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:45:05:514 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:45:05:516 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:45:05:521 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:45:05:523 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:45:05:524 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 10:45:05:525 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 10:45:05:528 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 10:45:05:529 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:45:05:531 ESI/(6016:6020): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 10:45:58:204 ESI/(6125:6125): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 10:45:58:214 ESI/(6125:6129): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 10:45:58:215 ESI/(6125:6129): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 10:45:58:257 ESI/(6125:6129): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 10:46:00:856 ESI/(6132:6132): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 10:46:00:862 ESI/(6132:6136): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 10:58:06:452 ESI/(6433:6433): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 10:58:06:465 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 10:58:06:466 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 10:58:06:466 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 10:58:06:509 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 10:58:31:133 ESI/(6441:6441): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 10:58:31:143 ESI/(6441:6445): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:01:01:585 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:01:01:586 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:01:02:658 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:01:03:607 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:01:03:609 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:01:04:554 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:01:04:555 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:01:04:557 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 11:01:05:448 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 11:01:05:449 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:01:06:556 ESI/(6433:6437): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 11:24:17:858 ESI/(7352:7352): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 11:24:17:862 ESI/(7352:7356): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 11:24:17:863 ESI/(7352:7356): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 11:24:17:903 ESI/(7352:7356): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:24:19:899 ESI/(7358:7358): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 11:24:19:902 ESI/(7358:7362): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:29:34:823 ESI/(7613:7613): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 11:29:34:830 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 11:29:34:831 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 11:29:34:871 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:29:36:907 ESI/(7619:7619): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 11:29:36:917 ESI/(7619:7623): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:30:38:834 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:30:38:888 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:30:39:310 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:30:39:312 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:30:39:315 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:30:39:712 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:30:40:520 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:30:40:522 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:30:40:524 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 11:30:40:525 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 11:30:40:526 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:30:40:528 ESI/(7613:7617): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 11:32:11:719 ESI/(7750:7750): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 11:32:11:720 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 11:32:11:722 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 11:32:11:759 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:32:14:935 ESI/(7756:7756): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 11:32:14:936 ESI/(7756:7760): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 11:32:25:702 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:32:25:704 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:32:25:705 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:32:25:713 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:32:25:715 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:32:25:716 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:32:25:722 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:32:25:724 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 11:32:25:727 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 11:32:25:728 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 11:32:25:732 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 11:32:25:734 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 11:32:25:737 ESI/(7750:7754): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:ansaldi
+[INFO] 11:32:25:740 ESI/(7750:7754): Cierro Hilo Planificador
+[INFO] 11:32:25:740 ESI/(7750:7750): Cierro Conexión con Coordinador
+[INFO] 11:32:25:740 ESI/(7750:7754): Cierro Hilo Parser
+[INFO] 11:32:25:740 ESI/(7750:7750): Cierro Conexión con Planificador
+[INFO] 11:32:25:741 ESI/(7750:7750): Finalizó el Esi ESI1
+
+[INFO] 18:14:16:375 ESI/(9763:9763): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_MultiClave
+
+[INFO] 18:14:16:377 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:ansaldi
+[INFO] 18:14:16:377 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:ansaldi y valor: TraeVodka
+[INFO] 18:14:16:415 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 18:14:19:566 ESI/(9769:9769): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
+[INFO] 18:14:19:570 ESI/(9769:9773): ESI id: ESI1, se ejecutó operación GET, con clave: futbol:messi
+[INFO] 18:14:31:151 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 18:14:31:153 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 18:14:31:155 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 18:14:31:156 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 18:14:31:158 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 18:14:31:159 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 18:14:31:164 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 18:14:31:165 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCo
+[INFO] 18:14:31:166 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: PorqueMessi
+[INFO] 18:14:31:167 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: SeLoMeressi
+[INFO] 18:14:31:168 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación SET, con clave: futbol:messi y valor: TraemeLaCopa
+[INFO] 18:14:31:170 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:messi
+[INFO] 18:14:31:172 ESI/(9763:9767): ESI id: ESI1, se ejecutó operación STORE, con clave: futbol:ansaldi
+[INFO] 18:14:31:175 ESI/(9763:9767): Cierro Hilo Planificador
+[INFO] 18:14:31:175 ESI/(9763:9763): Cierro Conexión con Coordinador
+[INFO] 18:14:31:175 ESI/(9763:9767): Cierro Hilo Parser
+[INFO] 18:14:31:175 ESI/(9763:9763): Cierro Conexión con Planificador
+[INFO] 18:14:31:175 ESI/(9763:9763): Finalizó el Esi ESI1
+
+[INFO] 21:06:58:137 ESI/(5939:5939): El programa a ejecutar es /home/utnso/Pruebas-ESI/ESI_Largo
+
