@@ -10,6 +10,7 @@ void PausarContinuar(){
 		log_info(logger,"La planificación se detuvo.\n");
 	}else{
 		log_info(logger,"La planificacion se renaudó.\n");
+		planificacion_detenida=false;
 		planificar();
 	}
 }

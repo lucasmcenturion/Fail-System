@@ -105,10 +105,10 @@ void escuchaCoordinador() {
 				strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
 				strcpy(cxe->clave, paquete.Payload);
 				list_add(clavesBloqueadas, cxe);
-				if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
-					procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
-					list_add(LISTOS, esiAEstarReady);
-				}
+//				if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
+//					procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+//					list_add(LISTOS, esiAEstarReady);
+//				}
 				ChequearPlanificacionYSeguirEjecutando();
 			}
 			log_info(logger, "GET OK en Planificador");
@@ -123,10 +123,10 @@ void escuchaCoordinador() {
 		}
 			break;
 		case SETOKPLANI:
-			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
-				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
-				list_add(LISTOS, esiAEstarReady);
-			}
+//			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
+//				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+//				list_add(LISTOS, esiAEstarReady);
+//			}
 			ChequearPlanificacionYSeguirEjecutando();
 			log_info(logger, "SET OK en Planificador");
 			break;
@@ -269,11 +269,19 @@ void ejecutarEsi() {
 		}else {
 			planificar();
 		}
+	}else{
+		if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
+			list_add(LISTOS,list_remove(EJECUCION,0));
+		}
 	}
 }
 
 void ChequearPlanificacionYSeguirEjecutando() {
 	if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
+		if(list_size(EJECUCION)>0){
+			procesoEsi*aux=list_remove(EJECUCION,0);
+			list_add(LISTOS,aux);
+		}
 		planificar();
 	} else {
 		ejecutarEsi();
@@ -306,10 +314,6 @@ void planificar() {
 			//log_info(logger, "ENTRE HACER SJF POR SJF-SD");
 			HacerSJF();
 		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
-			if (list_size(EJECUCION) > 0) {
-				list_remove(EJECUCION, 0);
-				//list_add(LISTOS, esiEnEjecucion);
-			}
 			//log_info(logger, "ENTRE EN EL SJF POR SJF-CD");
 			HacerSJF();
 		} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
