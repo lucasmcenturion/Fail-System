@@ -62,21 +62,6 @@ void enviarHandshakeESI(int socketFD, char emisor[13]) {
 	free(paquete);
 }
 
-void escucharCoordinador(int socketFD, char emisor[13]) {
-	Paquete paquete;
-	void* datos;
-	while (RecibirPaqueteCliente(socketCoordinador, ESI, &paquete) > 0) {
-		datos = paquete.Payload;
-		switch (paquete.header.tipoMensaje) {
-		//CASES
-		}
-
-		if (paquete.Payload != NULL) {
-			free(paquete.Payload);
-		}
-	}
-}
-
 void escucharPlanificador(int socketFD, char emisor[13]) {
 	Paquete paquete;
 	void* datos;
@@ -219,7 +204,6 @@ int main(int argc, char* argv[]) {
 			enviarHandshakeESI);
 	socketCoordinador = ConectarAServidorESI(PUERTO_COORDINADOR, IP_COORDINADOR,
 	COORDINADOR, ESI, RecibirHandshake, enviarHandshakeESI);
-	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
 	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_mutex_lock(&mutexFinalizar);
