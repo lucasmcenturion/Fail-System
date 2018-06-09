@@ -67,6 +67,7 @@ bool EnviarDatos(int socketFD, char emisor[13], void* datos, int tamDatos);
 bool EnviarDatosTipo(int socketFD, char emisor[13], void* datos, int tamDatos, tipo tipoMensaje);
 bool EnviarMensaje(int socketFD, char* msg, char emisor[13]);
 bool EnviarPaquete(int socketCliente, Paquete* paquete);
+void RecibirElHandshake(int socketFD, char emisor[13]);
 void RecibirHandshake(int socketFD, char emisor[13]);
 int RecibirPaqueteServidor(int socketFD, char receptor[13], Paquete* paquete); //Responde al recibir un Handshake
 int RecibirPaqueteServidorCoordinador(int socketFD, char receptor[13], Paquete* paquete);
