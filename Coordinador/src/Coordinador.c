@@ -9,7 +9,7 @@ bool end;
 t_list* instancias;
 t_list* esis;
 t_list* instancias_caidas;
-t_dictionary* clavesNuevas;
+t_list* clavesNuevasPorEsi;
 t_dictionary* clavesReemplazadas;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
@@ -270,8 +270,12 @@ void accion(void* socket) {
 						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
 					}else{
 						if(verificarGet(id,key)){
+							bool verificarNuevaPorEsi(claveNueva*e){
+								return !strcmp(id,e->id) && !strcmp(key,e->clave);
+							}
+
 							pthread_mutex_lock(&mutex_clavesNuevas);
-							if(dictionary_has_key(clavesNuevas,key)){
+							if(list_find((t_list*)clavesNuevasPorEsi,(void*)verificarNuevaPorEsi)){
 								int tam=strlen(key)+strlen(value)+2;
 								void*sendInstancia = malloc(tam);
 								strcpy(sendInstancia,key);
@@ -311,7 +315,14 @@ void accion(void* socket) {
 									EnviarDatosTipo(aux->socket,COORDINADOR,sendInstancia,tam,SETINST);
 								}
 							}
-							dictionary_remove(clavesNuevas,key);
+							if(!list_is_empty(clavesNuevasPorEsi)){
+								claveNueva*aEliminar=list_remove_by_condition((t_list*)clavesNuevasPorEsi,(void*)verificarNuevaPorEsi);
+								if(aEliminar){
+									free(aEliminar->id);
+									free(aEliminar->clave);
+									free(aEliminar);
+								}
+							}
 							pthread_mutex_unlock(&mutex_clavesNuevas);
 						}else{
 							log_info(vg_logger,"Se intenta hacer un SET de la clave %s pero nunca se hizo un GET",key);
@@ -330,9 +341,14 @@ void accion(void* socket) {
 				pthread_mutex_lock(&mutex_esis);
 				t_esiCoordinador *aux = list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;}));
 				if(!list_any_satisfy(aux->claves,LAMBDA(int _(char*elemento) {  return !strcmp(elemento,lakey);}))){
+					claveNueva *nueva = malloc(sizeof(claveNueva));
+					nueva->clave=malloc(strlen(lakey)+1);
+					strcpy(nueva->clave,lakey);
+					nueva->id = malloc(strlen(aux->id)+1);
+					strcpy(nueva->id,aux->id);
 					list_add(aux->claves,lakey);
 					pthread_mutex_lock(&mutex_clavesNuevas);
-					dictionary_put(clavesNuevas,(char*)paquete.Payload,true);
+					list_add(clavesNuevasPorEsi,nueva);
 					pthread_mutex_unlock(&mutex_clavesNuevas);
 				}
 				pthread_mutex_unlock(&mutex_esis);
@@ -430,7 +446,7 @@ int main(void) {
 	esis=list_create();
 	instancias=list_create();
 	instancias_caidas=list_create();
-	clavesNuevas = dictionary_create();
+	clavesNuevasPorEsi=list_create();
 	clavesReemplazadas = dictionary_create();
 	ServidorConcurrente(IP, PUERTO, COORDINADOR, &listaHilos, &end, accion);
 	finalizarLogger();
