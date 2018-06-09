@@ -141,7 +141,6 @@ void verificarPuntoMontaje() {
 		closedir(dir);
 	} else if (ENOENT == errno) {
 		//el directorio no existe
-//		log_info(vg_logger,"No existe el punto de montaje, se crea el directorio");
 		mkdir(PUNTO_MONTAJE, 0700);
 	} else {
 		log_error(logger,

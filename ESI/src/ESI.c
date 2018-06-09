@@ -8,9 +8,9 @@ int socketPlanificador, socketCoordinador;
 
 char *programaAEjecutar;
 
-pthread_mutex_t binario_linea, mutexFinalizar;
+pthread_mutex_t mutexFinalizar;
 sem_t binario;
-pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
+pthread_t hiloPlanificador, hiloParser;
 
 t_log* logger;
 
@@ -69,15 +69,11 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case SIGUIENTELINEA: {
-			log_info(logger,"ME LLEGO SIGUIENTE LINEA");
 			sem_post(&binario);
-			//pthread_mutex_unlock(&binario_linea);
-			log_info(logger,"YA DESBLOQUEE EL SEMAFORO");
 		}
 			break;
 
 		case ABORTAR: {
-			printf("MUERTEESI1\n");
 			muerteEsi();
 		}
 			break;
@@ -90,11 +86,7 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 }
 
 void parsear() {
-	//pthread_mutex_lock(&binario_linea);
 	sem_wait(&binario);
-	//log_info(logger,"LE CHUPO UN HUEVO EL SEM WAIT");
-	pthread_mutex_lock(&binario_linea);
-	log_info(logger,"YA SE DESBLOQUEO EL SEMAFORO");
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
@@ -103,13 +95,11 @@ void parsear() {
 
 	fp = fopen(programaAEjecutar, "r");
 	if (fp == NULL) {
-		perror("Error al abrir el archivo: ");
-		printf("MUERTEESI2\n");
+		log_error(logger, "Error al abrir el archivo: %s", programaAEjecutar);
 		muerteEsi();
 	}
 
 	while ((read = getline(&line, &len, fp)) != -1) {
-		log_info(logger,"ESTOY VIENDO QUE OPERACION VIENE EN EL GETLINE");
 		t_esi_operacion parsed = parse(line);
 		if (parsed.valido) {
 			switch (parsed.keyword) {
@@ -153,19 +143,15 @@ void parsear() {
 						ID, parsed.argumentos.STORE.clave);
 				break;
 			default:
-				fprintf(stderr, "No pude interpretar <%s>\n", line);
+				log_error(logger, "No pude interpretar <%s>\n", line);
 
-				printf("MUERTEESI3\n");
 				muerteEsi();
 			}
-			//pthread_mutex_lock(&binario_linea);
 			sem_wait(&binario);
 
 			destruir_operacion(parsed);
 		} else {
-			fprintf(stderr, "La linea <%s> no es valida\n", line);
-
-			printf("MUERTEESI4\n");
+			log_error(logger, "La linea <%s> no es valida\n", line);
 			muerteEsi();
 		}
 	}
@@ -174,7 +160,6 @@ void parsear() {
 	if (line)
 		free(line);
 
-	printf("MUERTEESI5\n");
 	muerteEsi();
 	printf(pthread_cancel(hiloPlanificador));
 
@@ -196,7 +181,6 @@ int main(int argc, char* argv[]) {
 	crearLogger();
 	log_info(logger, "El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
-	pthread_mutex_init(&binario_linea, NULL);
 	pthread_mutex_init(&mutexFinalizar, NULL);
 	sem_init(&binario,0,0);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
