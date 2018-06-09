@@ -5,5 +5,5 @@ Integrantes:
 Julián Molina
 Julián Simplituca
 Lucas Matías Centurión
-Marcos Ortiz
+Ingrid Ivonne Garcia Rengifo
 Nadia Gutiérrez
