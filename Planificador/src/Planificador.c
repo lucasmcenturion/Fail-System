@@ -105,11 +105,10 @@ void escuchaCoordinador() {
 				strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
 				strcpy(cxe->clave, paquete.Payload);
 				list_add(clavesBloqueadas, cxe);
-//				procesoEsi* esiAEstarReady =
-//						(procesoEsi*) list_remove_by_condition(EJECUCION,
-//								LAMBDA(
-//										bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
-//				list_add(LISTOS, esiAEstarReady);
+				if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
+					procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+					list_add(LISTOS, esiAEstarReady);
+				}
 				ChequearPlanificacionYSeguirEjecutando();
 			}
 			log_info(logger, "GET OK en Planificador");
@@ -124,6 +123,10 @@ void escuchaCoordinador() {
 		}
 			break;
 		case SETOKPLANI:
+			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
+				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+				list_add(LISTOS, esiAEstarReady);
+			}
 			ChequearPlanificacionYSeguirEjecutando();
 			log_info(logger, "SET OK en Planificador");
 			break;
@@ -304,8 +307,8 @@ void planificar() {
 			HacerSJF();
 		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
 			if (list_size(EJECUCION) > 0) {
-				procesoEsi* esiEnEjecucion = list_remove(EJECUCION, 0);
-				list_add(LISTOS, esiEnEjecucion);
+				list_remove(EJECUCION, 0);
+				//list_add(LISTOS, esiEnEjecucion);
 			}
 			//log_info(logger, "ENTRE EN EL SJF POR SJF-CD");
 			HacerSJF();
