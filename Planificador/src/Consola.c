@@ -2,10 +2,16 @@
 
 bool planificacion_detenida;
 t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
-
+t_log* logger;
+sem_t semPlanificacionDetenida;
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
-	planificacion_detenida ? printf("La planificación se detuvo.\n") : printf("La planificación se reanudó.\n");
+	if(planificacion_detenida){
+		log_info(logger,"La planificación se detuvo.\n");
+	}else{
+		log_info(logger,"La planificacion se renaudó.\n");
+		planificar();
+	}
 }
 
 void Bloquear(char* clave, char* id){
@@ -70,6 +76,12 @@ void Desbloquear(char* clave, bool flagPrint){
 		esiAPonerReady->rafagasEstimadas = esiDesbloqueado->esi->rafagasEstimadas;
 		esiAPonerReady->rafagasRealesEjecutadas = esiDesbloqueado->esi->rafagasRealesEjecutadas;
 		esiAPonerReady->socket = esiDesbloqueado->esi->socket;
+		clavexEsi* clavexEsiAAgregar = malloc(sizeof(clavexEsi));
+		clavexEsiAAgregar->clave = malloc(strlen(clave)+1);
+		strcpy(clavexEsiAAgregar->clave, clave);
+		clavexEsiAAgregar->idEsi = malloc(strlen(esiDesbloqueado->esi->id)+1);
+		strcpy(clavexEsiAAgregar->idEsi, esiDesbloqueado->esi->id);
+		list_add(clavesBloqueadas, clavexEsiAAgregar);
 		list_add(LISTOS, esiAPonerReady);
 		free(esiDesbloqueado->clave);
 		free(esiDesbloqueado->esi->id);
@@ -79,6 +91,7 @@ void Desbloquear(char* clave, bool flagPrint){
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar);
+	ChequearPlanificacionYSeguirEjecutando();
 }
 
 void Listar(char* recurso){

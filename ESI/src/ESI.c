@@ -9,10 +9,12 @@ int socketPlanificador, socketCoordinador;
 char *programaAEjecutar;
 
 pthread_mutex_t binario_linea, mutexFinalizar;
-
+sem_t binario;
 pthread_t hiloCoordinador, hiloPlanificador, hiloParser;
 
 t_log* logger;
+
+
 
 /* Creo el logger de ESI*/
 
@@ -21,7 +23,7 @@ void crearLogger() {
 	logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
 }
 
-void obtenerValoresArchivoConfiguracion() {
+void obtenerValoresArchivoConfiguracion(char* id) {
 	t_config* arch = config_create(
 			"/home/utnso/workspace/tp-2018-1c-Fail-system/ESI/esi.cfg");
 	IP_COORDINADOR = string_duplicate(
@@ -30,7 +32,8 @@ void obtenerValoresArchivoConfiguracion() {
 	IP_PLANIFICADOR = string_duplicate(
 			config_get_string_value(arch, "IP_PLANIFICADOR"));
 	PUERTO_PLANIFICADOR = config_get_int_value(arch, "PUERTO_PLANIFICADOR");
-	ID = string_duplicate(config_get_string_value(arch, "ID"));
+	//ID = string_duplicate(config_get_string_value(arch, "ID"));
+	ID = string_from_format("ESI%s", id);
 	config_destroy(arch);
 }
 
@@ -81,7 +84,10 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 		datos = paquete.Payload;
 		switch (paquete.header.tipoMensaje) {
 		case SIGUIENTELINEA: {
-			pthread_mutex_unlock(&binario_linea);
+			log_info(logger,"ME LLEGO SIGUIENTE LINEA");
+			sem_post(&binario);
+			//pthread_mutex_unlock(&binario_linea);
+			log_info(logger,"YA DESBLOQUEE EL SEMAFORO");
 		}
 			break;
 
@@ -99,6 +105,11 @@ void escucharPlanificador(int socketFD, char emisor[13]) {
 }
 
 void parsear() {
+	//pthread_mutex_lock(&binario_linea);
+	sem_wait(&binario);
+	//log_info(logger,"LE CHUPO UN HUEVO EL SEM WAIT");
+	pthread_mutex_lock(&binario_linea);
+	log_info(logger,"YA SE DESBLOQUEO EL SEMAFORO");
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
@@ -113,7 +124,7 @@ void parsear() {
 	}
 
 	while ((read = getline(&line, &len, fp)) != -1) {
-		pthread_mutex_lock(&binario_linea);
+		log_info(logger,"ESTOY VIENDO QUE OPERACION VIENE EN EL GETLINE");
 		t_esi_operacion parsed = parse(line);
 		if (parsed.valido) {
 			switch (parsed.keyword) {
@@ -162,6 +173,8 @@ void parsear() {
 				printf("MUERTEESI3\n");
 				muerteEsi();
 			}
+			//pthread_mutex_lock(&binario_linea);
+			sem_wait(&binario);
 
 			destruir_operacion(parsed);
 		} else {
@@ -192,7 +205,7 @@ void muerteEsi() {
 }
 
 int main(int argc, char* argv[]) {
-	obtenerValoresArchivoConfiguracion();
+	obtenerValoresArchivoConfiguracion(argv[2]);
 	imprimirArchivoConfiguracion();
 	programaAEjecutar = argv[1];
 	crearLogger();
@@ -200,14 +213,15 @@ int main(int argc, char* argv[]) {
 	fflush(stdout);
 	pthread_mutex_init(&binario_linea, NULL);
 	pthread_mutex_init(&mutexFinalizar, NULL);
+	sem_init(&binario,0,0);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,
 			IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake,
 			enviarHandshakeESI);
 	socketCoordinador = ConectarAServidorESI(PUERTO_COORDINADOR, IP_COORDINADOR,
 	COORDINADOR, ESI, RecibirHandshake, enviarHandshakeESI);
 	pthread_create(&hiloCoordinador, NULL, (void*) escucharCoordinador, NULL);
-	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_create(&hiloParser, NULL, (void*) parsear, NULL);
+	pthread_create(&hiloPlanificador, NULL, (void*) escucharPlanificador, NULL);
 	pthread_mutex_lock(&mutexFinalizar);
 	pthread_mutex_lock(&mutexFinalizar);
 	close(socketCoordinador);

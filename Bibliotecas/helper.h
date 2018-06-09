@@ -62,6 +62,7 @@ typedef struct {
 	int entradasOcupadas;
 	int tamanio;
 	bool atomico;
+	bool activo;
 }__attribute__((packed)) t_Entrada;
 
 typedef struct {
