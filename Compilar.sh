@@ -1,24 +1,12 @@
 #!/bin/bash
 
-cd /home/utnso/workspace/tp-2018-1c-Fail-system/Coodinador/src
 echo "compilo Coordinador"
-gcc -Wall  Coordinador.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o Coordinador   -lcommons -lpthread
-cd ..
-cd ..
-cd /home/utnso/workspace/tp-2018-1c-Fail-system/Planificador/src
-echo "compilo Planificador"
-gcc -Wall  Planificador.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o Planificador   -lcommons -lpthread -lreadline
-cd ..
-cd ..
-cd /home/utnso/workspace/tp-2018-1c-Fail-system/ESI/src
+gcc -Wall  /home/utnso/workspace/tp-2018-1c-Fail-system/Coodinador/src/Coordinador.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o Coordinador   -lcommons -lpthread
 
+echo "compilo Planificador"
+gcc -Wall /home/utnso/workspace/tp-2018-1c-Fail-system/Planificador/src/ Planificador.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c /home/utnso/workspace/tp-2018-1c-Fail-system/Planificador/src/Consola.c  -o Planificador   -lcommons -lpthread -lreadline
 echo "compilo ESI"
-gcc -Wall  ESI.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o ESI   -lcommons -lpthread -lparsi
-cd ..
-cd ..
-cd /home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/src
+gcc -Wall  /home/utnso/workspace/tp-2018-1c-Fail-system/ESI/src/ESI.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o ESI   -lcommons -lpthread -lparsi
 echo "compilo Instancia"
-gcc -Wall  Instancia.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o Instancia   -lcommons -lpthread 
+gcc -Wall   /home/utnso/workspace/tp-2018-1c-Fail-system/ESI/src/Instancia.C  /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/sockets.c /home/utnso/workspace/tp-2018-1c-Fail-system/Bibliotecas/helper.c -o Instancia   -lcommons -lpthread 
 echo "Finalizo compilación"
-cd /home/utnso/workspace/tp-2018-1c-Fail-system/
-cd ..
