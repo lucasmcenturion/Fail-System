@@ -23,7 +23,7 @@ void crearLogger() {
 	logger = log_create("ESILog.log", "ESI", true, LOG_LEVEL_INFO);
 }
 
-void obtenerValoresArchivoConfiguracion(char* id) {
+void obtenerValoresArchivoConfiguracion(/*char* id*/) {
 	t_config* arch = config_create(
 			"/home/utnso/workspace/tp-2018-1c-Fail-system/ESI/esi.cfg");
 	IP_COORDINADOR = string_duplicate(
@@ -32,8 +32,8 @@ void obtenerValoresArchivoConfiguracion(char* id) {
 	IP_PLANIFICADOR = string_duplicate(
 			config_get_string_value(arch, "IP_PLANIFICADOR"));
 	PUERTO_PLANIFICADOR = config_get_int_value(arch, "PUERTO_PLANIFICADOR");
-	//ID = string_duplicate(config_get_string_value(arch, "ID"));
-	ID = string_from_format("ESI%s", id);
+	ID = string_duplicate(config_get_string_value(arch, "ID"));
+	//ID = string_from_format("ESI%s", id);
 	config_destroy(arch);
 }
 
@@ -175,7 +175,7 @@ void muerteEsi() {
 }
 
 int main(int argc, char* argv[]) {
-	obtenerValoresArchivoConfiguracion(argv[2]);
+	obtenerValoresArchivoConfiguracion(/*argv[2]*/);
 	imprimirArchivoConfiguracion();
 	programaAEjecutar = argv[1];
 	crearLogger();

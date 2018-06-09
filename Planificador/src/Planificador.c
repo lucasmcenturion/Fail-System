@@ -241,7 +241,7 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 		esiTerminado = list_remove_by_condition(EJECUCION, LAMBDA( bool _(procesoEsi* esi ) {return !strcmp(esi->id,idEsiFinalizado);}));
 		list_add(TERMINADOS, esiTerminado);
 	}
-	log_info(logger, "El valor de la estimación del ESI %s es %.4f", esiTerminado->id, esiTerminado->rafagasEstimadas);
+	//log_info(logger, "El valor de la estimación del ESI %s es %.4f", esiTerminado->id, esiTerminado->rafagasEstimadas);
 	//sem_post(&semaforoCoordinador);
 }
 
@@ -256,6 +256,8 @@ void CalcularEstimacion(procesoEsi* unEsi) {
 		b = b * unEsi->rafagasEstimadas;
 		unEsi->rafagasEstimadas = a+b;
 	}
+//	printf("%s: ESTIMACION: %.4f\n", unEsi->id, unEsi->rafagasEstimadas);
+//	fflush(stdout);
 }
 
 bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
@@ -263,7 +265,7 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 void ejecutarEsi() {
-	if(!planificacion_detenida){
+	//if(!planificacion_detenida){
 		if (list_size(EJECUCION) != 0) {
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 			++esiAEjecutar->rafagasRealesEjecutadas;
@@ -271,22 +273,25 @@ void ejecutarEsi() {
 		}else {
 			planificar();
 		}
-	}else{
+	/*}else{
 		if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
-			list_add(LISTOS,list_remove(EJECUCION,0));
+			procesoEsi* esiAPonerReady = list_remove(EJECUCION,0);
+			list_add(LISTOS,esiAPonerReady);
 		}
-	}
+	}*/
 }
 
 void ChequearPlanificacionYSeguirEjecutando() {
-	if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
-		if(list_size(EJECUCION)>0){
-			procesoEsi*aux=list_remove(EJECUCION,0);
-			list_add(LISTOS,aux);
+	if(!planificacion_detenida){
+		if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
+			if(list_size(EJECUCION)>0){
+				procesoEsi*aux=list_remove(EJECUCION,0);
+				list_add(LISTOS,aux);
+			}
+			planificar();
+		} else {
+			ejecutarEsi();
 		}
-		planificar();
-	} else {
-		ejecutarEsi();
 	}
 }
 
@@ -305,17 +310,19 @@ void HacerSJF() {
 }
 
 void planificar() {
-	if (!list_is_empty(LISTOS)) {
-		if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
-			procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
-			list_add(EJECUCION, esiAEjecutar);
-			ejecutarEsi();
-		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
-			HacerSJF();
-		} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
-			HacerSJF();
-		} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
+	if(!planificacion_detenida){
+		if (!list_is_empty(LISTOS)) {
+			if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
+				procesoEsi* esiAEjecutar = (procesoEsi*) list_remove(LISTOS, 0);
+				list_add(EJECUCION, esiAEjecutar);
+				ejecutarEsi();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
+				HacerSJF();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
+				HacerSJF();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
 
+			}
 		}
 	}
 
