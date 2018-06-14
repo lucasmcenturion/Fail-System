@@ -83,6 +83,11 @@ typedef struct {
 }__attribute__((packed)) clavexEsi;
 
 typedef struct {
+	char* clave;
+	char* id;
+}__attribute__((packed)) claveNueva;
+
+typedef struct {
 	char* id;
 	int socket;
 	t_list* claves;

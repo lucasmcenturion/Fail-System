@@ -15,7 +15,7 @@ void crearLogger() {
 	logger = log_create("InstanciaLog.log", "INSTANCIA", true, LOG_LEVEL_INFO);
 }
 
-void obtenerValoresArchivoConfiguracion(char* id) {
+void obtenerValoresArchivoConfiguracion(/*char* id*/) {
 	t_config* arch =
 			config_create(
 					"/home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/instancia.cfg");
@@ -24,12 +24,12 @@ void obtenerValoresArchivoConfiguracion(char* id) {
 	PUERTO_COORDINADOR = config_get_int_value(arch, "PUERTO_COORDINADOR");
 	ALGORITMO_REEMPLAZO = string_duplicate(
 			config_get_string_value(arch, "ALGORITMO_REEMPLAZO"));
-	/*PUNTO_MONTAJE = string_duplicate(
+	PUNTO_MONTAJE = string_duplicate(
 			config_get_string_value(arch, "PUNTO_MONTAJE"));
 	NOMBRE_INSTANCIA = string_duplicate(
-			config_get_string_value(arch, "NOMBRE_INSTANCIA"));*/
-	PUNTO_MONTAJE = string_from_format("/home/utnso/Instancia%s", id);
-	NOMBRE_INSTANCIA = string_from_format("Instancia%s", id);
+			config_get_string_value(arch, "NOMBRE_INSTANCIA"));
+	/*PUNTO_MONTAJE = string_from_format("/home/utnso/Instancia%s", id);
+	NOMBRE_INSTANCIA = string_from_format("Instancia%s", id);*/
 	INTERVALO_DUMP = config_get_int_value(arch, "INTERVALO_DUMP");
 	config_destroy(arch);
 }
@@ -141,7 +141,6 @@ void verificarPuntoMontaje() {
 		closedir(dir);
 	} else if (ENOENT == errno) {
 		//el directorio no existe
-//		log_info(vg_logger,"No existe el punto de montaje, se crea el directorio");
 		mkdir(PUNTO_MONTAJE, 0700);
 	} else {
 		log_error(logger,
@@ -203,8 +202,8 @@ void ejecutarDump(){
 	}
 }
 
-int main(int argc, char* argv[]) {
-	obtenerValoresArchivoConfiguracion(argv[1]);
+int main(/*int argc, char* argv[]*/) {
+	obtenerValoresArchivoConfiguracion(/*argv[1]*/);
 	imprimirArchivoConfiguracion();
 	crearLogger();
 	ENTRADAS_LIBRES = CANT_ENTRADA;
