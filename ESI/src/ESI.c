@@ -32,7 +32,7 @@ void obtenerValoresArchivoConfiguracion(/*char* id*/) {
 	IP_PLANIFICADOR = string_duplicate(
 			config_get_string_value(arch, "IP_PLANIFICADOR"));
 	PUERTO_PLANIFICADOR = config_get_int_value(arch, "PUERTO_PLANIFICADOR");
-	ID = string_duplicate(config_get_string_value(arch, "ID"));
+//	ID = string_duplicate(config_get_string_value(arch, "ID"));
 	//ID = string_from_format("ESI%s", id);
 	config_destroy(arch);
 }
@@ -175,6 +175,7 @@ void muerteEsi() {
 }
 
 int main(int argc, char* argv[]) {
+	ID = argv[2];
 	obtenerValoresArchivoConfiguracion(/*argv[2]*/);
 	imprimirArchivoConfiguracion();
 	programaAEjecutar = argv[1];

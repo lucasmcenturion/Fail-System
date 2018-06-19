@@ -83,6 +83,9 @@ void Desbloquear(char* clave, bool flagPrint){
 		strcpy(clavexEsiAAgregar->idEsi, esiDesbloqueado->esi->id);
 		list_add(clavesBloqueadas, clavexEsiAAgregar);
 		list_add(LISTOS, esiAPonerReady);
+//		if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1){
+//			list_iterate(LISTOS, (void*) CalcularEstimacion);
+//		}
 		free(esiDesbloqueado->clave);
 		free(esiDesbloqueado->esi->id);
 		free(esiDesbloqueado->esi);

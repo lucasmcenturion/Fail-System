@@ -145,6 +145,21 @@ void escuchaCoordinador() {
 	}
 }
 
+void CalcularEstimacion(procesoEsi* unEsi) {
+	if(unEsi->rafagasRealesEjecutadas == 0){
+		unEsi->rafagasEstimadas = ESTIMACION_INICIAL;
+	}
+	else{
+		float a = ALFA_ESTIMACION/100.0;
+		a = a * unEsi->rafagasRealesEjecutadas;
+		float b = 1 - ALFA_ESTIMACION/100.0;
+		b = b * unEsi->rafagasEstimadas;
+		unEsi->rafagasEstimadas = a+b;
+	}
+//	printf("%s: ESTIMACION: %.4f\n", unEsi->id, unEsi->rafagasEstimadas);
+//	fflush(stdout);
+}
+
 void EscucharESIyPlanificarlo(void* socket) {
 	int socketFD = *(int*) socket;
 	Paquete paquete;
@@ -164,8 +179,10 @@ void EscucharESIyPlanificarlo(void* socket) {
 				list_add(LISTOS, nuevoEsi);
 				//ChequearPlanificacionYSeguirEjecutando();
 				if(!planificacion_detenida){
-					if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
+					if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1){
+						list_iterate(LISTOS, (void*) CalcularEstimacion);
 						planificar();
+					}
 				}
 				break;
 
@@ -197,6 +214,8 @@ void EscucharESIyPlanificarlo(void* socket) {
 						strcpy(clavexEsiAAgregar->idEsi, esiADesbloquear->esi->id);
 						list_add(clavesBloqueadas, clavexEsiAAgregar);
 						list_add(LISTOS, esiAPonerReady); //mandar func enviar a Listos
+						if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)
+							list_iterate(LISTOS, (void*) CalcularEstimacion);
 						free(esiADesbloquear->clave);
 						free(esiADesbloquear->esi->id);
 						free(esiADesbloquear->esi);
@@ -245,21 +264,6 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 	//sem_post(&semaforoCoordinador);
 }
 
-void CalcularEstimacion(procesoEsi* unEsi) {
-	if(unEsi->rafagasRealesEjecutadas == 0){
-		unEsi->rafagasEstimadas = ESTIMACION_INICIAL;
-	}
-	else{
-		float a = ALFA_ESTIMACION/100.0;
-		a = a * unEsi->rafagasRealesEjecutadas;
-		float b = 1 - ALFA_ESTIMACION/100.0;
-		b = b * unEsi->rafagasEstimadas;
-		unEsi->rafagasEstimadas = a+b;
-	}
-//	printf("%s: ESTIMACION: %.4f\n", unEsi->id, unEsi->rafagasEstimadas);
-//	fflush(stdout);
-}
-
 bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 	return esi->rafagasEstimadas < esiMenor->rafagasEstimadas;
 }
@@ -296,7 +300,7 @@ void ChequearPlanificacionYSeguirEjecutando() {
 }
 
 void HacerSJF() {
-	list_iterate(LISTOS, (void*) CalcularEstimacion);
+//	list_iterate(LISTOS, (void*) CalcularEstimacion);
 	t_list* listaAuxAOrdenar = list_duplicate(LISTOS);
 	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
 	procesoEsi* esiMenorEst = (procesoEsi*) list_get(listaAuxAOrdenar, 0);
