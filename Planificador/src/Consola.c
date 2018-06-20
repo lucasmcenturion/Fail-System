@@ -4,6 +4,8 @@ bool planificacion_detenida;
 t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 t_log* logger;
 sem_t semPlanificacionDetenida;
+int flag;
+
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
 	if(planificacion_detenida){
@@ -83,6 +85,7 @@ void Desbloquear(char* clave, bool flagPrint){
 		strcpy(clavexEsiAAgregar->idEsi, esiDesbloqueado->esi->id);
 		list_add(clavesBloqueadas, clavexEsiAAgregar);
 		list_add(LISTOS, esiAPonerReady);
+		flag = 1;
 //		if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1){
 //			list_iterate(LISTOS, (void*) CalcularEstimacion);
 //		}

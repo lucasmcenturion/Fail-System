@@ -3,6 +3,7 @@
 char *IP, *ALGORITMO_PLANIFICACION, *IP_COORDINADOR;
 int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR, ALFA_ESTIMACION;
 char **CLAVES_BLOQUEADAS;
+int flag = 0;
 
 pthread_mutex_t mutexOperaciones;
 pthread_mutex_t ordenPlanificacionDetenida;
@@ -231,16 +232,13 @@ void EscucharESIyPlanificarlo(void* socket) {
 				PasarESIMuertoAColaTerminados(idEsiFinalizado); //Busco en que cola esta y paso el ESI a la cola de TERMINADOS
 				ChequearPlanificacionYSeguirEjecutando();
 				break;
-
 			}
-
 			}
 		} else {
 			perror("No es ningún proceso ESI.\n");
 			if (paquete.Payload != NULL)
 				free(paquete.Payload);
 		}
-
 	}
 	close(socketFD);
 }
@@ -286,6 +284,10 @@ void ejecutarEsi() {
 }
 
 void ChequearPlanificacionYSeguirEjecutando() {
+	if (flag==1){
+		list_iterate(LISTOS, (void*) CalcularEstimacion);
+		flag = 0;
+	}
 	if(!planificacion_detenida){
 		if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
 			if(list_size(EJECUCION)>0){
