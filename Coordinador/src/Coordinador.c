@@ -312,8 +312,8 @@ void accion(void* socket) {
 							strlen(id) + 1, ABORTAR);
 				} else {
 					if (verificarGet(id, key)) {
-						bool verificarNuevaPorEsi(claveNueva*e) {
-							return !strcmp(id, e->id) && !strcmp(key, e->clave);
+						bool verificarNuevaPorEsi(clavexEsi* e) {
+							return !strcmp(id, e->idEsi) && !strcmp(key, e->clave);
 						}
 
 						pthread_mutex_lock(&mutex_clavesNuevas);
@@ -367,11 +367,11 @@ void accion(void* socket) {
 							}
 						}
 						if (!list_is_empty(clavesNuevasPorEsi)) {
-							claveNueva*aEliminar = list_remove_by_condition(
+							clavexEsi*aEliminar = list_remove_by_condition(
 									(t_list*) clavesNuevasPorEsi,
 									(void*) verificarNuevaPorEsi);
 							if (aEliminar) {
-								free(aEliminar->id);
+								free(aEliminar->idEsi);
 								free(aEliminar->clave);
 								free(aEliminar);
 							}
@@ -404,13 +404,13 @@ void accion(void* socket) {
 					return !strcmp(elemento, lakey);
 				}
 				))) {
-					claveNueva *nueva = malloc(sizeof(claveNueva));
+					clavexEsi* nueva = malloc(sizeof(clavexEsi));
 					nueva->clave = malloc(strlen(lakey) + 1);
 					strcpy(nueva->clave, lakey);
 					char* id = malloc(strlen(aux->id) + 1);
 					strcpy(id, (aux->id));
-					nueva->id = malloc(strlen(id));
-					strcpy(nueva->id, id);
+					nueva->idEsi = malloc(strlen(id));
+					strcpy(nueva->idEsi, id);
 					free(id);
 					list_add(aux->claves, lakey);
 					pthread_mutex_lock(&mutex_clavesNuevas);
