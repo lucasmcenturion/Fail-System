@@ -14,6 +14,8 @@ extern bool planificacion_detenida;
 extern t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 extern sem_t semPlanificacionDetenida;
 extern t_log*logger;
+extern int flag;
+
 void PausarContinuar();
 void Bloquear(char* clave, char* id);
 void Desbloquear(char* clave, bool flagPrint);
