@@ -15,7 +15,7 @@ void crearLogger() {
 	logger = log_create("InstanciaLog.log", "INSTANCIA", true, LOG_LEVEL_INFO);
 }
 
-void obtenerValoresArchivoConfiguracion(/*char* id*/) {
+void obtenerValoresArchivoConfiguracion(char* id) {
 	t_config* arch =
 			config_create(
 					"/home/utnso/workspace/tp-2018-1c-Fail-system/Instancia/instancia.cfg");
@@ -28,8 +28,8 @@ void obtenerValoresArchivoConfiguracion(/*char* id*/) {
 			config_get_string_value(arch, "PUNTO_MONTAJE"));
 	NOMBRE_INSTANCIA = string_duplicate(
 			config_get_string_value(arch, "NOMBRE_INSTANCIA"));
-	/*PUNTO_MONTAJE = string_from_format("/home/utnso/Instancia%s", id);
-	NOMBRE_INSTANCIA = string_from_format("Instancia%s", id);*/
+	PUNTO_MONTAJE = string_from_format("/home/utnso/Instancia%s", id);
+	NOMBRE_INSTANCIA = string_from_format("Instancia%s", id);
 	INTERVALO_DUMP = config_get_int_value(arch, "INTERVALO_DUMP");
 	config_destroy(arch);
 }
@@ -202,8 +202,8 @@ void ejecutarDump(){
 	}
 }
 
-int main(/*int argc, char* argv[]*/) {
-	obtenerValoresArchivoConfiguracion(/*argv[1]*/);
+int main(int argc, char* argv[]) {
+	obtenerValoresArchivoConfiguracion(argv[1]);
 	imprimirArchivoConfiguracion();
 	crearLogger();
 	ENTRADAS_LIBRES = CANT_ENTRADA;
