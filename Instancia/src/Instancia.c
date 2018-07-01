@@ -130,22 +130,66 @@ int getFirstIndex(int entradasValue) {
 	}
 	return -1;
 }
+void obtenerEntradasViejas(){
+	DIR* dir = opendir(PUNTO_MONTAJE);
+	struct dirent *ent;
+	while ((ent = readdir (dir)) != NULL) {
+		if(strcmp(ent->d_name,".") && strcmp(ent->d_name,"..")){
+			char* directorio=malloc(strlen(PUNTO_MONTAJE)+1+strlen(ent->d_name)+1);
+			strcpy(directorio,PUNTO_MONTAJE);
+			strcat(directorio,"/");
+			strcat(directorio,ent->d_name);
+			char* key =malloc(strlen(ent->d_name)+1);
+			strcpy(key,ent->d_name);
+			FILE *f= fopen(directorio,"r");
+			fseek(f, 0, SEEK_END);
+			int fsize = ftell(f);
+			fseek(f, 0, SEEK_SET);
+			char *value = malloc(fsize+1);
+			fread(value,fsize,1,f);
+			fclose(f);
+			t_Entrada *nueva = malloc(sizeof(t_Entrada));
+			nueva->clave = malloc(strlen(key) + 1);
+			strcpy(nueva->clave, key);
+			nueva->entradasOcupadas = ceilDivision(strlen(value));
+			nueva->tamanio = strlen(value);
+			nueva->index = getFirstIndex(nueva->entradasOcupadas);
+			nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
+			nueva->activo=true;
+			list_add(entradas_administrativa, nueva);
+			int i;
+			char *valueAux = malloc(strlen(value) + 1);
+			strcpy(valueAux, value);
+			for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);i++) {
+				if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
+					//Porque no puedo hacer un free de tabla_entradas[i]?
+					tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+					strcpy(tabla_entradas[i], valueAux);
+					ENTRADAS_LIBRES--;
+					break;
+				}
+				strncpy(tabla_entradas[i], valueAux, TAMANIO_ENTRADA);
+				valueAux += TAMANIO_ENTRADA;
+				ENTRADAS_LIBRES--;
+			}
+			free(directorio);
+			free(key);
+			free(value);
+			free(valueAux);
+		}
+	}
+	closedir(dir);
+}
 void verificarPuntoMontaje() {
 
 	DIR* dir = opendir(PUNTO_MONTAJE);
 	if (dir) {
-		/* Directory exists. */
-		/* El directorio existe. Hay que recorrer todos sus archivos y por cada uno de ellos
-		 *  verificar el nombre del archivo(clave) y lo que haya dentro es el value(valor)
-		 * Despues hay que añadirlo a la tabla de entradas y mandarle un mensaje a COORDINADOR con las entradas que tiene */
-		closedir(dir);
+		  closedir (dir);
 	} else if (ENOENT == errno) {
 		//el directorio no existe
 		mkdir(PUNTO_MONTAJE, 0700);
 	} else {
-		log_error(logger,
-				"Se detectó el siguiente error al abrir el directorio: %s",
-				strerror(errno));
+		log_error(logger,"Se detectó el siguiente error al abrir el directorio: %s",strerror(errno));
 		printf("Fallo el opendir \n");
 		fflush(stdout);
 	}
@@ -270,7 +314,7 @@ int main(int argc, char* argv[]) {
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
 				nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
 				nueva->activo=true;
-				list_add(entradas_administrativa, nueva);  //
+				list_add(entradas_administrativa, nueva);
 				int i;
 				char *valueAux = malloc(strlen(value) + 1);
 				strcpy(valueAux, value);
@@ -341,6 +385,7 @@ int main(int argc, char* argv[]) {
 				tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
 				strcpy(tabla_entradas[i], "NaN");
 			}
+			obtenerEntradasViejas();
 		}
 			break;
 		}

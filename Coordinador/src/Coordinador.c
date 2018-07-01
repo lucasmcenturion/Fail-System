@@ -336,50 +336,6 @@ void accion(void* socket) {
 					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
 					id=realloc(id,strlen(id)+1);
 					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s \n", id, key, value);
-					if(strlen(key)>40){
-						log_info(vg_logger,"Se quiere hacer un SET de una clave que excede los 40 caracteres");
-						EnviarDatosTipo(socketPlanificador,COORDINADOR,id,strlen(id)+1,ABORTAR);
-					}else{
-						if(verificarGet(id,key)){
-							pthread_mutex_lock(&mutex_clavesNuevas);
-							if(dictionary_has_key(clavesNuevas,key)){
-								int tam=strlen(key)+strlen(value)+2;
-								void*sendInstancia = malloc(tam);
-								strcpy(sendInstancia,key);
-								sendInstancia+=strlen(key)+1;
-								strcpy(sendInstancia,value);
-								sendInstancia+=strlen(value)+1;
-								sendInstancia-=tam;
-								if(!strcmp(ALGORITMO_DISTRIBUCION,"EL")){
-									pthread_mutex_lock(&mutex_instancias);
-									int socketSiguiente = getProximo();
-									if(socketSiguiente!=0){
-										EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
-									}else{
-										//error, no hay instancias conectadas al sistema
-										log_info(vg_logger,"No hay instancias conectadas al sistema");
-										fflush(stdout);
-									}
-									pthread_mutex_unlock(&mutex_instancias);
-								}else{
-									if(!strcmp(ALGORITMO_DISTRIBUCION,"KE")){
-										pthread_mutex_lock(&mutex_instancias);
-										int socketSiguiente = getProximoKE((int)key[0]);
-										if(socketSiguiente!=0){
-											EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
-										}else{
-											//error, no hay instancias conectadas al sistema
-											log_info(vg_logger,"No hay instancias conectadas al sistema");
-											fflush(stdout);
-										}
-										pthread_mutex_unlock(&mutex_instancias);
-									}
-								}
-						)))->id);
-				id = realloc(id, strlen(id) + 1);
-				log_info(vg_logger,
-						"El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s \n",
-						id, key, value);
 				if (strlen(key) > 40) {
 					log_info(vg_logger,
 							"Se quiere hacer un SET de una clave que excede los 40 caracteres");
@@ -415,6 +371,19 @@ void accion(void* socket) {
 									fflush(stdout);
 								}
 								pthread_mutex_unlock(&mutex_instancias);
+							}else {
+								if(!strcmp(ALGORITMO_DISTRIBUCION,"KE")){
+									pthread_mutex_lock(&mutex_instancias);
+									int socketSiguiente = getProximoKE((int)key[0]);
+									if(socketSiguiente!=0){
+										EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
+									}else{
+										//error, no hay instancias conectadas al sistema
+										log_info(vg_logger,"No hay instancias conectadas al sistema");
+										fflush(stdout);
+									}
+									pthread_mutex_unlock(&mutex_instancias);
+								}
 							}
 						} else {
 							pthread_mutex_lock(&mutex_instancias);
