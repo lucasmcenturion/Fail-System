@@ -26,6 +26,42 @@ void finalizarLogger() {
 	log_destroy(vg_logger);
 
 }
+int getProximoKE(int letraAscii){
+	void* between(t_IdInstancia*aux){
+			return letraAscii <= aux->finalKE ? true : false;
+	}
+	t_IdInstancia*rv= list_find(instancias, between);
+	return rv->socket;
+}
+void reOrganizar(){
+	int cant=list_size(instancias);
+	if(cant==1){
+		t_IdInstancia*aux = list_get(instancias,0);
+		aux->inicialKE=97;
+		aux->finalKE=122;
+	}else{
+		int cantidadDelPrimero = 26 / cant;
+		int inicialResto = 96 + cantidadDelPrimero;
+		int i=0;
+		void setearLetras (t_IdInstancia *unaInstancia){
+			if(i==0){
+				unaInstancia->inicialKE=97;
+				unaInstancia->finalKE = inicialResto;
+				cantidadDelPrimero ++;
+			}else{
+				unaInstancia->inicialKE = inicialResto +1;
+				if(cant-1 == i){
+					unaInstancia->finalKE = 122;
+				}else{
+					unaInstancia->finalKE = unaInstancia->inicialKE + cantidadDelPrimero;
+				}
+				inicialResto = unaInstancia->finalKE;
+			}
+			i++;
+		}
+		list_iterate(instancias, setearLetras);
+	}
+}
 
 void obteneryValidarValoresArchivoConfiguracion() {
 	log_info(vg_logger, "Chequeo archivo de configuración");
@@ -193,6 +229,8 @@ void accion(void* socket) {
 				instancia->activo = false;
 				pthread_mutex_lock(&mutex_instancias);
 				list_add(instancias, instancia);
+				if(!strcmp(ALGORITMO_DISTRIBUCION,"KE"))
+					reOrganizar();
 				pthread_mutex_unlock(&mutex_instancias);
 			}
 			break;
@@ -290,6 +328,19 @@ void accion(void* socket) {
 										fflush(stdout);
 									}
 									pthread_mutex_unlock(&mutex_instancias);
+								}else{
+									if(!strcmp(ALGORITMO_DISTRIBUCION,"KE")){
+										pthread_mutex_lock(&mutex_instancias);
+										int socketSiguiente = getProximoKE((int)key[0]);
+										if(socketSiguiente!=0){
+											EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
+										}else{
+											//error, no hay instancias conectadas al sistema
+											log_info(vg_logger,"No hay instancias conectadas al sistema");
+											fflush(stdout);
+										}
+										pthread_mutex_unlock(&mutex_instancias);
+									}
 								}
 							}else{
 								pthread_mutex_lock(&mutex_instancias);

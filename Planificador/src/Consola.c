@@ -91,6 +91,10 @@ void Desbloquear(char* clave, bool flagPrint){
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar);
+	if(list_size(EJECUCION)!=0){
+		procesoEsi* aux = list_get(EJECUCION,0);
+		list_add(LISTOS,aux);
+	}
 	ChequearPlanificacionYSeguirEjecutando();
 }
 

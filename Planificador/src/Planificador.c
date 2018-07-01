@@ -124,7 +124,7 @@ void escuchaCoordinador() {
 			break;
 		case SETOKPLANI:
 			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
-				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
+				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, (char*)paquete.Payload);}));
 				list_add(LISTOS, esiAEstarReady);
 			}
 			ChequearPlanificacionYSeguirEjecutando();

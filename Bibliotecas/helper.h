@@ -51,6 +51,8 @@ void muerteEsi(void);
 
 typedef struct {
 	int socket;
+	int inicialKE;
+	int finalKE;
 	char* nombre;
 	bool activo;
 	t_list *claves;
