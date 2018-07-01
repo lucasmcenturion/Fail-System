@@ -4,6 +4,8 @@ bool planificacion_detenida;
 t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 t_log* logger;
 sem_t semPlanificacionDetenida;
+int flag;
+
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
 	if(planificacion_detenida){
@@ -23,7 +25,7 @@ void Bloquear(char* clave, char* id){
 		if (esiABloquear == NULL)
 		{
 			//si no lo encuentra acá, no existe el esi que se pretende bloquear.
-			printf("El ESI de id %s no se puede bloquear ya que no existe ningún ESI con ese id.", id);
+			log_info(logger, "El ESI de id %s no se puede bloquear ya que no existe ningún ESI con ese id.", id);
 		}
 		else
 		{
@@ -39,7 +41,7 @@ void Bloquear(char* clave, char* id){
 			claveXEsiABloquear->idEsi = malloc(strlen(id)+1);
 			strcpy(claveXEsiABloquear->idEsi, id);
 			list_add(clavesBloqueadas, claveXEsiABloquear);
-			printf("Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n", clave, id);
+			log_info(logger, "Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n", clave, id);
 		}
 	}
 	else
@@ -56,7 +58,7 @@ void Bloquear(char* clave, char* id){
 		claveXEsiABloquear->idEsi = malloc(strlen(id)+1);
 		strcpy(claveXEsiABloquear->idEsi, id);
 		list_add(clavesBloqueadas, claveXEsiABloquear);
-		printf("Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n", clave, id);
+		log_info(logger, "Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n", clave, id);
 	}
 	fflush(stdout);
 }
@@ -67,7 +69,7 @@ void Desbloquear(char* clave, bool flagPrint){
 	if (esiDesbloqueado != NULL)
 	{
 		if(flagPrint)
-			printf(
+			log_info(logger,
 			"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 			esiDesbloqueado->esi->id, esiDesbloqueado->clave);
 		procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
@@ -83,6 +85,10 @@ void Desbloquear(char* clave, bool flagPrint){
 		strcpy(clavexEsiAAgregar->idEsi, esiDesbloqueado->esi->id);
 		list_add(clavesBloqueadas, clavexEsiAAgregar);
 		list_add(LISTOS, esiAPonerReady);
+		flag = 1;
+//		if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1){
+//			list_iterate(LISTOS, (void*) CalcularEstimacion);
+//		}
 		free(esiDesbloqueado->clave);
 		free(esiDesbloqueado->esi->id);
 		free(esiDesbloqueado->esi);
@@ -99,14 +105,26 @@ void Desbloquear(char* clave, bool flagPrint){
 }
 
 void Listar(char* recurso){
-	printf("A continuación, se listan los procesos bloqueados esperando el recurso %s:\n", recurso);
-	list_iterate(clavesBloqueadas,
-			LAMBDA(void _(clavexEsi* item1)
-			{
-				if (!strcmp(item1->clave, recurso))
-					printf("\t\t- %s\n", item1->idEsi);
-			}
-	));
+	if(list_any_satisfy(BLOQUEADOS,LAMBDA(bool _(esiBloqueado* item1)
+	{
+		return !strcmp(item1->clave, recurso);
+
+	})))
+	{
+		log_info(logger,"A continuación, se listan los procesos bloqueados esperando el recurso %s:\n", recurso);
+		list_iterate(BLOQUEADOS,
+				LAMBDA(void _(esiBloqueado* item1)
+				{
+					if (!strcmp(item1->clave, recurso))
+					{
+						printf("\t\t- %s\n", item1->esi->id);
+						fflush(stdout);
+					}
+				}
+		));
+	}
+	else
+		log_info(logger,"No hay procesos bloqueados esperando el recurso %s\n", recurso);
 }
 
 void Kill(){

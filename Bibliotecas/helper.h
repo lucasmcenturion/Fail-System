@@ -38,16 +38,6 @@
 #define false 0
 #define NULL ((void *) 0)
 
-void escribir_log(char* nombre_log,char* proceso,char* mensaje,char* tipo);
-char* integer_to_string(char*string,int x);
-size_t getFileSize(const char* filename);
-void planificar(void);
-void ejecutarEsi(void);
-void ChequearPlanificacionYSeguirEjecutando(void);
-void PasarESIMuertoAColaTerminados(char*);
-void parsear(void);
-void muerteEsi(void);
-
 
 typedef struct {
 	int socket;
@@ -85,8 +75,25 @@ typedef struct {
 }__attribute__((packed)) clavexEsi;
 
 typedef struct {
+	char* clave;
+	char* id;
+}__attribute__((packed)) claveNueva;
+
+typedef struct {
 	char* id;
 	int socket;
 	t_list* claves;
 }__attribute__((packed)) t_esiCoordinador;
+
+void escribir_log(char* nombre_log,char* proceso,char* mensaje,char* tipo);
+char* integer_to_string(char*string,int x);
+size_t getFileSize(const char* filename);
+void planificar(void);
+void ejecutarEsi(void);
+void ChequearPlanificacionYSeguirEjecutando(void);
+void PasarESIMuertoAColaTerminados(char*);
+void parsear(void);
+void muerteEsi(void);
+bool verificarNuevaPorEsi (clavexEsi* clave);
+
 #endif /* HELPER_*/
