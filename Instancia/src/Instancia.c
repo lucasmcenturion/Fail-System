@@ -366,8 +366,12 @@ int main(int argc, char* argv[]) {
 			}
 			pthread_mutex_unlock(&mutex_entradas);
 			log_info(logger, "se hizo un SET de clave %s", key);
-			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
+			void* claveykey = malloc(strlen(key)+strlen(value)+2);
+			strcpy(claveykey,key);
+			strcpy(claveykey+strlen(key)+1,value);
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, claveykey, strlen(key) + strlen(value) + 2,
 					SETOK);
+			free(claveykey);
 			free(key);
 
 			free(value);

@@ -96,6 +96,7 @@ void Desbloquear(char* clave, bool flagPrint){
 	}
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
+	free(clavexEsiABorrar->valor);
 	free(clavexEsiABorrar);
 	if(list_size(EJECUCION)!=0){
 		procesoEsi* aux = list_get(EJECUCION,0);
@@ -127,11 +128,34 @@ void Listar(char* recurso){
 		log_info(logger,"No hay procesos bloqueados esperando el recurso %s\n", recurso);
 }
 
-void Kill(){
-
+void Kill(char* id){
+	procesoEsi* esiAMatar = (procesoEsi*) list_find(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, id);}));
+	if (esiAMatar == NULL){
+		esiAMatar = (procesoEsi*) list_find(LISTOS, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, id);}));
+		if (esiAMatar == NULL){
+			esiAMatar = ((esiBloqueado*) list_find(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->esi->id, id);})))->esi;
+			if(esiAMatar == NULL){
+				//si no lo encuentra acá, no existe el esi que se pretende matar.
+				log_info(logger, "El ESI de id %s no se puede matar ya que no existe ningún ESI con ese id.", id);
+			}
+			else
+			{
+				EnviarDatosTipo(esiAMatar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
+				log_info(logger, "Abortando ESI por consola");
+			}
+		}
+		else{
+			EnviarDatosTipo(esiAMatar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
+			log_info(logger, "Abortando ESI por consola");
+		}
+	}
+	else{
+		EnviarDatosTipo(esiAMatar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
+		log_info(logger, "Abortando ESI por consola");
+	}
 }
 
-void Status(){
+void Status(char* clave){
 
 }
 

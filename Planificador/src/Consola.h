@@ -20,8 +20,8 @@ void PausarContinuar();
 void Bloquear(char* clave, char* id);
 void Desbloquear(char* clave, bool flagPrint);
 void Listar(char* recurso);
-void Kill();
-void Status();
+void Kill(char* id);
+void Status(char* clave);
 void Deadlock();
 void consola();
 

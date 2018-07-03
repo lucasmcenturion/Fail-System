@@ -262,6 +262,8 @@ void accion(void* socket) {
 				}
 				char* claveNueva = malloc(strlen((char*) paquete.Payload) + 1);
 				strcpy(claveNueva, paquete.Payload);
+				char* value = malloc(strlen(paquete.Payload+strlen(claveNueva)+1)+1);
+				strcpy(value,paquete.Payload+strlen(claveNueva)+1);
 				pthread_mutex_lock(&mutex_instancias);
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
 				list_add(aux->claves, claveNueva);
@@ -270,8 +272,14 @@ void accion(void* socket) {
 				strcpy(idEsi, obtenerId((char*) paquete.Payload, 0));
 				idEsi = realloc(idEsi, strlen(idEsi) + 1);
 				log_info(vg_logger, "Se hizo OK el SET");
-				EnviarDatosTipo(socketPlanificador, COORDINADOR, idEsi,
-						strlen(idEsi) + 1, SETOKPLANI);
+				void* idvalueykey = malloc(strlen(idEsi)+strlen(value)+ strlen(claveNueva) +3);
+				strcpy(idvalueykey, idEsi);
+				strcpy(idvalueykey + strlen(idEsi) + 1, value);
+				strcpy(idvalueykey + strlen(idEsi) + strlen(value) + 2, claveNueva);
+				EnviarDatosTipo(socketPlanificador, COORDINADOR, idvalueykey,
+						strlen(idEsi) + strlen(value) + strlen(claveNueva) + 3, SETOKPLANI);
+				free(idvalueykey);
+				free(value);
 				free(idEsi);
 			}
 				break;

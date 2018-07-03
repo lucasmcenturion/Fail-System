@@ -71,6 +71,7 @@ void imprimirArchivoConfiguracion() {
 		clavexEsi* cxe = malloc(sizeof(clavexEsi));
 		cxe->idEsi = malloc(strlen("SYSTEM") + 1);
 		cxe->clave = malloc(strlen(item1) + 1);
+		cxe->valor = NULL;
 		strcpy(cxe->idEsi, "SYSTEM");
 		strcpy(cxe->clave, item1);
 		list_add(clavesBloqueadas, cxe);
@@ -103,6 +104,7 @@ void escuchaCoordinador() {
 				clavexEsi* cxe = malloc(sizeof(clavexEsi));
 				cxe->idEsi = malloc(strlen(paquete.Payload + strlen(paquete.Payload) + 1)+ 1);
 				cxe->clave = malloc(strlen(paquete.Payload) + 1);
+				cxe->valor = NULL;
 				strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
 				strcpy(cxe->clave, paquete.Payload);
 				list_add(clavesBloqueadas, cxe);
@@ -117,15 +119,21 @@ void escuchaCoordinador() {
 			break;
 
 		case ABORTAR: { // VER SI CUANDO ABORTA LA OPERACION EL COORD. DEBERIAMOS HACER MUERTEESI PARA QUE LIBERE TODO OK
-			procesoEsi* esiAAbortar = (procesoEsi*) list_remove_by_condition(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, datos);}));
+			procesoEsi* esiAAbortar = (procesoEsi*) list_find(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, datos);}));
 			EnviarDatosTipo(esiAAbortar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
-			list_add(TERMINADOS, esiAAbortar);
 			log_info(logger, "Aborta ESI");
 		}
 			break;
 		case SETOKPLANI:
+			char* id, *value, *key;
+			id = paquete.Payload;
+			value = paquete.Payload + strlen(id) + 1;
+			key = paquete.Payload + strlen(id) + strlen(value) + 2;
+			clavexEsi* cxe = list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->clave,key);}));
+			cxe->valor = malloc(strlen(value)+1);
+			strcpy(cxe->valor, value);
 			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
-				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, (char*)paquete.Payload);}));
+				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, id);}));
 				list_add(LISTOS, esiAEstarReady);
 			}
 			ChequearPlanificacionYSeguirEjecutando();
@@ -226,6 +234,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 					}
 					free(clavexEsiABorrar->clave);
 					free(clavexEsiABorrar->idEsi);
+					free(clavexEsiABorrar->valor);
 					free(clavexEsiABorrar);
 					ChequearPlanificacionYSeguirEjecutando();
 				}
