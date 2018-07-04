@@ -162,19 +162,19 @@ void Status(char* clave){
 		log_info(logger, "Estado de la clave \"%s\"", clave);
 		if (c->valor != NULL)
 		{
-			log_info(logger, "\t\t\t valor: ", c->valor);
-			log_info(logger, "\t\t\t instancia actual: ", c->instancia);
+			log_info(logger, "\t\t\t valor: %s", c->valor);
+			log_info(logger, "\t\t\t instancia actual: %s", c->instancia);
 		}
 		else
 		{
 			log_info(logger, "\t\t\t valor: Sin valor");
-			log_info(logger, "\t\t\t potencial instancia: ", c->valor);
+			log_info(logger, "\t\t\t potencial instancia: %s", c->instancia);
 		}
 
-		log_info(logger, "\t\t\t ESIs bloqueados por la clave: ", c->valor);
+		log_info(logger, "\t\t\t ESIs bloqueados por la clave: ");
 		list_iterate(BLOQUEADOS,LAMBDA(void _(esiBloqueado* item1){
 			if(!strcmp(item1, clave)){
-				log_info(logger, "\t\t\t\t\t\t %s: ", item1->esi->id);
+				log_info(logger, "\t\t\t\t\t\t- %s: ", item1->esi->id);
 			}
 		}));
 	}
@@ -216,15 +216,13 @@ void consola() {
 
 		else if (!strncmp(linea, "kill ", 5)) {
 			char **array_input = string_split(linea, " ");
-			printf("Se finaliza el proceso de id %s.\n", array_input[1]);
-			Kill();
+			Kill(array_input[1]);
 			string_iterate_lines(array_input,free);
 			free(array_input);
 		}
 		else if (!strncmp(linea, "status ", 7)) {
 			char **array_input = string_split(linea, " ");
-			printf("Se muestra el estado de la clave %s.\n", array_input[1]);
-			Status();
+			Status(array_input[1]);
 			string_iterate_lines(array_input,free);
 			free(array_input);
 		}

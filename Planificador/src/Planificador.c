@@ -126,7 +126,7 @@ void escuchaCoordinador() {
 			log_info(logger, "Aborta ESI");
 		}
 			break;
-		case SETOKPLANI:
+		case SETOKPLANI:{
 			char* id, *value, *key, *instancia;
 			id = paquete.Payload;
 			value = paquete.Payload + strlen(id) + 1;
@@ -144,6 +144,7 @@ void escuchaCoordinador() {
 			}
 			ChequearPlanificacionYSeguirEjecutando();
 			log_info(logger, "SET OK en Planificador");
+		}
 			break;
 		case STOREOKPLANI: {
 			Desbloquear(datos, false);

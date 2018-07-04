@@ -38,7 +38,7 @@ char* simulacionGetProximoKE(int letraAscii){
 char* simulacionGetProximo() {
 	if (list_size(instancias) == 0)
 		return "No hay instancias";
-	t_list* instanciasClon = list_new();
+	t_list* instanciasClon = list_create();
 	list_iterate(instancias,
 					LAMBDA(
 							void _(t_IdInstancia * elemento) {
@@ -329,13 +329,14 @@ void accion(void* socket) {
 				strcpy(idEsi, obtenerId((char*) paquete.Payload, 0));
 				idEsi = realloc(idEsi, strlen(idEsi) + 1);
 				log_info(vg_logger, "Se hizo OK el SET");
-				void* idvalueykey = malloc(strlen(idEsi)+strlen(value)+ strlen(claveNueva) + strlen(aux->nombre) + 4);
-				strcpy(idvalueykey, idEsi);
-				strcpy(idvalueykey + strlen(idEsi) + 1, value);
-				strcpy(idvalueykey + strlen(idEsi) + strlen(value) + 2, claveNueva);
-				EnviarDatosTipo(socketPlanificador, COORDINADOR, idvalueykey,
+				void* idvaluekeyeinst = malloc(strlen(idEsi)+strlen(value)+ strlen(claveNueva) + strlen(aux->nombre) + 4);
+				strcpy(idvaluekeyeinst, idEsi);
+				strcpy(idvaluekeyeinst+ strlen(idEsi) + 1, value);
+				strcpy(idvaluekeyeinst + strlen(idEsi) + strlen(value) + 2, claveNueva);
+				strcpy(idvaluekeyeinst + strlen(idEsi) + strlen(value) + strlen(claveNueva) + 3, aux->nombre);
+				EnviarDatosTipo(socketPlanificador, COORDINADOR, idvaluekeyeinst,
 						strlen(idEsi) + strlen(value) + strlen(claveNueva) + strlen(aux->nombre) + 4, SETOKPLANI);
-				free(idvalueykey);
+				free(idvaluekeyeinst);
 				free(value);
 				free(idEsi);
 			}
