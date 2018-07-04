@@ -97,6 +97,7 @@ void Desbloquear(char* clave, bool flagPrint){
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar->valor);
+	free(clavexEsiABorrar->instancia);
 	free(clavexEsiABorrar);
 	if(list_size(EJECUCION)!=0){
 		procesoEsi* aux = list_get(EJECUCION,0);
@@ -156,7 +157,30 @@ void Kill(char* id){
 }
 
 void Status(char* clave){
+	clavexEsi* c = list_find(clavesBloqueadas,LAMBDA(bool _(clavexEsi* item1){return !strcmp(item1->clave,clave);}));
+	if (c != NULL){
+		log_info(logger, "Estado de la clave \"%s\"", clave);
+		if (c->valor != NULL)
+		{
+			log_info(logger, "\t\t\t valor: ", c->valor);
+			log_info(logger, "\t\t\t instancia actual: ", c->instancia);
+		}
+		else
+		{
+			log_info(logger, "\t\t\t valor: Sin valor");
+			log_info(logger, "\t\t\t potencial instancia: ", c->valor);
+		}
 
+		log_info(logger, "\t\t\t ESIs bloqueados por la clave: ", c->valor);
+		list_iterate(BLOQUEADOS,LAMBDA(void _(esiBloqueado* item1){
+			if(!strcmp(item1, clave)){
+				log_info(logger, "\t\t\t\t\t\t %s: ", item1->esi->id);
+			}
+		}));
+	}
+	else{
+		log_info(logger, "No se puede mostrar el estado de la clave \"%s\" porque esta no existe.", clave);
+	}
 }
 
 void Deadlock(){

@@ -102,11 +102,13 @@ void escuchaCoordinador() {
 				planificar();
 			} else {	//Sino, agrega la clave a claves bloqueadas
 				clavexEsi* cxe = malloc(sizeof(clavexEsi));
-				cxe->idEsi = malloc(strlen(paquete.Payload + strlen(paquete.Payload) + 1)+ 1);
 				cxe->clave = malloc(strlen(paquete.Payload) + 1);
 				cxe->valor = NULL;
-				strcpy(cxe->idEsi, paquete.Payload + strlen(paquete.Payload) + 1);
 				strcpy(cxe->clave, paquete.Payload);
+				cxe->idEsi = malloc(strlen(paquete.Payload + strlen(cxe->clave)+1) + 1);
+				strcpy(cxe->idEsi, paquete.Payload + strlen(cxe->clave) + 1);
+				cxe->instancia = malloc(strlen(paquete.Payload + strlen(cxe->clave) + strlen(cxe->idEsi)+2) + 1);
+				strcpy(cxe->instancia, paquete.Payload + strlen(cxe->clave) + strlen(cxe->idEsi)+2);
 				list_add(clavesBloqueadas, cxe);
 //				if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
 //					procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
@@ -125,13 +127,17 @@ void escuchaCoordinador() {
 		}
 			break;
 		case SETOKPLANI:
-			char* id, *value, *key;
+			char* id, *value, *key, *instancia;
 			id = paquete.Payload;
 			value = paquete.Payload + strlen(id) + 1;
 			key = paquete.Payload + strlen(id) + strlen(value) + 2;
+			instancia = paquete.Payload + strlen(id) + strlen(value) + strlen(key) + 3;
 			clavexEsi* cxe = list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->clave,key);}));
 			cxe->valor = malloc(strlen(value)+1);
+			free(cxe->instancia);
+			cxe->instancia = malloc(strlen(instancia)+1);
 			strcpy(cxe->valor, value);
+			strcpy(cxe->instancia, instancia);
 			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
 				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, id);}));
 				list_add(LISTOS, esiAEstarReady);
@@ -235,6 +241,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 					free(clavexEsiABorrar->clave);
 					free(clavexEsiABorrar->idEsi);
 					free(clavexEsiABorrar->valor);
+					free(clavexEsiABorrar->instancia);
 					free(clavexEsiABorrar);
 					ChequearPlanificacionYSeguirEjecutando();
 				}

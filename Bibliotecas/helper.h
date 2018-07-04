@@ -72,6 +72,7 @@ typedef struct {
 typedef struct {
 	char* clave;
 	char* valor;
+	char* instancia;
 	char* idEsi;
 }__attribute__((packed)) clavexEsi;
 

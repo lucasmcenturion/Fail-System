@@ -26,7 +26,64 @@ void finalizarLogger() {
 	log_destroy(vg_logger);
 
 }
+
+char* simulacionGetProximoKE(int letraAscii){
+	void* between(t_IdInstancia*aux){
+			return letraAscii <= aux->finalKE ? true : false;
+	}
+	t_IdInstancia*rv= list_find(instancias, between);
+	return rv->nombre;
+}
+
+char* simulacionGetProximo() {
+	if (list_size(instancias) == 0)
+		return "No hay instancias";
+	t_list* instanciasClon = list_new();
+	list_iterate(instancias,
+					LAMBDA(
+							void _(t_IdInstancia * elemento) {
+		t_IdInstancia* inst = malloc(sizeof(t_IdInstancia));
+		inst->socket = elemento->socket;
+		inst->activo = elemento->activo;
+		inst->nombre = malloc(strlen(elemento->nombre)+1);
+		strcpy(inst->nombre, elemento->nombre);
+		list_add(instanciasClon, inst);
+	}));
+
+	t_IdInstancia *aux;
+
+	if (list_all_satisfy(instanciasClon,
+			LAMBDA(
+					bool _(t_IdInstancia * elemento) { return elemento->activo==true;}))) {
+		list_iterate(instanciasClon,
+				LAMBDA(
+						void _(t_IdInstancia * elemento) { elemento->activo=false;}));
+		aux = list_get(instanciasClon, 0);
+		aux->activo = true;
+		//list_replace(instancias, 0, aux);
+		t_IdInstancia* inst = list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return !strcmp(elemento->nombre,aux->nombre);}));
+		list_destroy_and_destroy_elements(instanciasClon,LAMBDA(void _(t_IdInstancia * elemento) {free(elemento->nombre);free(elemento);}));
+		return inst->nombre;
+	}
+	int i = -1;
+	bool proximo(t_IdInstancia *elemento) {
+		i++;
+		if (!elemento->activo)
+			return true;
+	}
+	list_find(instanciasClon, proximo);
+	aux = list_get(instanciasClon, i);
+	aux->activo = true;
+	list_replace(instanciasClon, i, aux);
+	t_IdInstancia* inst = list_find(instancias, LAMBDA(bool _(t_IdInstancia * elemento) { return !strcmp(elemento->nombre,aux->nombre);}));
+	list_destroy_and_destroy_elements(instanciasClon,LAMBDA(void _(t_IdInstancia * elemento) {free(elemento->nombre);free(elemento);}));
+	return inst->nombre;
+}
+
+
 int getProximoKE(int letraAscii){
+	if (list_size(instancias) == 0)
+		return 0;
 	void* between(t_IdInstancia*aux){
 			return letraAscii <= aux->finalKE ? true : false;
 	}
@@ -272,12 +329,12 @@ void accion(void* socket) {
 				strcpy(idEsi, obtenerId((char*) paquete.Payload, 0));
 				idEsi = realloc(idEsi, strlen(idEsi) + 1);
 				log_info(vg_logger, "Se hizo OK el SET");
-				void* idvalueykey = malloc(strlen(idEsi)+strlen(value)+ strlen(claveNueva) +3);
+				void* idvalueykey = malloc(strlen(idEsi)+strlen(value)+ strlen(claveNueva) + strlen(aux->nombre) + 4);
 				strcpy(idvalueykey, idEsi);
 				strcpy(idvalueykey + strlen(idEsi) + 1, value);
 				strcpy(idvalueykey + strlen(idEsi) + strlen(value) + 2, claveNueva);
 				EnviarDatosTipo(socketPlanificador, COORDINADOR, idvalueykey,
-						strlen(idEsi) + strlen(value) + strlen(claveNueva) + 3, SETOKPLANI);
+						strlen(idEsi) + strlen(value) + strlen(claveNueva) + strlen(aux->nombre) + 4, SETOKPLANI);
 				free(idvalueykey);
 				free(value);
 				free(idEsi);
@@ -479,12 +536,21 @@ void accion(void* socket) {
 					EnviarDatosTipo(socketPlanificador, COORDINADOR, id,
 							strlen(id) + 1, ABORTAR);
 				} else {
-					int tamSend = strlen(paquete.Payload) + strlen(id) + 2;
+					char* instancia;
+					if (!strcmp(ALGORITMO_DISTRIBUCION, "EL")){
+						instancia = simulacionGetProximo();
+					}
+					else if (!strcmp(ALGORITMO_DISTRIBUCION, "KE")){
+						instancia = simulacionGetProximoKE((int)lakey[0]);
+					}
+					int tamSend = strlen(paquete.Payload) + strlen(id) + strlen(instancia) + 3;
 					void* sendPlanificador = malloc(tamSend);
 					strcpy(sendPlanificador, paquete.Payload);
 					sendPlanificador += strlen(paquete.Payload) + 1;
 					strcpy(sendPlanificador, id);
 					sendPlanificador += strlen(id) + 1;
+					strcpy(sendPlanificador, instancia);
+					sendPlanificador += strlen(instancia) + 1;
 					sendPlanificador -= tamSend;
 					EnviarDatosTipo(socketPlanificador, COORDINADOR,
 							sendPlanificador, tamSend, GETPLANI);
