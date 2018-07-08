@@ -154,6 +154,7 @@ void sacar_instancia(int socket) {
 			(void*) tiene_socket);
 	if (remove) {
 		list_add(instancias_caidas, remove);
+		reOrganizar();
 	} else {
 		//termino un ESI
 		bool tiene_socket_esi(t_esiCoordinador *esi) {
