@@ -47,7 +47,7 @@ void imprimirArchivoConfiguracion() {
 			INTERVALO_DUMP);
 	fflush(stdout);
 }
-void compactacion() {
+void compactacion(bool condicion) {
 	/*Voy a obtener todos los valores asociados, los pongo en un dictionary
 	 * y luego voy copiando uno por uno de nuevo al array*/
 	void insertarEnDictionary(t_Entrada * aux){
@@ -95,12 +95,17 @@ void compactacion() {
 	}
 	dictionary_iterator(aux_compactacion, freeValue);
 	dictionary_clean(aux_compactacion);
+	if(condicion){
+		EnviarDatosTipo(socketCoordinador,INSTANCIA,NULL,0,INICIOCOMPACTACION);
+	}else{
+		EnviarDatosTipo(socketCoordinador,INSTANCIA,NULL,0,COMPACTACIONOK);
+	}
 }
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 	int i = 0;
 	int entradasAux=cantidadEntradas;
 	t_list*atomicos=list_create();
-	atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico;}));
+	atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
 	if (list_size(atomicos) > 0 && cantidadEntradas<=list_size(atomicos)) {
 		t_Entrada *aux = list_get(atomicos, i);
 		if (entradasAux > 1) {
@@ -125,7 +130,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 		}
 	} else {
 		if (ENTRADAS_LIBRES >= entradasAux) {
-			compactacion();
+			compactacion(true);
 		} else {
 			printf("Nose\n");
 		}
@@ -147,13 +152,12 @@ int getFirstIndex(int entradasValue) {
 				return i;
 			}
 		}else{
-			if (!strcmp(tabla_entradas[i], "NaN") && tabla_entradas[i+(entradasValue - 1)]
-				&& !strcmp(tabla_entradas[i+(entradasValue - 1)], "NaN")) {
+			if (!strcmp(tabla_entradas[i], "NaN") && i+(entradasValue - 1) < CANT_ENTRADA) {
 				int aux;
 				bool cumple = true;
 				//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
-				for (aux = i + 1; aux < aux+(entradasValue - 1); aux++) {
-					if (strcmp(tabla_entradas[aux], "NaN")) {
+				for (aux = i + 1; aux < i+entradasValue; aux++) {
+					if (tabla_entradas[aux] && strcmp(tabla_entradas[aux], "NaN")) {
 						cumple = false;
 						break;
 					}
@@ -167,7 +171,7 @@ int getFirstIndex(int entradasValue) {
 	if (ENTRADAS_LIBRES >= entradasValue) {
 		/*Cuando se lanza una compactación en una Instancia, se tiene
 		 * que hacer en todas las demas. Falta enviar un mensaje al coordinador*/
-		compactacion();
+		compactacion(true);
 	} else {
 		aplicarAlgoritmoReemplazo(entradasValue);
 	}
@@ -177,13 +181,12 @@ int getFirstIndex(int entradasValue) {
 				return i;
 			}
 		}else{
-			if (!strcmp(tabla_entradas[i], "NaN") && tabla_entradas[i+(entradasValue - 1)]
-				&& !strcmp(tabla_entradas[i+(entradasValue - 1)], "NaN")) {
+			if (!strcmp(tabla_entradas[i], "NaN") && i+(entradasValue - 1) < CANT_ENTRADA) {
 				int aux;
 				bool cumple = true;
 				//evaluo valores intermedios entre el inicio y el supuesto final (entradasValue-1)
-				for (aux = i + 1; aux < aux+(entradasValue - 1); aux++) {
-					if (strcmp(tabla_entradas[aux], "NaN")) {
+				for (aux = i + 1; aux < i+entradasValue; aux++) {
+					if (tabla_entradas[aux] && strcmp(tabla_entradas[aux], "NaN")) {
 						cumple = false;
 						break;
 					}
@@ -223,25 +226,24 @@ void obtenerEntradasViejas(){
 			nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
 			nueva->activo=true;
 			list_add(entradas_administrativa, nueva);
-			int i;
-			char *valueAux = malloc(strlen(value) + 1);
-			strcpy(valueAux, value);
+			int i,j=nueva->tamanio;
 			for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);i++) {
 				if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
-					//Porque no puedo hacer un free de tabla_entradas[i]?
-					tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
-					strcpy(tabla_entradas[i], valueAux);
+					strcpy(tabla_entradas[i], value);
+					value+=j;
+					value-=nueva->tamanio;
 					ENTRADAS_LIBRES--;
 					break;
 				}
-				strncpy(tabla_entradas[i], valueAux, TAMANIO_ENTRADA);
-				valueAux += TAMANIO_ENTRADA;
+				strncpy(tabla_entradas[i], value, TAMANIO_ENTRADA);
+				value += TAMANIO_ENTRADA;
+				j-=TAMANIO_ENTRADA;
 				ENTRADAS_LIBRES--;
 			}
 			free(directorio);
 			free(key);
 			free(value);
-			free(valueAux);
+			//free(valueAux);
 		}
 	}
 	closedir(dir);
@@ -366,8 +368,7 @@ int main(int argc, char* argv[]) {
 			}
 			log_info(logger, "STORE OK se creo archivo con clave %s y valor %s",key, valueReturn);
 			//aviso a coordinador que termine OK
-			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,
-					STOREOK);
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,STOREOK);
 			free(key);
 			free(valueReturn);
 		}
@@ -462,6 +463,10 @@ int main(int argc, char* argv[]) {
 			}
 			ENTRADAS_LIBRES=CANT_ENTRADA;
 			obtenerEntradasViejas();
+		}
+			break;
+		case COMPACTACION: {
+			compactacion(false);
 		}
 			break;
 		}
