@@ -279,37 +279,6 @@ bool EnviarMensaje(int socketFD, char* msg, char emisor[13]) {
 	paquete.Payload = msg;
 	return EnviarPaquete(socketFD, &paquete);
 }
-
-void EnviarHandshake(int socketFD, char emisor[13]) {
-	Paquete* paquete = malloc(TAMANIOHEADER);
-	Header header;
-	header.tipoMensaje = ESHANDSHAKE;
-	header.tamPayload = 0;
-	strcpy(header.emisor, emisor);
-	paquete->header = header;
-	bool valor_retorno=EnviarPaquete(socketFD, paquete);
-
-	free(paquete);
-}
-
-bool EnviarDatos(int socketFD, char emisor[13], void* datos, int tamDatos) {
-	return EnviarDatosTipo(socketFD, emisor, datos, tamDatos, ESDATOS);
-}
-
-void RecibirHandshake(int socketFD, char emisor[13]) {
-	Header header;
-	int resul = RecibirDatos(&header, socketFD, TAMANIOHEADER);
-	if (resul > 0) { // si no hubo error en la recepcion
-		if (strcmp(header.emisor, emisor) == 0) {
-			if (header.tipoMensaje == ESHANDSHAKE)
-				printf("\nConectado con el servidor %s\n", emisor);
-			else
-				perror("Error de Conexion, no se recibio un handshake\n");
-		} else
-			perror("Error, no se recibio un handshake del servidor esperado\n");
-	}
-}
-
 int RecibirDatos(void* paquete, int socketFD, uint32_t cantARecibir) {
 	void* datos = malloc(cantARecibir);
 	int recibido = 0;
@@ -332,6 +301,37 @@ int RecibirDatos(void* paquete, int socketFD, uint32_t cantARecibir) {
 
 	return recibido;
 }
+void EnviarHandshake(int socketFD, char emisor[13]) {
+	Paquete* paquete = malloc(TAMANIOHEADER);
+	Header header;
+	header.tipoMensaje = ESHANDSHAKE;
+	header.tamPayload = 0;
+	strcpy(header.emisor, emisor);
+	paquete->header = header;
+	//bool valor_retorno=EnviarPaquete(socketFD, paquete);
+
+	free(paquete);
+}
+
+bool EnviarDatos(int socketFD, char emisor[13], void* datos, int tamDatos) {
+	return EnviarDatosTipo(socketFD, emisor, datos, tamDatos, ESDATOS);
+}
+
+void RecibirHandshake(int socketFD, char emisor[13]) {
+	Header header;
+	int resul = RecibirDatos(&header, socketFD, TAMANIOHEADER);
+	if (resul > 0) { // si no hubo error en la recepcion
+		if (strcmp(header.emisor, emisor) == 0) {
+			if (header.tipoMensaje == ESHANDSHAKE)
+				printf("\nConectado con el servidor %s\n", emisor);
+			else
+				perror("Error de Conexion, no se recibio un handshake\n");
+		} else
+			perror("Error, no se recibio un handshake del servidor esperado\n");
+	}
+}
+
+
 
 /*int RecibirDatosDeDatanode(void* paquete, int socketFD, uint32_t cantARecibir) {
 	void* datos = malloc(cantARecibir);

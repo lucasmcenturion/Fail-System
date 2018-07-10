@@ -1,7 +1,7 @@
 #ifndef SOCKETS_H_
 #define SOCKETS_H_
 
-#include "helper.h"
+#include <helper.h>
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -64,6 +64,7 @@ int ConectarAServidorPlanificador(int puertoAConectar, char* ipAConectar, char s
 		void EnviarElHandshake(int socketFD, char emisor[13]));
 
 bool EnviarDatos(int socketFD, char emisor[13], void* datos, int tamDatos);
+void EnviarHandshake(int socketFD, char emisor[13]);
 bool EnviarDatosTipo(int socketFD, char emisor[13], void* datos, int tamDatos, tipo tipoMensaje);
 bool EnviarMensaje(int socketFD, char* msg, char emisor[13]);
 bool EnviarPaquete(int socketCliente, Paquete* paquete);

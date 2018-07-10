@@ -8,7 +8,7 @@
 #ifndef CONSOLA_H_
 #define CONSOLA_H_
 
-#include "sockets.h"
+#include <sockets.h>
 
 extern bool planificacion_detenida;
 extern t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
