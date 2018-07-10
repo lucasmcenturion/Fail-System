@@ -3,9 +3,10 @@
 
 /* Variables Globales */
 char *IP, *ALGORITMO_DISTRIBUCION;
-int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO, socketPlanificador;
+int PUERTO, CANT_ENTRADAS, TAMANIO_ENTRADA, RETARDO, socketPlanificador,faltanCompactar;
 t_list* listaHilos;
 bool end;
+bool compactacion_activada;
 t_list* instancias;
 t_list* esis;
 t_list* instancias_caidas;
@@ -14,6 +15,8 @@ t_dictionary* clavesReemplazadas;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
 pthread_mutex_t mutex_clavesNuevas;
+sem_t sem_compactacion;
+t_dictionary *dict_compactacion;
 t_log* vg_logger;
 
 /*Creación de Logger*/
@@ -211,6 +214,7 @@ void sacar_instancia(int socket) {
 			(void*) tiene_socket);
 	if (remove) {
 		list_add(instancias_caidas, remove);
+		reOrganizar();
 	} else {
 		//termino un ESI
 		bool tiene_socket_esi(t_esiCoordinador *esi) {
@@ -288,6 +292,32 @@ void accion(void* socket) {
 				free(datosEntradas);
 			}
 				break;
+			case INICIOCOMPACTACION:{
+				bool func(t_IdInstancia*aux){
+					return aux->socket ==socketFD ? false : true;
+				}
+				t_list*instanciasFiltradas=list_filter(instancias, func);
+				if(list_size(instanciasFiltradas)!=0){
+					compactacion_activada=true;
+					void enviarCompactacion(t_IdInstancia*i){
+						EnviarDatosTipo(i->socket,COORDINADOR,NULL,0,COMPACTACION);
+					}
+					faltanCompactar=list_size(instanciasFiltradas);
+					list_iterate(instanciasFiltradas, enviarCompactacion);
+				}
+			}
+				break;
+			case COMPACTACIONOK: {
+				faltanCompactar--;
+				bool cumple=faltanCompactar == 0 ? true: false;
+				if(cumple){
+					sem_post(&sem_compactacion);
+					dictionary_clean(dict_compactacion);
+					compactacion_activada=false;
+				}
+			}
+				break;
+
 			case IDENTIFICACIONINSTANCIA: {
 				char *nombreInstancia = malloc(paquete.header.tamPayload);
 				strcpy(nombreInstancia, (char*) paquete.Payload);
@@ -328,6 +358,9 @@ void accion(void* socket) {
 				char *idEsi = malloc(10);
 				strcpy(idEsi, obtenerId((char*) paquete.Payload, 0));
 				idEsi = realloc(idEsi, strlen(idEsi) + 1);
+				if(compactacion_activada){
+					sem_wait(&sem_compactacion);
+				}
 				log_info(vg_logger, "Se hizo OK el SET");
 				void* idvaluekeyeinst = malloc(strlen(idEsi)+strlen(value)+ strlen(claveNueva) + strlen(aux->nombre) + 4);
 				strcpy(idvaluekeyeinst, idEsi);
@@ -343,9 +376,16 @@ void accion(void* socket) {
 				break;
 			case STOREOK: {
 				log_info(vg_logger, "Se hizo OK el STORE");
-				EnviarDatosTipo(socketPlanificador, COORDINADOR,
-						paquete.Payload, paquete.header.tamPayload,
-						STOREOKPLANI);
+				int tiene_socket(t_IdInstancia *e) {
+					return e->socket == socketFD;
+				}
+				pthread_mutex_lock(&mutex_instancias);
+				t_IdInstancia *aux = list_find(instancias, tiene_socket);
+				list_remove_by_condition(aux->claves,LAMBDA(int _(char *clave) {return !strcmp(clave, (char* )paquete.Payload);}
+				));
+				pthread_mutex_unlock(&mutex_instancias);
+				EnviarDatosTipo(socketPlanificador, COORDINADOR,paquete.Payload, paquete.header.tamPayload,STOREOKPLANI);
+
 			}
 				break;
 			case ELIMINARCLAVE: {
@@ -657,6 +697,9 @@ int main(void) {
 	pthread_mutex_init(&mutex_instancias, NULL);
 	pthread_mutex_init(&mutex_esis, NULL);
 	pthread_mutex_init(&mutex_clavesNuevas, NULL);
+	sem_init(&sem_compactacion,0,0);
+	compactacion_activada=false;
+	dict_compactacion=dictionary_create();
 	esis = list_create();
 	instancias = list_create();
 	instancias_caidas = list_create();

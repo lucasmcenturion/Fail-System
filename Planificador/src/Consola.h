@@ -1,10 +1,3 @@
-/*
- * Consola.h
- *
- *  Created on: 5 may. 2018
- *      Author: utnso
- */
-
 #ifndef CONSOLA_H_
 #define CONSOLA_H_
 
@@ -25,4 +18,4 @@ void Status(char* clave);
 void Deadlock();
 void consola();
 
-#endif /* CONSOLA_H_ */
+#endif
