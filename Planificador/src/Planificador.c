@@ -15,6 +15,7 @@ bool end;
 sem_t semaforoESI;
 sem_t semPlanificacionDetenida;
 t_log* logger;
+int tiempoActual;
 
 /* Creo el logger de ESI*/
 
@@ -265,10 +266,18 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 	return esi->rafagasEstimadas < esiMenor->rafagasEstimadas;
 }
+bool ComparadorDeTasaDeRespuesta(procesoEsi* esi, procesoEsi* esiMenor) {
+	return tasaDeRespuesta(esi) > tasaDeRespuesta(esiMenor);
+}
+
+float tasaDeRespuesta(procesoEsi* esi){
+		return esi->;
+}
 
 void ejecutarEsi() {
 	//if(!planificacion_detenida){
 		if (list_size(EJECUCION) != 0) {
+			tiempoActual++;
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 			++esiAEjecutar->rafagasRealesEjecutadas;
 			EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
@@ -315,6 +324,19 @@ void HacerSJF() {
     ejecutarEsi();
 }
 
+void HacerHRRN() {
+	t_list* listaAuxAOrdenar = list_duplicate(LISTOS);
+	list_sort(listaAuxAOrdenar, (void*) ComparadorDeRafagas);
+	procesoEsi* esiMenorRR = (procesoEsi*) list_get(listaAuxAOrdenar, 0);
+	list_destroy(listaAuxAOrdenar);
+	t_list* listaConLosMenoresOrdenadosPorOrdenDeLlegada = list_filter(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return item1->rafagasEstimadas == esiMenorEst->rafagasEstimadas;}));
+	procesoEsi* esiMenoryPrimeroEnLlegar = list_get(listaConLosMenoresOrdenadosPorOrdenDeLlegada,0);
+	list_destroy(listaConLosMenoresOrdenadosPorOrdenDeLlegada);
+	procesoEsi* esiAEjecutar = list_remove_by_condition(LISTOS,LAMBDA(bool _(procesoEsi* item1) {return !strcmp(item1->id,esiMenoryPrimeroEnLlegar->id);}));
+    list_add(EJECUCION, esiAEjecutar);
+    ejecutarEsi();
+}
+
 void planificar() {
 	if(!planificacion_detenida){
 		if (!list_is_empty(LISTOS)) {
@@ -327,6 +349,7 @@ void planificar() {
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
 				HacerSJF();
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
+				HacerHRRN();
 
 			}
 		}
@@ -370,10 +393,11 @@ void EnviarHandshakePlani(int socketFD, char emisor[13]) {
 
 int main(void) {
 	inicializar();
+	crearLogger();
 	obtenerValoresArchivoConfiguracion();
 	imprimirArchivoConfiguracion();
 	planificacion_detenida=false;
-	crearLogger();
+	
 	socketCoordinador = ConectarAServidorPlanificador(PUERTO_COORDINADOR,
 			IP_COORDINADOR, COORDINADOR,
 			PLANIFICADOR, RecibirHandshake, EnviarHandshakePlani);

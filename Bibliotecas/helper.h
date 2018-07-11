@@ -62,6 +62,7 @@ typedef struct {
 	char* id;
 	int rafagasRealesEjecutadas;
 	float rafagasEstimadas;
+	float tiempoDeEspera;
 }__attribute__((packed)) procesoEsi;
 
 typedef struct {
