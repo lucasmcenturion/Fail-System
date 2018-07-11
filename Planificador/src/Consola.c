@@ -5,6 +5,7 @@ t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 t_log* logger;
 sem_t semPlanificacionDetenida;
 int flag;
+int tiempoActual;
 
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
@@ -78,6 +79,7 @@ void Desbloquear(char* clave, bool flagPrint){
 		esiAPonerReady->rafagasEstimadas = esiDesbloqueado->esi->rafagasEstimadas;
 		esiAPonerReady->rafagasRealesEjecutadas = esiDesbloqueado->esi->rafagasRealesEjecutadas;
 		esiAPonerReady->socket = esiDesbloqueado->esi->socket;
+		esiAPonerReady->tiempoDeLlegada =tiempoActual;
 		clavexEsi* clavexEsiAAgregar = malloc(sizeof(clavexEsi));
 		clavexEsiAAgregar->clave = malloc(strlen(clave)+1);
 		strcpy(clavexEsiAAgregar->clave, clave);
