@@ -50,6 +50,7 @@ void imprimirArchivoConfiguracion() {
 void compactacion(bool condicion) {
 	/*Voy a obtener todos los valores asociados, los pongo en un dictionary
 	 * y luego voy copiando uno por uno de nuevo al array*/
+
 	void insertarEnDictionary(t_Entrada * aux){
 		//obtenemos el valor asociado
 		char *valueReturn = malloc(aux->tamanio + 1);
@@ -70,8 +71,10 @@ void compactacion(bool condicion) {
 		}
 
 	}
+
 	t_list*activos= list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *ent) {return ent->activo;}));
 	list_iterate(activos, insertarEnDictionary);
+
 	void reOrdenarEntradas(t_Entrada *e){
 		//nuevo index
 		e->index = getFirstIndex(e->entradasOcupadas);
@@ -101,47 +104,69 @@ void compactacion(bool condicion) {
 		EnviarDatosTipo(socketCoordinador,INSTANCIA,NULL,0,COMPACTACIONOK);
 	}
 }
+
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
-	int i = 0;
-	int entradasAux=cantidadEntradas;
-	t_list*atomicos=list_create();
-	atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
-	if (list_size(atomicos) > 0 && cantidadEntradas<=list_size(atomicos)) {
-		t_Entrada *aux = list_get(atomicos, i);
-		if (entradasAux > 1) {
-			while (entradasAux) {
-				strcpy(tabla_entradas[aux->index],"NaN");
-				t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+	if (!strcmp(ALGORITMO_REEMPLAZO, "CIRC")){
+		int i = 0;
+		int entradasAux=cantidadEntradas;
+		t_list*atomicos=list_create();
+		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
+		if (list_size(atomicos) > 0 && cantidadEntradas<=list_size(atomicos)) {
+			t_Entrada *aux = list_get(atomicos, i);
+			if (entradasAux > 1) {
+				while (entradasAux) {
+					strcpy(tabla_entradas[aux->index],"NaN");
+					t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+					EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+					entradasAux--;
+					i++;
+					aux = list_get(atomicos, i);
+					free(elem->clave);
+					free(elem);
+				}
+			} else {
+				//borro entrada actual
+				strcpy(tabla_entradas[aux->index], "NaN");
+				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
-				entradasAux--;
-				i++;
-				aux = list_get(atomicos, i);
 				free(elem->clave);
 				free(elem);
 			}
 		} else {
-			//borro entrada actual
-			strcpy(tabla_entradas[aux->index], "NaN");
-			//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-			t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-			EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
-			free(elem->clave);
-			free(elem);
+			if (ENTRADAS_LIBRES >= entradasAux) {
+				compactacion(true);
+			} else {
+				printf("Nose\n");
+			}
 		}
-	} else {
-		if (ENTRADAS_LIBRES >= entradasAux) {
-			compactacion(true);
-		} else {
-			printf("Nose\n");
-		}
+		list_destroy(atomicos);
+	} else if (!strcmp(ALGORITMO_REEMPLAZO, "LRU")) {
+//		El algoritmo LRU se basa en llevar registro de hace cuánto
+//		fue referenciada cada entrada. Llegado el momento de reemplazar una entrada,
+//		se selecciona aquella entrada que ha sido referenciada hace mayor tiempo(^17)
+//		^17: Para simplificar el manejo de referencias sólo se llevará cuenta de hace cuantas
+//		operaciones fue referenciada cada entrada, almacenando el número de ultima referencia y
+//		reemplazando el menor. Esto solo sera efectivo si se accedió a la instancia (SET y STORE),
+//		caso contrario no afectara el calculo del algoritmo.
+
+//		se agrega atributo 'ultimaReferencia'(int) a t_entrada
+//		hacer lista global de t_entrada y sumar 1 a ultimaReferencia por cada SET/STORE que realizo la instancia
+//		reemplazar entrada que mayor valor de 'ultimaReferencia' tiene
+	} else if (!strcmp(ALGORITMO_REEMPLAZO, "BSU")) {
+//		lleva registro del tamaño dentro de la entrada atomica que está siendo ocupado, y en el momento de un reemplazo,
+//		escoge aquél que ocupa más espacio dentro de una entrada.
+
+//		Fíjate que esa lista global de instancias tiene un atributo que se llama tamanio
+//		Y ahí tiene el tamaño del string que se guarda
+//		Seria algo asi como ordenar por eso la lista y obtener el primero
 	}
-	list_destroy(atomicos);
 }
+
 int ceilDivision(int lengthValue) {
 	double cantidadEntradas;
 	cantidadEntradas = (lengthValue + TAMANIO_ENTRADA - 1) / TAMANIO_ENTRADA;
 	return cantidadEntradas;
-
 }
 
 int getFirstIndex(int entradasValue) {
@@ -248,8 +273,8 @@ void obtenerEntradasViejas(){
 	}
 	closedir(dir);
 }
-void verificarPuntoMontaje() {
 
+void verificarPuntoMontaje() {
 	DIR* dir = opendir(PUNTO_MONTAJE);
 	if (dir) {
 		  closedir (dir);
@@ -262,6 +287,7 @@ void verificarPuntoMontaje() {
 		fflush(stdout);
 	}
 }
+
 void crearArchivo(char*key, char*value) {
 	char *ruta = malloc(strlen(PUNTO_MONTAJE) + strlen("/") + strlen(key) + 1);
 	strcpy(ruta, PUNTO_MONTAJE);

@@ -53,6 +53,7 @@ typedef struct {
 	int index;
 	int entradasOcupadas;
 	int tamanio;
+	int utlimaReferencia;
 	bool atomico;
 	bool activo;
 }__attribute__((packed)) t_Entrada;
