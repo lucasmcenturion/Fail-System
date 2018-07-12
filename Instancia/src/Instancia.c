@@ -157,16 +157,106 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 //		reemplazando el menor. Esto solo sera efectivo si se accedió a la instancia (SET y STORE),
 //		caso contrario no afectara el calculo del algoritmo.
 
-//		se agrega atributo 'ultimaReferencia'(int) a t_entrada
-//		hacer lista global de t_entrada y sumar 1 a ultimaReferencia por cada SET/STORE que realizo la instancia
-//		reemplazar entrada que mayor valor de 'ultimaReferencia' tiene
+//		se agrega atributo 'ultimaReferencia'(int) a estructura t_entrada
+//		se inicializa ultimaReferencia = 0 en entradas obtenidas de 'EntradasViejas'
+//		se suma 1 a 'ultimaReferencia' a la entrada al hacer SETINST
+//		reemplaza entrada que menor valor de 'ultimaReferencia' tiene
+
+		//funcion para comparar ultimasReferencias
+		bool ComparadorDeRef(t_Entrada* entrada, t_Entrada* entradaMenosRef) {
+			return entrada->utlimaReferencia < entradaMenosRef->utlimaReferencia;
+		}
+		//creo lista atomicos
+		t_list*atomicos=list_create();
+		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
+
+		//like algoritmo de reemplazo CIRC nocierto? copypaste pero con atomicos ordenado por ultReferencia
+		int entradasAux=cantidadEntradas;
+		int i = 0;
+		if (list_size(atomicos) > 0 && cantidadEntradas<=list_size(atomicos)) {
+			//ordeno lista atomicos por ultimaReferencia de menor a mayor (atomicos[0] -> menor ref)
+			list_sort(atomicos, (void*) ComparadorDeRef);
+
+			t_Entrada *aux = list_get(atomicos, i);
+			if (entradasAux > 1) {
+				while (entradasAux) {
+					strcpy(tabla_entradas[aux->index],"NaN");
+					t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+					EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+					entradasAux--;
+					i++;
+					aux = list_get(atomicos, i);
+					free(elem->clave);
+					free(elem);
+				}
+			} else {
+				//borro entrada actual
+				strcpy(tabla_entradas[aux->index], "NaN");
+				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+				free(elem->clave);
+				free(elem);
+			}
+		} else {
+			if (ENTRADAS_LIBRES >= entradasAux) {
+				compactacion(true);
+			} else {
+				printf("Nose\n");
+			}
+		}
+		//fin copypaste
 	} else if (!strcmp(ALGORITMO_REEMPLAZO, "BSU")) {
-//		lleva registro del tamaño dentro de la entrada atomica que está siendo ocupado, y en el momento de un reemplazo,
-//		escoge aquél que ocupa más espacio dentro de una entrada.
+//		lleva registro del tamaño dentro de la entrada atomica que está siendo ocupado,
+//		y en el momento de un reemplazo, escoge aquél que ocupa más espacio dentro de una entrada.
 
 //		Fíjate que esa lista global de instancias tiene un atributo que se llama tamanio
 //		Y ahí tiene el tamaño del string que se guarda
 //		Seria algo asi como ordenar por eso la lista y obtener el primero
+
+		//funcion para comparar tamanio
+		bool ComparadorDeTamanio(t_Entrada* entrada, t_Entrada* entradaMenosTam) {
+			return entrada->tamanio > entradaMenosTam->tamanio;
+		}
+		//creo lista atomicos
+		t_list*atomicos=list_create();
+		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
+
+		//like algoritmo de reemplazo CIRC nocierto? copypaste pero con atomicos ordenado por tamanio
+		int entradasAux=cantidadEntradas;
+		int i = 0;
+		if (list_size(atomicos) > 0 && cantidadEntradas<=list_size(atomicos)) {
+			//ordeno lista atomicos por tamanio de entrada de mayor a menor (atomicos[0] -> mayor tamanio)
+			list_sort(atomicos, (void*) ComparadorDeTamanio);
+
+			t_Entrada *aux = list_get(atomicos, i);
+			if (entradasAux > 1) {
+				while (entradasAux) {
+					strcpy(tabla_entradas[aux->index],"NaN");
+					t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+					EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+					entradasAux--;
+					i++;
+					aux = list_get(atomicos, i);
+					free(elem->clave);
+					free(elem);
+				}
+			} else {
+				//borro entrada actual
+				strcpy(tabla_entradas[aux->index], "NaN");
+				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
+				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+				free(elem->clave);
+				free(elem);
+			}
+		} else {
+			if (ENTRADAS_LIBRES >= entradasAux) {
+				compactacion(true);
+			} else {
+				printf("Nose\n");
+			}
+		}
 	}
 }
 
@@ -257,6 +347,7 @@ void obtenerEntradasViejas(){
 			nueva->index = getFirstIndex(nueva->entradasOcupadas);
 			nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
 			nueva->activo=true;
+			nueva->utlimaReferencia = 0;
 			list_add(entradas_administrativa, nueva);
 			int i,j=nueva->tamanio;
 			for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);i++) {
@@ -428,6 +519,7 @@ int main(int argc, char* argv[]) {
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
 				nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
 				nueva->activo=true;
+				nueva->utlimaReferencia++;
 				list_add(entradas_administrativa, nueva);
 				int i;
 				char *valueAux = calloc(1,strlen(value) + 1);
@@ -461,7 +553,9 @@ int main(int argc, char* argv[]) {
 				entrada->index = getFirstIndex(entrada->entradasOcupadas);
 				entrada->atomico =TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
 				entrada->activo = true;
+				entrada->utlimaReferencia++;
 				char *valueAux = calloc(1,strlen(value) + 1);
+				list_add(entradas_administrativa, entrada);
 				strcpy(valueAux, value);
 				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
 						i++) {
