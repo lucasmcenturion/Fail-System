@@ -560,7 +560,7 @@ void accion(void* socket) {
 					strcpy(nueva->clave, lakey);
 					char* id = malloc(strlen(aux->id) + 1);
 					strcpy(id, (aux->id));
-					nueva->idEsi = malloc(strlen(id));
+					nueva->idEsi = malloc(strlen(id)+1);
 					strcpy(nueva->idEsi, id);
 					free(id);
 					list_add(aux->claves, lakey);

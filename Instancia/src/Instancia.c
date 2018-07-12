@@ -362,8 +362,12 @@ int main(int argc, char* argv[]) {
 		}
 			break;
 		case STOREINST: {
+
 			char *key = malloc(strlen(datos) + 1);
 			strcpy(key, datos);
+			if(!strcmp(key,"cocina:tallarines")){
+				int a=3;
+			}
 			pthread_mutex_lock(&mutex_entradas);
 			t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {
 						return !strcmp(key, elemento->clave);
@@ -383,6 +387,12 @@ int main(int argc, char* argv[]) {
 				valueReturn += TAMANIO_ENTRADA;
 			}
 			valueReturn -= esperada->tamanio;
+			if(esperada->tamanio==20){
+				valueReturn--;
+				char*aux=malloc(20);
+				strncpy(aux,valueReturn,20);
+				valueReturn=aux;
+			}
 			pthread_mutex_unlock(&mutex_entradas);
 			int i;
 			//creo el archivo
@@ -420,11 +430,9 @@ int main(int argc, char* argv[]) {
 				int i;
 				char *valueAux = malloc(strlen(value) + 1);
 				strcpy(valueAux, value);
-				for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);
-						i++) {
+				for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);i++) {
 					if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
 						//Porque no puedo hacer un free de tabla_entradas[i]?
-						tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
 						strcpy(tabla_entradas[i], valueAux);
 						ENTRADAS_LIBRES--;
 						break;
