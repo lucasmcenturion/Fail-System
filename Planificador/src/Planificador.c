@@ -6,6 +6,8 @@ char **CLAVES_BLOQUEADAS;
 int flag = 0;
 
 pthread_mutex_t mutexOperaciones;
+t_log* logger;
+
 pthread_mutex_t ordenPlanificacionDetenida;
 int socketCoordinador;
 int tiempo = 0; //Controlar arribos
@@ -14,8 +16,6 @@ t_list* listaHilos;
 bool end;
 sem_t semaforoESI;
 sem_t semPlanificacionDetenida;
-t_log* logger;
-
 /* Creo el logger de ESI*/
 
 /*Creación de Logger*/
@@ -203,10 +203,11 @@ void EscucharESIyPlanificarlo(void* socket) {
 				}
 				break;
 
-			case MUERTEESI: {sem_wait(&semaforoESI);
+			case MUERTEESI: {
+				sem_wait(&semaforoESI);
 				char* idEsiFinalizado = (char*) paquete.Payload;
-				log_info(logger, "El proceso ESI finalizado es %s\n", idEsiFinalizado);
-				fflush(stdout);
+				PasarESIMuertoAColaTerminados(idEsiFinalizado);
+				ChequearPlanificacionYSeguirEjecutando();
 				//libero claves bloqueadas por ese ESI
 				while (list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->idEsi,idEsiFinalizado);}))) {
 					clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->idEsi,idEsiFinalizado);}));
@@ -247,8 +248,17 @@ void EscucharESIyPlanificarlo(void* socket) {
 					free(clavexEsiABorrar);
 					ChequearPlanificacionYSeguirEjecutando();
 				}
-				PasarESIMuertoAColaTerminados(idEsiFinalizado); //Busco en que cola esta y paso el ESI a la cola de TERMINADOS
-				ChequearPlanificacionYSeguirEjecutando();
+				/*PasarESIMuertoAColaTerminados(idEsiFinalizado); //Busco en que cola esta y paso el ESI a la cola de TERMINADOS
+				if(list_size(BLOQUEADOS) > 0 )
+					if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
+					{
+						log_info(logger,"Ejecucion %s, %d, %d, %f", ((procesoEsi*) list_get(EJECUCION, 0))->id
+								,((procesoEsi*) list_get(EJECUCION, 0))->socket,
+								((procesoEsi*) list_get(EJECUCION, 0))->rafagasRealesEjecutadas,
+								((procesoEsi*) list_get(EJECUCION, 0))->rafagasEstimadas);
+
+					}
+				ChequearPlanificacionYSeguirEjecutando();*/
 				break;
 			}
 			}
@@ -264,17 +274,17 @@ void EscucharESIyPlanificarlo(void* socket) {
 void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 	procesoEsi* esiTerminado;
 	if (list_any_satisfy(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* esiBloqueado ) {return !strcmp(esiBloqueado->esi->id,idEsiFinalizado);}))) {
-
 		esiTerminado = list_remove_by_condition(BLOQUEADOS, LAMBDA( bool _(esiBloqueado* esiBloqueado ) {return !strcmp(esiBloqueado->esi->id,idEsiFinalizado);}));
 		list_add(TERMINADOS, esiTerminado);
+		log_info(logger, "El proceso ESI finalizado es %s\n", idEsiFinalizado);
 	} else if (list_any_satisfy(LISTOS,	LAMBDA(	bool _(procesoEsi* esi ) {return !strcmp(esi->id,idEsiFinalizado);}))) {
-
 		esiTerminado = list_remove_by_condition(LISTOS,	LAMBDA(bool _(procesoEsi* esi ) {return !strcmp(esi->id,idEsiFinalizado);}));
 		list_add(TERMINADOS, esiTerminado);
+		log_info(logger, "El proceso ESI finalizado es %s\n", idEsiFinalizado);
 	} else if (list_any_satisfy(EJECUCION, LAMBDA( bool _(procesoEsi* esi ) {return !strcmp(esi->id,idEsiFinalizado);}))) {
-
 		esiTerminado = list_remove_by_condition(EJECUCION, LAMBDA( bool _(procesoEsi* esi ) {return !strcmp(esi->id,idEsiFinalizado);}));
 		list_add(TERMINADOS, esiTerminado);
+		log_info(logger, "El proceso ESI finalizado es %s\n", idEsiFinalizado);
 	}
 	//log_info(logger, "El valor de la estimación del ESI %s es %.4f", esiTerminado->id, esiTerminado->rafagasEstimadas);
 	//sem_post(&semaforoCoordinador);
@@ -287,6 +297,15 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 void ejecutarEsi() {
 	//if(!planificacion_detenida){
 		if (list_size(EJECUCION) != 0) {
+			if(list_size(BLOQUEADOS) > 0 )
+				if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
+				{
+					log_info(logger,"Ejecucion %s, %d, %d, %f", ((procesoEsi*) list_get(EJECUCION, 0))->id
+							,((procesoEsi*) list_get(EJECUCION, 0))->socket,
+							((procesoEsi*) list_get(EJECUCION, 0))->rafagasRealesEjecutadas,
+							((procesoEsi*) list_get(EJECUCION, 0))->rafagasEstimadas);
+
+				}
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 			++esiAEjecutar->rafagasRealesEjecutadas;
 			EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);

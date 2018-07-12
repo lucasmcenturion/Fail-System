@@ -355,9 +355,8 @@ void accion(void* socket) {
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
 				list_add(aux->claves, claveNueva);
 				pthread_mutex_unlock(&mutex_instancias);
-				char *idEsi = malloc(10);
+				char *idEsi = malloc(strlen(obtenerId((char*) paquete.Payload, 0))+1);
 				strcpy(idEsi, obtenerId((char*) paquete.Payload, 0));
-				idEsi = realloc(idEsi, strlen(idEsi) + 1);
 				if(compactacion_activada){
 					sem_wait(&sem_compactacion);
 				}
@@ -438,9 +437,8 @@ void accion(void* socket) {
 					return rv;
 				}
 
-					char*id=malloc(10);
+					char*id=malloc(strlen(((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id)+1);
 					strcpy(id,((t_esiCoordinador*)list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {  return elemento->socket ==socketFD;})))->id);
-					id=realloc(id,strlen(id)+1);
 					log_info(vg_logger, "El COORDINADOR recibió operación SET del ESI: %s, con clave: %s y valor: %s \n", id, key, value);
 				if (strlen(key) > 40) {
 					log_info(vg_logger,
@@ -491,6 +489,7 @@ void accion(void* socket) {
 									pthread_mutex_unlock(&mutex_instancias);
 								}
 							}
+							free(sendInstancia);
 						} else {
 							pthread_mutex_lock(&mutex_instancias);
 							t_IdInstancia *aux = list_find(instancias,
@@ -514,6 +513,8 @@ void accion(void* socket) {
 								sendInstancia -= tam;
 								EnviarDatosTipo(aux->socket, COORDINADOR,
 										sendInstancia, tam, SETINST);
+								free(sendInstancia);
+
 							}
 						}
 						if (!list_is_empty(clavesNuevasPorEsi)) {
@@ -568,9 +569,8 @@ void accion(void* socket) {
 					pthread_mutex_unlock(&mutex_clavesNuevas);
 				}
 				pthread_mutex_unlock(&mutex_esis);
-				char*id = malloc(10);
+				char*id = malloc(strlen(aux->id)+1);
 				strcpy(id, aux->id);
-				id = realloc(id, strlen(id) + 1);
 				if (strlen((char*) paquete.Payload) > 40) {
 					printf(
 							"Se intenta hacer un GET de una clave que excede el tamaño maximo\n");
@@ -607,14 +607,18 @@ void accion(void* socket) {
 				break;
 			case STORECOORD: {
 				usleep(RETARDO);
-				char*id = malloc(10);
+				char*id = malloc(strlen(
+						((t_esiCoordinador*) list_find(esis,
+								LAMBDA(int _(t_esiCoordinador *elemento) {
+									return elemento->socket == socketFD;
+								}
+						)))->id)+1);
 				strcpy(id,
 						((t_esiCoordinador*) list_find(esis,
 								LAMBDA(int _(t_esiCoordinador *elemento) {
 									return elemento->socket == socketFD;
 								}
 						)))->id);
-				id = realloc(id, strlen(id) + 1);
 				if (strlen((char*) paquete.Payload) > 40) {
 					printf(
 							"Se quiere hacer un SET de una clave que excede los 40 caracteres\n");
