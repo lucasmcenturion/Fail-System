@@ -69,7 +69,7 @@ void imprimirArchivoConfiguracion() {
 		clavexEsi* cxe = malloc(sizeof(clavexEsi));
 		cxe->idEsi = malloc(strlen("SYSTEM") + 1);
 		cxe->clave = malloc(strlen(item1) + 1);
-		cxe->valor = NULL;
+		cxe->valor = string_new();
 		strcpy(cxe->idEsi, "SYSTEM");
 		strcpy(cxe->clave, item1);
 		list_add(clavesBloqueadas, cxe);
@@ -102,7 +102,7 @@ void escuchaCoordinador() {
 			} else {	//Sino, agrega la clave a claves bloqueadas
 				clavexEsi* cxe = malloc(sizeof(clavexEsi));
 				cxe->clave = malloc(strlen(paquete.Payload) + 1);
-				cxe->valor = NULL;
+				cxe->valor = string_new();
 				strcpy(cxe->clave, paquete.Payload);
 				cxe->idEsi = malloc(strlen(paquete.Payload + strlen(cxe->clave)+1) + 1);
 				strcpy(cxe->idEsi, paquete.Payload + strlen(cxe->clave) + 1);
@@ -145,7 +145,6 @@ void escuchaCoordinador() {
 			value = paquete.Payload + strlen(id) + 1;
 			key = paquete.Payload + strlen(id) + strlen(value) + 2;
 			instancia = paquete.Payload + strlen(id) + strlen(value) + strlen(key) + 3;
-			int entradasOcupadas = ((int*)(paquete.Payload + strlen(id) + strlen(value) + strlen(key) + strlen (instancia) + 4))[0];
 			clavexEsi* cxe = list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->clave,key);}));
 			cxe->valor = malloc(strlen(value)+1);
 			free(cxe->instancia);
@@ -275,7 +274,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 					}
 				ChequearPlanificacionYSeguirEjecutando();*/
 				break;
-			}
+				}
 			}
 		} else {
 			perror("No es ningún proceso ESI.\n");

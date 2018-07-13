@@ -31,7 +31,7 @@ void obtenerValoresArchivoConfiguracion(char* id) {
 			config_get_string_value(arch, "NOMBRE_INSTANCIA"));
 	PUNTO_MONTAJE = string_from_format("/home/utnso/inst%s", id);
 	NOMBRE_INSTANCIA = string_from_format("Inst%s", id);
-	INTERVALO_DUMP = config_get_int_value(arch, "INTERVALO_DUMP");
+	INTERVALO_DUMP = (strcmp(id,"1") ? 100 : 10); //config_get_int_value(arch, "INTERVALO_DUMP");
 	config_destroy(arch);
 }
 

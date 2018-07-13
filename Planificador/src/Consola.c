@@ -65,9 +65,8 @@ void Bloquear(char* clave, char* id){
 }
 
 void Desbloquear(char* clave, bool flagPrint){
-	while (list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) { return !strcmp(item1->clave, clave);}))){
 	clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
-	esiBloqueado* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, clave);}));
+	esiBloqueado* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, clavexEsiABorrar->clave);}));
 	if (esiDesbloqueado != NULL)
 	{		if(flagPrint)
 			log_info(logger,
@@ -98,13 +97,14 @@ void Desbloquear(char* clave, bool flagPrint){
 		free(esiDesbloqueado->esi);
 		free(esiDesbloqueado);
 	}
+	log_info("%s %s %s %s", clavexEsiABorrar->clave, clavexEsiABorrar->idEsi, clavexEsiABorrar->valor, clavexEsiABorrar->instancia);
 	free(clavexEsiABorrar->clave);
 	free(clavexEsiABorrar->idEsi);
 	free(clavexEsiABorrar->valor);
 	free(clavexEsiABorrar->instancia);
 	free(clavexEsiABorrar);
 	ChequearPlanificacionYSeguirEjecutando();
-	}
+
 }
 
 
@@ -162,7 +162,7 @@ void Status(char* clave){
 	clavexEsi* c = list_find(clavesBloqueadas,LAMBDA(bool _(clavexEsi* item1){return !strcmp(item1->clave,clave);}));
 	if (c != NULL){
 		log_info(logger, "Estado de la clave \"%s\"", clave);
-		if (c->valor != NULL)
+		if (strcmp(c->valor,""))
 		{
 			log_info(logger, "\t\t\t valor: %s", c->valor);
 			log_info(logger, "\t\t\t instancia actual: %s", c->instancia);
@@ -185,17 +185,84 @@ void Status(char* clave){
 	}
 }
 
-void Deadlock(){
 
+bool deadlockRecursivo(char* inicial, t_list* listaDL, esiBloqueado* esi){
+	char* idEsi = ((clavexEsi*)list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, esi->clave);})))->idEsi;
+	esiBloqueado* bloqueado = list_find(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->esi->id, idEsi);}));
+	if (NULL != bloqueado)
+	{
+		if (!strcmp(bloqueado->clave,inicial)){
+			//hay deadlock
+			t_list* deadlock = list_create();
+			list_add(deadlock,bloqueado->esi->id);
+			list_add(deadlock, esi->esi->id);
+			list_add(listaDL, deadlock);
+			return true;
+		}
+		else
+		{
+			//aplicar recursividad
+			deadlockRecursivo(inicial, listaDL, bloqueado->clave);
+		}
+	}
+	return false;
 }
+
+void Deadlock(){
+	int i;
+	t_list* deadlocks = list_create();
+	for (i=0; i < list_size(BLOQUEADOS); i++)
+	{
+		esiBloqueado* bloqueado = list_get(BLOQUEADOS,i);
+		char* claveInicial = ((clavexEsi*)list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->idEsi, bloqueado->esi->id);})))->clave;
+		deadlockRecursivo(claveInicial, deadlocks, bloqueado);
+
+	}
+	printf(list_size(deadlocks));
+	/*
+	for (i=0; i < list_size(clavesBloqueadas); i++)
+	{
+		clavexEsi* cxe = list_get(clavesBloqueadas,i);
+		esiBloqueado* esi = list_find(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->esi->id, cxe->idEsi);}));
+		if(NULL != esi)
+		{
+			t_list* esis_bloqueados = list_filter(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, cxe->clave);}));
+			if (esis_bloqueados != NULL)
+			{
+				int j;
+				for (j=0; j < list_size(esis_bloqueados); j++)
+				{
+					esiBloqueado* bloqueado = list_get(esis_bloqueados,j);
+					t_list* claves = list_filter(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->idEsi, bloqueado->esi->id);}));
+					void f (clavexEsi* c){
+						if(!strcmp(c->clave,esi->clave))
+							log_info("Los ESIs %s y %s se encuentran en deadlock por las claves %s y %s", esi->esi->id, bloqueado->esi->id, esi->clave, bloqueado->clave);
+					}
+					list_iterate(claves, f);
+				}
+
+			}
+		}
+	}*/
+}
+
 void consola() {
 	char * linea;
 	while (true) {
 		linea = readline(">> ");
 		if (linea)
 			add_history(linea);
-		if (!strcmp(linea, "pausar/continuar")) {
-			PausarContinuar();
+		if (!strcmp(linea, "pausar")) {
+			if(!planificacion_detenida)
+				PausarContinuar();
+			else
+				log_info(logger,"La planificación ya se encontraba pausada.\n");
+		}
+		else if(!strcmp(linea, "reanudar")) {
+			if(planificacion_detenida)
+				PausarContinuar();
+			else
+				log_info(logger,"La planificación ya se encontraba reanudada.\n");
 		}
 		else if (!strncmp(linea, "bloquear ", 9)) {
 			char **array_input = string_split(linea, " ");
