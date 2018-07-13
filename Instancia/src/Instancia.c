@@ -50,10 +50,10 @@ void imprimirArchivoConfiguracion() {
 void compactacion(bool condicion) {
 	/*Voy a obtener todos los valores asociados, los pongo en un dictionary
 	 * y luego voy copiando uno por uno de nuevo al array*/
-
+	log_info(logger,"Se activo compactación en %s,comenzando la compactación...",NOMBRE_INSTANCIA);
 	void insertarEnDictionary(t_Entrada * aux){
 		//obtenemos el valor asociado
-		char *valueReturn = malloc(aux->tamanio + 1);
+		char *valueReturn = calloc(1,aux->tamanio + 1);
 		for (int var = aux->index;var < aux->index + aux->entradasOcupadas; var++) {
 			if ((aux->index + aux->entradasOcupadas) - 1 == var) {
 				strcpy(valueReturn, tabla_entradas[var]);
@@ -67,6 +67,8 @@ void compactacion(bool condicion) {
 		dictionary_put(aux_compactacion,aux->clave,valueReturn);
 		int i;
 		for (i = aux->index; i < (aux->index + aux->entradasOcupadas);i++) {
+			free(tabla_entradas[i]);
+			tabla_entradas[i]=calloc(1,TAMANIO_ENTRADA);
 			strcpy(tabla_entradas[i],"NaN");
 		}
 
@@ -78,18 +80,20 @@ void compactacion(bool condicion) {
 	void reOrdenarEntradas(t_Entrada *e){
 		//nuevo index
 		e->index = getFirstIndex(e->entradasOcupadas);
-		char *valueAux = malloc(strlen(dictionary_get(aux_compactacion,e->clave)) + 1);
+		char *valueAux = calloc(1,strlen(dictionary_get(aux_compactacion,e->clave)) + 1);
 		strcpy(valueAux, dictionary_get(aux_compactacion,e->clave));
 		int j;
 		//copio en tabla entradas posta
 		for (j = e->index; j < (e->index + e->entradasOcupadas);j++) {
 			if ((e->index + e->entradasOcupadas) - 1 == j) {
 				strcpy(tabla_entradas[j], valueAux);
+				valueAux+=strlen(tabla_entradas[j]);
 				break;
 			}
 			strncpy(tabla_entradas[j], valueAux, TAMANIO_ENTRADA);
 			valueAux += TAMANIO_ENTRADA;
 		}
+		valueAux-=e->tamanio;
 		free(valueAux);
 	}
 	list_iterate(activos, reOrdenarEntradas);
@@ -103,6 +107,7 @@ void compactacion(bool condicion) {
 	}else{
 		EnviarDatosTipo(socketCoordinador,INSTANCIA,NULL,0,COMPACTACIONOK);
 	}
+	log_info(logger,"Compactación en %s finalizada",NOMBRE_INSTANCIA);
 }
 
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
@@ -121,8 +126,9 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 					entradasAux--;
 					i++;
 					aux = list_get(atomicos, i);
-					free(elem->clave);
-					free(elem);
+					log_info(logger,"Se reemplazo la clave %s",elem->clave);
+					//free(elem->clave);
+					//free(elem);
 				}
 			} else {
 				//borro entrada actual
@@ -130,8 +136,9 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
-				free(elem->clave);
-				free(elem);
+				log_info(logger,"Se reemplazo la clave %s",elem->clave);
+				//free(elem->clave);
+				// free(elem);
 			}
 		} else {
 			if (ENTRADAS_LIBRES >= entradasAux) {
@@ -319,21 +326,21 @@ void obtenerEntradasViejas(){
 	struct dirent *ent;
 	while ((ent = readdir (dir)) != NULL) {
 		if(strcmp(ent->d_name,".") && strcmp(ent->d_name,"..")){
-			char* directorio=malloc(strlen(PUNTO_MONTAJE)+1+strlen(ent->d_name)+1);
+			char* directorio=calloc(1,strlen(PUNTO_MONTAJE)+1+strlen(ent->d_name)+1);
 			strcpy(directorio,PUNTO_MONTAJE);
 			strcat(directorio,"/");
 			strcat(directorio,ent->d_name);
-			char* key =malloc(strlen(ent->d_name)+1);
+			char* key =calloc(1,strlen(ent->d_name)+1);
 			strcpy(key,ent->d_name);
 			FILE *f= fopen(directorio,"r");
 			fseek(f, 0, SEEK_END);
 			int fsize = ftell(f);
 			fseek(f, 0, SEEK_SET);
-			char *value = malloc(fsize+1);
+			char *value = calloc(1,fsize+1);
 			fread(value,fsize,1,f);
 			fclose(f);
-			t_Entrada *nueva = malloc(sizeof(t_Entrada));
-			nueva->clave = malloc(strlen(key) + 1);
+			t_Entrada *nueva = calloc(1,sizeof(t_Entrada));
+			nueva->clave = calloc(1,strlen(key) + 1);
 			strcpy(nueva->clave, key);
 			nueva->entradasOcupadas = ceilDivision(strlen(value));
 			nueva->tamanio = strlen(value);
@@ -380,7 +387,7 @@ void verificarPuntoMontaje() {
 }
 
 void crearArchivo(char*key, char*value) {
-	char *ruta = malloc(strlen(PUNTO_MONTAJE) + strlen("/") + strlen(key) + 1);
+	char *ruta = calloc(1,strlen(PUNTO_MONTAJE) + strlen("/") + strlen(key) + 1);
 	strcpy(ruta, PUNTO_MONTAJE);
 	strcat(ruta, "/");
 	strcat(ruta, key);
@@ -401,11 +408,11 @@ void dump() {
 		for (i = 0; i < list_size(atomicos); i++) {
 
 			t_Entrada* actual = (t_Entrada*) list_get(atomicos,i);
-			char* directorio_actual = malloc(strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 3);
+			char* directorio_actual = calloc(1,strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 3);
 			strcpy(directorio_actual, PUNTO_MONTAJE);
 			strcat(directorio_actual,"/");
 			strcat(directorio_actual, actual->clave);
-			char* valor = malloc(actual->tamanio+1);
+			char* valor = calloc(1,actual->tamanio+1);
 			int tamanioPegado = 0;
 			for (j = actual->index;j < (actual->index + actual->entradasOcupadas); j++) {
 				if ((actual->index + actual->entradasOcupadas) - 1 == j) {
@@ -454,11 +461,8 @@ int main(int argc, char* argv[]) {
 			break;
 		case STOREINST: {
 
-			char *key = malloc(strlen(datos) + 1);
+			char *key = calloc(1,strlen(datos) + 1);
 			strcpy(key, datos);
-			if(!strcmp(key,"cocina:tallarines")){
-				int a=3;
-			}
 			pthread_mutex_lock(&mutex_entradas);
 			t_Entrada *esperada = list_find(entradas_administrativa,LAMBDA(int _(t_Entrada *elemento) {
 						return !strcmp(key, elemento->clave);
@@ -467,7 +471,7 @@ int main(int argc, char* argv[]) {
 			//ya no esta mas activa esta entrada
 			esperada->activo=false;
 			//obtengo el valor asociado
-			char *valueReturn = malloc(esperada->tamanio + 1);
+			char *valueReturn = calloc(1,esperada->tamanio + 1);
 			for (int var = esperada->index;var < esperada->index + esperada->entradasOcupadas; var++) {
 				if ((esperada->index + esperada->entradasOcupadas) - 1 == var) {
 					strcpy(valueReturn, tabla_entradas[var]);
@@ -478,12 +482,6 @@ int main(int argc, char* argv[]) {
 				valueReturn += TAMANIO_ENTRADA;
 			}
 			valueReturn -= esperada->tamanio;
-			if(esperada->tamanio==20){
-				valueReturn--;
-				char*aux=malloc(20);
-				strncpy(aux,valueReturn,20);
-				valueReturn=aux;
-			}
 			pthread_mutex_unlock(&mutex_entradas);
 			int i;
 			//creo el archivo
@@ -501,16 +499,20 @@ int main(int argc, char* argv[]) {
 		}
 			break;
 		case SETINST: {
-			char*key = malloc(strlen(datos) + 1);
+			char*key = calloc(1,100);
 			strcpy(key, datos);
+			key = realloc(key,strlen(key)+1);
 			datos += strlen(datos) + 1;
-			char* value = malloc(strlen(datos) + 1);
+			char* value = calloc(1,strlen(datos) + 1);
 			strcpy(value, datos);
 			pthread_mutex_lock(&mutex_entradas);
-			if (NULL == list_find(entradas_administrativa,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(key, elemento->clave);})))
+			bool iguales(t_Entrada*e){
+				return !strcmp(key,e->clave) ? true : false;
+			}
+			if (NULL == list_find(entradas_administrativa,iguales))
 			{
-				t_Entrada *nueva = malloc(sizeof(t_Entrada));
-				nueva->clave = malloc(strlen(key) + 1);
+				t_Entrada *nueva = calloc(1,sizeof(t_Entrada));
+				nueva->clave = calloc(1,strlen(key) + 1);
 				strcpy(nueva->clave, key);
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
 				nueva->tamanio = strlen(value);
@@ -520,7 +522,7 @@ int main(int argc, char* argv[]) {
 				nueva->utlimaReferencia++;
 				list_add(entradas_administrativa, nueva);
 				int i;
-				char *valueAux = malloc(strlen(value) + 1);
+				char *valueAux = calloc(1,strlen(value) + 1);
 				strcpy(valueAux, value);
 				for (i = nueva->index; i < (nueva->index + nueva->entradasOcupadas);i++) {
 					if ((nueva->index + nueva->entradasOcupadas) - 1 == i) {
@@ -540,6 +542,8 @@ int main(int argc, char* argv[]) {
 				int i;
 				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
 						i++) {
+					free(tabla_entradas[i]);
+					tabla_entradas[i]=calloc(1,TAMANIO_ENTRADA);
 					strcpy(tabla_entradas[i],"NaN");
 					ENTRADAS_LIBRES++;
 				}
@@ -550,14 +554,13 @@ int main(int argc, char* argv[]) {
 				entrada->atomico =TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
 				entrada->activo = true;
 				entrada->utlimaReferencia++;
+				char *valueAux = calloc(1,strlen(value) + 1);
 				list_add(entradas_administrativa, entrada);
-				char *valueAux = malloc(strlen(value) + 1);
 				strcpy(valueAux, value);
 				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
 						i++) {
 					if ((entrada->index + entrada->entradasOcupadas) - 1 == i) {
-						//Porque no puedo hacer un free de tabla_entradas[i]?
-						tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+						tabla_entradas[i] = calloc(1,TAMANIO_ENTRADA);
 						strcpy(tabla_entradas[i], valueAux);
 						ENTRADAS_LIBRES--;
 						break;
@@ -569,7 +572,7 @@ int main(int argc, char* argv[]) {
 			}
 			pthread_mutex_unlock(&mutex_entradas);
 			log_info(logger, "se hizo un SET de clave %s", key);
-			void* claveykey = malloc(strlen(key)+strlen(value)+2);
+			void* claveykey = calloc(1,strlen(key)+strlen(value)+2);
 			strcpy(claveykey,key);
 			strcpy(claveykey+strlen(key)+1,value);
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, claveykey, strlen(key) + strlen(value) + 2,
@@ -586,14 +589,14 @@ int main(int argc, char* argv[]) {
 			datos += sizeof(int);
 			CANT_ENTRADA = *((int*) datos);
 			datos += sizeof(int);
-			tabla_entradas = malloc(CANT_ENTRADA * sizeof(char*)); //CANT_ENTRADA * TAMANIO_ENTRADA
+			tabla_entradas = calloc(1,CANT_ENTRADA * sizeof(char*)); //CANT_ENTRADA * TAMANIO_ENTRADA
 			int i;
 			for (i = 0; i < CANT_ENTRADA; i++) {
-				tabla_entradas[i] = malloc(TAMANIO_ENTRADA);
+				tabla_entradas[i] = calloc(1,TAMANIO_ENTRADA);
 				strcpy(tabla_entradas[i], "NaN");
 			}
 			ENTRADAS_LIBRES=CANT_ENTRADA;
-			obtenerEntradasViejas();
+			//obtenerEntradasViejas();
 		}
 			break;
 		case COMPACTACION: {
