@@ -1,0 +1,159 @@
+==9147== Memcheck, a memory error detector
+==9147== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==9147== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==9147== Command: ./Instancia 1
+==9147== Parent PID: 3708
+==9147== 
+==9147== Invalid write of size 1
+==9147==    at 0x402F486: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B356: main (Instancia.c:477)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid write of size 1
+==9147==    at 0x402F495: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B356: main (Instancia.c:477)
+==9147==  Address 0x4244aaf is 1 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x402F383: strlen (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804AE15: crearArchivo (Instancia.c:395)
+==9147==    by 0x804B407: main (Instancia.c:488)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x40E32AC: _IO_default_xsputn (genops.c:449)
+==9147==    by 0x40E16C5: _IO_file_xsputn@@GLIBC_2.1 (fileops.c:1352)
+==9147==    by 0x40D6DFB: fwrite (iofwrite.c:39)
+==9147==    by 0x804AE29: crearArchivo (Instancia.c:395)
+==9147==    by 0x804B407: main (Instancia.c:488)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x40E32A0: _IO_default_xsputn (genops.c:450)
+==9147==    by 0x40E16C5: _IO_file_xsputn@@GLIBC_2.1 (fileops.c:1352)
+==9147==    by 0x40D6DFB: fwrite (iofwrite.c:39)
+==9147==    by 0x804AE29: crearArchivo (Instancia.c:395)
+==9147==    by 0x804B407: main (Instancia.c:488)
+==9147==  Address 0x4244aaf is 1 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x40BC383: vfprintf (vfprintf.c:1632)
+==9147==    by 0x40DE3DE: vsnprintf (vsnprintf.c:114)
+==9147==    by 0x40546AF: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==9147==    by 0x4053E67: string_from_vformat (in /usr/lib/libcommons.so)
+==9147==    by 0x4053BA0: _log_write_in_level (in /usr/lib/libcommons.so)
+==9147==    by 0x4053A21: log_info (in /usr/lib/libcommons.so)
+==9147==    by 0x804B468: main (Instancia.c:494)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x40E32AC: _IO_default_xsputn (genops.c:449)
+==9147==    by 0x40BB732: vfprintf (vfprintf.c:1632)
+==9147==    by 0x40DE3DE: vsnprintf (vsnprintf.c:114)
+==9147==    by 0x40546AF: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==9147==    by 0x4053E67: string_from_vformat (in /usr/lib/libcommons.so)
+==9147==    by 0x4053BA0: _log_write_in_level (in /usr/lib/libcommons.so)
+==9147==    by 0x4053A21: log_info (in /usr/lib/libcommons.so)
+==9147==    by 0x804B468: main (Instancia.c:494)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x40BC383: vfprintf (vfprintf.c:1632)
+==9147==    by 0x40DE3DE: vsnprintf (vsnprintf.c:114)
+==9147==    by 0x40546E0: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==9147==    by 0x4053E67: string_from_vformat (in /usr/lib/libcommons.so)
+==9147==    by 0x4053BA0: _log_write_in_level (in /usr/lib/libcommons.so)
+==9147==    by 0x4053A21: log_info (in /usr/lib/libcommons.so)
+==9147==    by 0x804B468: main (Instancia.c:494)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid read of size 1
+==9147==    at 0x40E32AC: _IO_default_xsputn (genops.c:449)
+==9147==    by 0x40BB732: vfprintf (vfprintf.c:1632)
+==9147==    by 0x40DE3DE: vsnprintf (vsnprintf.c:114)
+==9147==    by 0x40546E0: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==9147==    by 0x4053E67: string_from_vformat (in /usr/lib/libcommons.so)
+==9147==    by 0x4053BA0: _log_write_in_level (in /usr/lib/libcommons.so)
+==9147==    by 0x4053A21: log_info (in /usr/lib/libcommons.so)
+==9147==    by 0x804B468: main (Instancia.c:494)
+==9147==  Address 0x4244aae is 0 bytes after a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== Invalid free() / delete / delete[] / realloc()
+==9147==    at 0x402D358: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B4B9: main (Instancia.c:498)
+==9147==  Address 0x4244aaa is 2 bytes inside a block of size 6 alloc'd
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== 
+==9147== HEAP SUMMARY:
+==9147==     in use at exit: 3,652 bytes in 84 blocks
+==9147==   total heap usage: 385 allocs, 302 frees, 77,186 bytes allocated
+==9147== 
+==9147== 5 bytes in 1 blocks are definitely lost in loss record 2 of 24
+==9147==    at 0x402C17C: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x40ED2C5: strdup (strdup.c:42)
+==9147==    by 0x4053D2E: string_duplicate (in /usr/lib/libcommons.so)
+==9147==    by 0x80496A7: obtenerValoresArchivoConfiguracion (Instancia.c:30)
+==9147==    by 0x804B1AC: main (Instancia.c:442)
+==9147== 
+==9147== 6 bytes in 1 blocks are definitely lost in loss record 4 of 24
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B88A: main (Instancia.c:557)
+==9147== 
+==9147== 6 bytes in 1 blocks are definitely lost in loss record 5 of 24
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B302: main (Instancia.c:474)
+==9147== 
+==9147== 19 bytes in 1 blocks are definitely lost in loss record 12 of 24
+==9147==    at 0x402C17C: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x40ED2C5: strdup (strdup.c:42)
+==9147==    by 0x4053D2E: string_duplicate (in /usr/lib/libcommons.so)
+==9147==    by 0x8049683: obtenerValoresArchivoConfiguracion (Instancia.c:28)
+==9147==    by 0x804B1AC: main (Instancia.c:442)
+==9147== 
+==9147== 43 bytes in 4 blocks are definitely lost in loss record 16 of 24
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B684: main (Instancia.c:525)
+==9147== 
+==9147== 50 bytes in 1 blocks are definitely lost in loss record 18 of 24
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x804B7AB: main (Instancia.c:546)
+==9147== 
+==9147== 136 bytes in 1 blocks are possibly lost in loss record 21 of 24
+==9147==    at 0x402E0B8: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==9147==    by 0x4011726: allocate_dtv (dl-tls.c:322)
+==9147==    by 0x401214B: _dl_allocate_tls (dl-tls.c:539)
+==9147==    by 0x4061CC3: allocate_stack (allocatestack.c:588)
+==9147==    by 0x4061CC3: pthread_create@@GLIBC_2.1 (pthread_create.c:539)
+==9147==    by 0x804B225: main (Instancia.c:451)
+==9147== 
+==9147== LEAK SUMMARY:
+==9147==    definitely lost: 129 bytes in 9 blocks
+==9147==    indirectly lost: 0 bytes in 0 blocks
+==9147==      possibly lost: 136 bytes in 1 blocks
+==9147==    still reachable: 3,387 bytes in 74 blocks
+==9147==         suppressed: 0 bytes in 0 blocks
+==9147== Reachable blocks (those to which a pointer was found) are not shown.
+==9147== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9147== 
+==9147== For counts of detected and suppressed errors, rerun with: -v
+==9147== ERROR SUMMARY: 20 errors from 17 contexts (suppressed: 0 from 0)

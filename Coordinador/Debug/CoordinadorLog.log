@@ -1,0 +1,415 @@
+[INFO] 20:42:49:557 Coordinador/(22206:22206): Chequeo archivo de configuración
+[INFO] 20:42:49:624 Coordinador/(22206:22206): IP: 127.0.0.1
+[INFO] 20:42:49:631 Coordinador/(22206:22206): PUERTO: 8000
+[INFO] 20:43:36:665 Coordinador/(22206:22271): El COORDINADOR recibió operación GET del ESI: Largo, con clave: e3:sony:juegos
+
+[INFO] 20:43:36:679 Coordinador/(22206:22271): El COORDINADOR recibió operación GET del ESI: Largo, con clave: e3:microsoft:juegos
+
+[INFO] 20:43:36:682 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:sony:juegos y valor: TLOU2 
+
+[INFO] 20:43:36:710 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:718 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:sony:juegos y valor: Spiderman 
+
+[INFO] 20:43:36:727 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:729 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:sony:juegos y valor: GhostOfTsushima 
+
+[INFO] 20:43:36:730 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:731 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:sony:juegos y valor: DeathStranding 
+
+[INFO] 20:43:36:732 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:737 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:sony:juegos y valor: ResidenEvil2Remake 
+
+[INFO] 20:43:36:738 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:742 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:sony:juegos y valor: Destiny2DLCForsaken 
+
+[INFO] 20:43:36:743 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:744 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: DLCCuphead 
+
+[INFO] 20:43:36:755 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:760 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: ForzaHorizon4 
+
+[INFO] 20:43:36:762 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:764 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: Gears5 
+
+[INFO] 20:43:36:765 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:766 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: MetroExodus 
+
+[INFO] 20:43:36:767 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:768 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: Fallout76 
+
+[INFO] 20:43:36:769 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:771 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: TheDivision2 
+
+[INFO] 20:43:36:772 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:773 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: DyingLight2 
+
+[INFO] 20:43:36:774 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:775 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: Crackdown3 
+
+[INFO] 20:43:36:776 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:777 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: HaloInfinite 
+
+[INFO] 20:43:36:778 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:779 Coordinador/(22206:22271): El COORDINADOR recibió operación SET del ESI: Largo, con clave: e3:microsoft:juegos y valor: KingdomHearts3 
+
+[INFO] 20:43:36:780 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:782 Coordinador/(22206:22271): El COORDINADOR recibió operación STORE del ESI: Largo, con clave: e3:microsoft:juegos
+
+[INFO] 20:43:36:790 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:36:796 Coordinador/(22206:22271): El COORDINADOR recibió operación STORE del ESI: Largo, con clave: e3:sony:juegos
+
+[INFO] 20:43:36:798 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:36:809 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: sony:consola:ps1
+
+[INFO] 20:43:36:809 Coordinador/(22206:22286): El COORDINADOR recibió operación GET del ESI: Tiramisu, con clave: postre:ingrediente1
+
+[INFO] 20:43:36:846 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: sony:consola:ps2
+
+[INFO] 20:43:36:848 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: sony:consola:ps3
+
+[INFO] 20:43:36:851 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: sony:consola:ps4
+
+[INFO] 20:43:36:852 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: microsoft:consola:xbox
+
+[INFO] 20:43:36:854 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: microsoft:consola:xbox360
+
+[INFO] 20:43:36:856 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: microsoft:consola:xboxone
+
+[INFO] 20:43:36:858 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:nes
+
+[INFO] 20:43:36:860 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:snes
+
+[INFO] 20:43:36:862 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:nintendo64
+
+[INFO] 20:43:36:865 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:gamecube
+
+[INFO] 20:43:36:867 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:wii
+
+[INFO] 20:43:36:869 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:wiiu
+
+[INFO] 20:43:36:871 Coordinador/(22206:22301): El COORDINADOR recibió operación GET del ESI: MultiClave, con clave: nintendo:consola:switch
+
+[INFO] 20:43:36:873 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:nes y valor: Mario 
+
+[INFO] 20:43:36:876 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:36:881 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:snes y valor: SuperMario 
+
+[INFO] 20:43:36:882 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:885 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:nintendo64 y valor: Mario64 
+
+[INFO] 20:43:36:886 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:888 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:gamecube y valor: Mario 
+
+[INFO] 20:43:36:889 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:36:890 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:wii y valor: MarioGalaxy 
+
+[INFO] 20:43:36:891 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:893 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:wiiu y valor: RIP 
+
+[INFO] 20:43:36:894 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:895 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: nintendo:consola:switch y valor: MarioOddysey 
+
+[INFO] 20:43:36:896 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:36:897 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: sony:consola:ps1 y valor: FinalFantasy 
+
+[INFO] 20:43:36:898 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:899 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: sony:consola:ps2 y valor: GodOfWar 
+
+[INFO] 20:43:36:900 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:901 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: sony:consola:ps3 y valor: TLOU 
+
+[INFO] 20:43:36:902 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:36:904 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: sony:consola:ps4 y valor: Bloodborne 
+
+[INFO] 20:43:36:905 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:36:907 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: microsoft:consola:xbox y valor: Halo 
+
+[INFO] 20:43:36:908 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:36:910 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: microsoft:consola:xbox360 y valor: Halo 
+
+[INFO] 20:43:36:912 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:36:914 Coordinador/(22206:22301): El COORDINADOR recibió operación SET del ESI: MultiClave, con clave: microsoft:consola:xboxone y valor: Halo 
+
+[INFO] 20:43:36:915 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:43:304 Coordinador/(22206:22321): El COORDINADOR recibió operación GET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente5
+
+[INFO] 20:43:43:342 Coordinador/(22206:22321): El COORDINADOR recibió operación GET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente4
+
+[INFO] 20:43:43:346 Coordinador/(22206:22321): El COORDINADOR recibió operación GET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente3
+
+[INFO] 20:43:43:348 Coordinador/(22206:22321): El COORDINADOR recibió operación GET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente2
+
+[INFO] 20:43:43:351 Coordinador/(22206:22321): El COORDINADOR recibió operación GET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente1
+
+[INFO] 20:43:43:353 Coordinador/(22206:22321): El COORDINADOR recibió operación SET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente1 y valor: milanesadecarne 
+
+[INFO] 20:43:43:358 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:43:362 Coordinador/(22206:22321): El COORDINADOR recibió operación SET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente2 y valor: queso 
+
+[INFO] 20:43:43:363 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:43:364 Coordinador/(22206:22321): El COORDINADOR recibió operación SET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente3 y valor: jamon 
+
+[INFO] 20:43:43:365 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:43:367 Coordinador/(22206:22321): El COORDINADOR recibió operación SET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente4 y valor: lechuga 
+
+[INFO] 20:43:43:368 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:43:374 Coordinador/(22206:22321): El COORDINADOR recibió operación SET del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente5 y valor: tomate 
+
+[INFO] 20:43:43:374 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:43:377 Coordinador/(22206:22321): El COORDINADOR recibió operación STORE del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente1
+
+[INFO] 20:43:43:379 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:43:382 Coordinador/(22206:22321): El COORDINADOR recibió operación STORE del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente2
+
+[INFO] 20:43:43:386 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:43:389 Coordinador/(22206:22321): El COORDINADOR recibió operación STORE del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente3
+
+[INFO] 20:43:43:391 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:43:400 Coordinador/(22206:22321): El COORDINADOR recibió operación STORE del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente4
+
+[INFO] 20:43:43:403 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:43:406 Coordinador/(22206:22321): El COORDINADOR recibió operación STORE del ESI: MilanesaCompleta, con clave: platoprincipal:ingrediente5
+
+[INFO] 20:43:43:409 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:49:733 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:bondiola:simple
+
+[INFO] 20:43:49:770 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:bondiola:jyq
+
+[INFO] 20:43:49:772 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:bondiola:completo
+
+[INFO] 20:43:49:773 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:lomo:simple
+
+[INFO] 20:43:49:775 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:lomo:jyq
+
+[INFO] 20:43:49:777 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:lomo:completo
+
+[INFO] 20:43:49:783 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:vacio:simple
+
+[INFO] 20:43:49:785 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:vacio:jyq
+
+[INFO] 20:43:49:787 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:vacio:completo
+
+[INFO] 20:43:49:790 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:choripan
+
+[INFO] 20:43:49:792 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: sandwich:morcipan
+
+[INFO] 20:43:49:794 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:chinchulines
+
+[INFO] 20:43:49:797 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:rinion
+
+[INFO] 20:43:49:799 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:tiraasado
+
+[INFO] 20:43:49:800 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:vacio
+
+[INFO] 20:43:49:803 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:entrania
+
+[INFO] 20:43:49:804 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:bifedelomo
+
+[INFO] 20:43:49:806 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:matambre:simple
+
+[INFO] 20:43:49:808 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:matambre:alapizza
+
+[INFO] 20:43:49:811 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:ojodebife
+
+[INFO] 20:43:49:813 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:molleja
+
+[INFO] 20:43:49:815 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: parrilla:pareja
+
+[INFO] 20:43:49:816 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:papasfritas
+
+[INFO] 20:43:49:817 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:batatasfritas
+
+[INFO] 20:43:49:819 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:tallarines
+
+[INFO] 20:43:49:820 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:ravioles
+
+[INFO] 20:43:49:822 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:nioquis
+
+[INFO] 20:43:49:837 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:suprema
+
+[INFO] 20:43:49:838 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:milanesa:carne
+
+[INFO] 20:43:49:843 Coordinador/(22206:22338): El COORDINADOR recibió operación GET del ESI: MenuParrilla, con clave: cocina:milanesa:pollo
+
+[INFO] 20:43:49:845 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:bondiola:simple y valor: panbondiola 
+
+[INFO] 20:43:49:848 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:850 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:bondiola:jyq y valor: panjamonquesobondiola 
+
+[INFO] 20:43:49:852 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:857 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:bondiola:completo y valor: panjamonquesolechugatomatebondiola 
+
+[INFO] 20:43:49:858 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:860 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:lomo:simple y valor: panlomo 
+
+[INFO] 20:43:49:860 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:864 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:lomo:jyq y valor: panjamonquesolomo 
+
+[INFO] 20:43:49:864 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:866 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:lomo:completo y valor: panjamonquesolechugatomatelomo 
+
+[INFO] 20:43:49:867 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:874 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:vacio:simple y valor: panvacio 
+
+[INFO] 20:43:49:875 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:877 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:vacio:jyq y valor: panjamonquesovacio 
+
+[INFO] 20:43:49:877 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:879 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:vacio:completo y valor: panjamonquesolechugatomatevacio 
+
+[INFO] 20:43:49:880 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:882 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:choripan y valor: panchorizo 
+
+[INFO] 20:43:49:883 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:884 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: sandwich:morcipan y valor: panmorcilla 
+
+[INFO] 20:43:49:884 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:886 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:chinchulines y valor: chinchulineslimon 
+
+[INFO] 20:43:49:888 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:891 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:rinion y valor: rinionylimon 
+
+[INFO] 20:43:49:893 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:898 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:tiraasado y valor: porcionde3o4huesos 
+
+[INFO] 20:43:49:901 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:903 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:vacio y valor: vacioconfritas 
+
+[INFO] 20:43:49:903 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:905 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:entrania y valor: entraniaconfritas 
+
+[INFO] 20:43:49:906 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:907 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:bifedelomo y valor: bifeconfritas 
+
+[INFO] 20:43:49:909 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:912 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:matambre:simple y valor: matambrefritas 
+
+[INFO] 20:43:49:913 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:915 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:matambre:alapizza y valor: matambrejamonquesooregano 
+
+[INFO] 20:43:49:916 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:918 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:ojodebife y valor: ojodebifeconfritas 
+
+[INFO] 20:43:49:920 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:921 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:molleja y valor: mollejaconlimon 
+
+[INFO] 20:43:49:922 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:923 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: parrilla:pareja y valor: chorizoymorcilla 
+
+[INFO] 20:43:49:923 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:925 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:papasfritas y valor: papayaceite 
+
+[INFO] 20:43:49:927 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:929 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:batatasfritas y valor: batatayaceite 
+
+[INFO] 20:43:49:930 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:931 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:tallarines y valor: tallarinescontuco 
+
+[INFO] 20:43:49:932 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:934 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:ravioles y valor: raviolesdejyqcontuco 
+
+[INFO] 20:43:49:935 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:937 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:nioquis y valor: nioquisdepapacontuco 
+
+[INFO] 20:43:49:937 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:939 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:suprema y valor: supremaalamaryland 
+
+[INFO] 20:43:49:941 Coordinador/(22206:22231): Se hizo OK el SET
+[INFO] 20:43:49:942 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:milanesa:carne y valor: milanesadecarneconfritas 
+
+[INFO] 20:43:49:942 Coordinador/(22206:22244): Se hizo OK el SET
+[INFO] 20:43:49:943 Coordinador/(22206:22338): El COORDINADOR recibió operación SET del ESI: MenuParrilla, con clave: cocina:milanesa:pollo y valor: milanesadepolloconfritas 
+
+[INFO] 20:43:49:944 Coordinador/(22206:22257): Se hizo OK el SET
+[INFO] 20:43:49:946 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:bondiola:simple
+
+[INFO] 20:43:49:947 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:49:953 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:bondiola:jyq
+
+[INFO] 20:43:49:955 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:49:956 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:bondiola:completo
+
+[INFO] 20:43:49:959 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:49:961 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:lomo:simple
+
+[INFO] 20:43:49:962 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:49:964 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:lomo:jyq
+
+[INFO] 20:43:49:965 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:49:967 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:lomo:completo
+
+[INFO] 20:43:49:968 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:49:972 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:vacio:simple
+
+[INFO] 20:43:49:973 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:49:977 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:vacio:jyq
+
+[INFO] 20:43:49:978 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:49:980 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:vacio:completo
+
+[INFO] 20:43:49:981 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:49:983 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:choripan
+
+[INFO] 20:43:49:984 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:49:987 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: sandwich:morcipan
+
+[INFO] 20:43:49:989 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:49:992 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:chinchulines
+
+[INFO] 20:43:49:993 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:49:995 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:rinion
+
+[INFO] 20:43:49:997 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:49:998 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:tiraasado
+
+[INFO] 20:43:49:999 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:49:1 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:vacio
+
+[INFO] 20:43:49:2 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:50:4 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:entrania
+
+[INFO] 20:43:50:5 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:50:8 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:bifedelomo
+
+[INFO] 20:43:50:9 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:50:11 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:matambre:simple
+
+[INFO] 20:43:50:12 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:50:14 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:matambre:alapizza
+
+[INFO] 20:43:50:17 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:50:22 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:ojodebife
+
+[INFO] 20:43:50:24 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:50:26 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:molleja
+
+[INFO] 20:43:50:29 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:50:30 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: parrilla:pareja
+
+[INFO] 20:43:50:31 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:50:33 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:papasfritas
+
+[INFO] 20:43:50:34 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:50:36 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:batatasfritas
+
+[INFO] 20:43:50:37 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:50:40 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:tallarines
+
+[INFO] 20:43:50:42 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:50:48 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:ravioles
+
+[INFO] 20:43:50:50 Coordinador/(22206:22244): Se hizo OK el STORE
+[INFO] 20:43:50:52 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:nioquis
+
+[INFO] 20:43:50:53 Coordinador/(22206:22257): Se hizo OK el STORE
+[INFO] 20:43:50:59 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:suprema
+
+[INFO] 20:43:50:68 Coordinador/(22206:22231): Se hizo OK el STORE
+[INFO] 20:43:50:70 Coordinador/(22206:22338): El COORDINADOR recibió operación STORE del ESI: MenuParrilla, con clave: cocina:milanesa:carne
+
+[INFO] 07:49:37:58 Coordinador/(12514:12514): Chequeo archivo de configuración
+[INFO] 07:49:38:175 Coordinador/(12514:12514): IP: 127.0.0.1
+[INFO] 07:49:38:180 Coordinador/(12514:12514): PUERTO: 8000
+[INFO] 07:50:54:855 Coordinador/(12708:12708): Chequeo archivo de configuración
+[INFO] 07:50:54:911 Coordinador/(12708:12708): IP: 127.0.0.1
+[INFO] 07:50:54:917 Coordinador/(12708:12708): PUERTO: 8000

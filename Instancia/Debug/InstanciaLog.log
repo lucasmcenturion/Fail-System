@@ -1,0 +1,9 @@
+[INFO] 21:34:51:357 INSTANCIA/(9147:9147): se hizo un SET de clave principal1
+[INFO] 21:34:51:425 INSTANCIA/(9147:9147): se hizo un SET de clave principal1
+[INFO] 21:35:19:948 INSTANCIA/(9147:9147): se hizo un SET de clave spoiler1
+[INFO] 21:35:19:978 INSTANCIA/(9147:9147): STORE OK se creo archivo con clave spoiler1 y valor era-el-padre-de-luke
+[INFO] 21:35:19:982 INSTANCIA/(9147:9147): STORE OK se creo archivo con clave principal1 y valor teddy
+[INFO] 21:35:19:984 INSTANCIA/(9147:9147): se hizo un SET de clave principal3
+[INFO] 21:35:19:993 INSTANCIA/(9147:9147): se hizo un SET de clave principal2
+[INFO] 21:35:19:0 INSTANCIA/(9147:9147): STORE OK se creo archivo con clave principal1 y valor rnard
+[INFO] 21:35:19:4 INSTANCIA/(9147:9147): STORE OK se creo archivo con clave principal2 y valor malvo
