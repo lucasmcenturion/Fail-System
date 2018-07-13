@@ -146,6 +146,7 @@ void escuchaCoordinador() {
 			value = paquete.Payload + strlen(id) + 1;
 			key = paquete.Payload + strlen(id) + strlen(value) + 2;
 			instancia = paquete.Payload + strlen(id) + strlen(value) + strlen(key) + 3;
+			int entradasOcupadas = ((int*)(paquete.Payload + strlen(id) + strlen(value) + strlen(key) + strlen (instancia) + 4))[0];
 			clavexEsi* cxe = list_find(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->clave,key);}));
 			cxe->valor = malloc(strlen(value)+1);
 			free(cxe->instancia);

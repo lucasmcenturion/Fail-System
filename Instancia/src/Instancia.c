@@ -186,8 +186,8 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 					entradasAux--;
 					i++;
 					aux = list_get(atomicos, i);
-					free(elem->clave);
-					free(elem);
+					//free(elem->clave);
+					//free(elem);
 				}
 			} else {
 				//borro entrada actual
