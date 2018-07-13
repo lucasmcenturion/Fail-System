@@ -122,7 +122,15 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				while (entradasAux) {
 					strcpy(tabla_entradas[aux->index],"NaN");
 					t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-					EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+					int tam = strlen(elem->clave)+1+sizeof(int);
+					void* claveYTamanio = calloc(1,tam);
+					strcpy(claveYTamanio,elem->clave);
+					claveYTamanio+=strlen(elem->clave)+1;
+					*((int*)claveYTamanio)=elem->entradasOcupadas;
+					claveYTamanio+=sizeof(int);
+					claveYTamanio-=tam;
+					EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
+					free(claveYTamanio);
 					entradasAux--;
 					i++;
 					aux = list_get(atomicos, i);
@@ -135,7 +143,15 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				strcpy(tabla_entradas[aux->index], "NaN");
 				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+				int tam = strlen(elem->clave)+1+sizeof(int);
+				void* claveYTamanio = calloc(1,tam);
+				strcpy(claveYTamanio,elem->clave);
+				claveYTamanio+=strlen(elem->clave)+1;
+				*((int*)claveYTamanio)=elem->entradasOcupadas;
+				claveYTamanio+=sizeof(int);
+				claveYTamanio-=tam;
+				EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
+				free(claveYTamanio);
 				log_info(logger,"Se reemplazo la clave %s",elem->clave);
 				//free(elem->clave);
 				// free(elem);
@@ -170,7 +186,15 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				while (entradasAux) {
 					strcpy(tabla_entradas[aux->index],"NaN");
 					t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-					EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+					int tam = strlen(elem->clave)+1+sizeof(int);
+					void* claveYTamanio = calloc(1,tam);
+					strcpy(claveYTamanio,elem->clave);
+					claveYTamanio+=strlen(elem->clave)+1;
+					*((int*)claveYTamanio)=elem->entradasOcupadas;
+					claveYTamanio+=sizeof(int);
+					claveYTamanio-=tam;
+					EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
+					free(claveYTamanio);
 					entradasAux--;
 					i++;
 					aux = list_get(atomicos, i);
@@ -183,7 +207,15 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				strcpy(tabla_entradas[aux->index], "NaN");
 				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+				int tam = strlen(elem->clave)+1+sizeof(int);
+				void* claveYTamanio = calloc(1,tam);
+				strcpy(claveYTamanio,elem->clave);
+				claveYTamanio+=strlen(elem->clave)+1;
+				*((int*)claveYTamanio)=elem->entradasOcupadas;
+				claveYTamanio+=sizeof(int);
+				claveYTamanio-=tam;
+				EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
+				free(claveYTamanio);
 				log_info(logger,"Se reemplazo la clave %s",elem->clave);
 //				free(elem->clave);
 //				free(elem);
@@ -216,7 +248,15 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				while (entradasAux) {
 					strcpy(tabla_entradas[aux->index],"NaN");
 					t_Entrada *elem = list_remove_by_condition(entradas_administrativa, LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-					EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+					int tam = strlen(elem->clave)+1+sizeof(int);
+					void* claveYTamanio = calloc(1,tam);
+					strcpy(claveYTamanio,elem->clave);
+					claveYTamanio+=strlen(elem->clave)+1;
+					*((int*)claveYTamanio)=elem->entradasOcupadas;
+					claveYTamanio+=sizeof(int);
+					claveYTamanio-=tam;
+					EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
+					free(claveYTamanio);
 					entradasAux--;
 					i++;
 					aux = list_get(atomicos, i);
@@ -229,7 +269,15 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				strcpy(tabla_entradas[aux->index], "NaN");
 				//t_Entrada *elem=list_remove_by_condition(atomicos,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
 				t_Entrada* elem=list_remove_by_condition(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->index == aux->index;}));
-				EnviarDatosTipo(socketCoordinador, INSTANCIA, elem->clave,strlen(elem->clave) + 1, ELIMINARCLAVE);
+				int tam = strlen(elem->clave)+1+sizeof(int);
+				void* claveYTamanio = calloc(1,tam);
+				strcpy(claveYTamanio,elem->clave);
+				claveYTamanio+=strlen(elem->clave)+1;
+				*((int*)claveYTamanio)=elem->entradasOcupadas;
+				claveYTamanio+=sizeof(int);
+				claveYTamanio-=tam;
+				EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
+				free(claveYTamanio);
 				log_info(logger,"Se reemplazo la clave %s",elem->clave);
 //				free(elem->clave);
 //				free(elem);
@@ -418,7 +466,7 @@ void dump() {
 void ejecutarDump(){
 	while(1){
 		sleep(INTERVALO_DUMP);
-		//dump();
+		dump();
 	}
 }
 
@@ -494,12 +542,14 @@ int main(int argc, char* argv[]) {
 			bool iguales(t_Entrada*e){
 				return !strcmp(key,e->clave) ? true : false;
 			}
+			int entradasOcupadas;
 			if (NULL == list_find(entradas_administrativa,iguales))
 			{
 				t_Entrada *nueva = calloc(1,sizeof(t_Entrada));
 				nueva->clave = calloc(1,strlen(key) + 1);
 				strcpy(nueva->clave, key);
 				nueva->entradasOcupadas = ceilDivision(strlen(value));
+				entradasOcupadas=nueva->entradasOcupadas;
 				nueva->tamanio = strlen(value);
 				nueva->index = getFirstIndex(nueva->entradasOcupadas);
 				nueva->atomico =TAMANIO_ENTRADA - nueva->tamanio >= 0 ? true : false;
@@ -534,6 +584,7 @@ int main(int argc, char* argv[]) {
 				}
 
 				entrada->entradasOcupadas = ceilDivision(strlen(value));
+				entradasOcupadas=entrada->entradasOcupadas;
 				entrada->tamanio = strlen(value);
 				entrada->index = getFirstIndex(entrada->entradasOcupadas);
 				entrada->atomico =TAMANIO_ENTRADA - entrada->tamanio >= 0 ? true : false;
@@ -557,11 +608,16 @@ int main(int argc, char* argv[]) {
 			ULT_REF++;
 			pthread_mutex_unlock(&mutex_entradas);
 			log_info(logger, "se hizo un SET de clave %s", key);
-			void* claveykey = calloc(1,strlen(key)+strlen(value)+2);
+			int tam=strlen(key)+strlen(value)+sizeof(int)+2;
+			void* claveykey = calloc(1,tam);
 			strcpy(claveykey,key);
-			strcpy(claveykey+strlen(key)+1,value);
-			EnviarDatosTipo(socketCoordinador, INSTANCIA, claveykey, strlen(key) + strlen(value) + 2,
-					SETOK);
+			claveykey+=strlen(key)+1;
+			strcpy(claveykey,value);
+			claveykey+=strlen(value)+1;
+			*((int*)claveykey)=entradasOcupadas;
+			claveykey+=sizeof(int);
+			claveykey-=tam;
+			EnviarDatosTipo(socketCoordinador, INSTANCIA, claveykey, tam, SETOK);
 			free(claveykey);
 			free(key);
 			free(value);
