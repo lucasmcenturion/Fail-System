@@ -43,6 +43,7 @@ typedef struct {
 	int socket;
 	int inicialKE;
 	int finalKE;
+	int entradasOcupadas;
 	char* nombre;
 	bool activo;
 	t_list *claves;
@@ -63,6 +64,7 @@ typedef struct {
 	char* id;
 	int rafagasRealesEjecutadas;
 	float rafagasEstimadas;
+	int tiempoDeLlegada;
 }__attribute__((packed)) procesoEsi;
 
 typedef struct {

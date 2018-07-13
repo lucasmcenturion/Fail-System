@@ -5,6 +5,7 @@ t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 t_log* logger;
 sem_t semPlanificacionDetenida;
 int flag;
+int tiempoActual;
 
 void PausarContinuar(){
 	planificacion_detenida = !planificacion_detenida;
@@ -64,11 +65,11 @@ void Bloquear(char* clave, char* id){
 }
 
 void Desbloquear(char* clave, bool flagPrint){
+	while (list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) { return !strcmp(item1->clave, clave);}))){
 	clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
-	esiBloqueado* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, clavexEsiABorrar->clave);}));
+	esiBloqueado* esiDesbloqueado = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* item1){ return !strcmp(item1->clave, clave);}));
 	if (esiDesbloqueado != NULL)
-	{
-		if(flagPrint)
+	{		if(flagPrint)
 			log_info(logger,
 			"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 			esiDesbloqueado->esi->id, esiDesbloqueado->clave);
@@ -78,6 +79,7 @@ void Desbloquear(char* clave, bool flagPrint){
 		esiAPonerReady->rafagasEstimadas = esiDesbloqueado->esi->rafagasEstimadas;
 		esiAPonerReady->rafagasRealesEjecutadas = esiDesbloqueado->esi->rafagasRealesEjecutadas;
 		esiAPonerReady->socket = esiDesbloqueado->esi->socket;
+		esiAPonerReady->tiempoDeLlegada =tiempoActual;
 		clavexEsi* clavexEsiAAgregar = malloc(sizeof(clavexEsi));
 		clavexEsiAAgregar->clave = malloc(strlen(clave)+1);
 		strcpy(clavexEsiAAgregar->clave, clave);
@@ -102,7 +104,9 @@ void Desbloquear(char* clave, bool flagPrint){
 	free(clavexEsiABorrar->instancia);
 	free(clavexEsiABorrar);
 	ChequearPlanificacionYSeguirEjecutando();
+	}
 }
+
 
 void Listar(char* recurso){
 	if(list_any_satisfy(BLOQUEADOS,LAMBDA(bool _(esiBloqueado* item1)

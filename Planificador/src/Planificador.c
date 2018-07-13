@@ -7,11 +7,9 @@ int flag = 0;
 
 pthread_mutex_t mutexOperaciones;
 t_log* logger;
-
 pthread_mutex_t ordenPlanificacionDetenida;
 int socketCoordinador;
-int tiempo = 0; //Controlar arribos
-
+int tiempoActual = 0; //Para Controlar arribos en el algoritmo HRRN
 t_list* listaHilos;
 bool end;
 sem_t semaforoESI;
@@ -98,6 +96,7 @@ void escuchaCoordinador() {
 				esiBloqueado->esi = esiABloquear;
 				esiBloqueado->clave = malloc(strlen(paquete.Payload) + 1);
 				strcpy(esiBloqueado->clave, paquete.Payload);
+				log_info(logger,"Se bloquea esi id%s por clave:%s",esiBloqueado->esi->id,esiBloqueado->clave);
 				list_add(BLOQUEADOS, esiBloqueado);
 				planificar();
 			} else {	//Sino, agrega la clave a claves bloqueadas
@@ -206,6 +205,8 @@ void EscucharESIyPlanificarlo(void* socket) {
 				nuevoEsi->socket = socketFD;
 				nuevoEsi->rafagasRealesEjecutadas = 0;
 				nuevoEsi->rafagasEstimadas = (float) ESTIMACION_INICIAL;
+				nuevoEsi->tiempoDeLlegada = tiempoActual;
+
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
 				//ChequearPlanificacionYSeguirEjecutando();
@@ -227,9 +228,6 @@ void EscucharESIyPlanificarlo(void* socket) {
 					clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->idEsi,idEsiFinalizado);}));
 					esiBloqueado* esiADesbloquear = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* esiBloqueado ){ return !strcmp(esiBloqueado->clave, clavexEsiABorrar->clave);}));
 					if (esiADesbloquear != NULL) {
-						printf("Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
-								esiADesbloquear->esi->id,
-								esiADesbloquear->clave);
 						log_info(logger, "Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 								esiADesbloquear->esi->id,
 								esiADesbloquear->clave);
@@ -239,6 +237,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 						esiAPonerReady->rafagasEstimadas = esiADesbloquear->esi->rafagasEstimadas;
 						esiAPonerReady->rafagasRealesEjecutadas = esiADesbloquear->esi->rafagasRealesEjecutadas;
 						esiAPonerReady->socket = esiADesbloquear->esi->socket;
+						esiAPonerReady->tiempoDeLlegada = tiempoActual;
 						clavexEsi* clavexEsiAAgregar = malloc(sizeof(clavexEsi));
 						clavexEsiAAgregar->clave = malloc(strlen(clavexEsiABorrar->clave)+1);
 						strcpy(clavexEsiAAgregar->clave, clavexEsiABorrar->clave);
@@ -306,23 +305,39 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 	//sem_post(&semaforoCoordinador);
 }
 
+int tiempoDeEspera(procesoEsi *esi) {
+	return (tiempoActual - esi->tiempoDeLlegada);
+}
+
+float tasaDeRespuesta(procesoEsi *esi) {
+	return (tiempoDeEspera(esi) + esi->rafagasEstimadas) / tiempoDeEspera(esi);
+}
+
 bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 	return esi->rafagasEstimadas < esiMenor->rafagasEstimadas;
+}
+
+bool ComparadorDeTasaDeRespuesta(procesoEsi *esi, procesoEsi *esiMenor) {
+	return tasaDeRespuesta(esi) > tasaDeRespuesta(esiMenor);
+	log_info(logger,"Comparador de RR: Esi: id %s - RR %f, Esi: %d - RR %f", esi-> id, tasaDeRespuesta(esi), esiMenor->id, tasaDeRespuesta(esiMenor));
+
 }
 
 void ejecutarEsi() {
 	//if(!planificacion_detenida){
 		if (list_size(EJECUCION) != 0) {
 			if(list_size(BLOQUEADOS) > 0 )
-				if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
-				{
-					log_info(logger,"Ejecucion %s, %d, %d, %f", ((procesoEsi*) list_get(EJECUCION, 0))->id
+				//if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
+				//{
+					log_info(logger,"Ejecucion id %s, socket %d, Raf Reales%d, Raf Est %f,Tiempo De llegada %d", ((procesoEsi*) list_get(EJECUCION, 0))->id
 							,((procesoEsi*) list_get(EJECUCION, 0))->socket,
 							((procesoEsi*) list_get(EJECUCION, 0))->rafagasRealesEjecutadas,
-							((procesoEsi*) list_get(EJECUCION, 0))->rafagasEstimadas);
+							((procesoEsi*) list_get(EJECUCION, 0))->rafagasEstimadas,
+							((procesoEsi*) list_get(EJECUCION, 0))->tiempoDeLlegada);
 
-				}
+				//}
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
+			tiempoActual++;
 			++esiAEjecutar->rafagasRealesEjecutadas;
 			EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 		}else {
@@ -368,6 +383,28 @@ void HacerSJF() {
     ejecutarEsi();
 }
 
+void HacerHRRN() {
+//	t_list *listaAuxAOrdenar = list_duplicate(LISTOS);
+	if (list_size(LISTOS) == 1) {
+				procesoEsi *esiAEjecutar = list_remove(LISTOS, 0);
+				log_info(logger,"Planificó HRRN y solo hay un esi id%s para ejecutar con RR %f",esiAEjecutar->id , tasaDeRespuesta(esiAEjecutar));
+		list_add(EJECUCION, esiAEjecutar);
+		ejecutarEsi();
+	} else {
+		list_sort(LISTOS, (void *) ComparadorDeTasaDeRespuesta);
+		procesoEsi *esiMayorRR = list_remove(LISTOS, 0);
+		log_info(logger,"Planificó HRRN y solo hay un esi id%s para ejecutar con RR %f",esiMayorRR->id , tasaDeRespuesta(esiMayorRR));
+		//list_destroy(listaAuxAOrdenar);
+
+//	procesoEsi *esiAEjecutar =
+//			list_remove_by_condition(LISTOS,
+//					LAMBDA(
+//							bool _(procesoEsi * item1) { return !strcmp(item1->id, esiMenoryPrimeroEnLlegar->id); }));
+		list_add(EJECUCION, esiMayorRR);
+		ejecutarEsi();
+	}
+}
+
 void planificar() {
 	if(!planificacion_detenida){
 		if (!list_is_empty(LISTOS)) {
@@ -380,7 +417,7 @@ void planificar() {
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
 				HacerSJF();
 			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
-
+				HacerHRRN();
 			}
 		}
 	}
