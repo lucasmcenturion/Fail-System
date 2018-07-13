@@ -8,6 +8,7 @@ extern t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *clavesBloqueadas;
 extern sem_t semPlanificacionDetenida;
 extern t_log*logger;
 extern int flag;
+extern int tiempoActual;
 
 void PausarContinuar();
 void Bloquear(char* clave, char* id);

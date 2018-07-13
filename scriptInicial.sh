@@ -14,5 +14,7 @@ sudo make install
 cd 	..
 git clone https://github.com/sisoputnfrba/tp-2018-1c-Fail-system
 cd tp-2018-1c-Fail-system
-git checkout Check_2
+sh insertarLibrerias.sh
+
+git checkout Check_4
 
