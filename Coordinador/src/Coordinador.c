@@ -12,6 +12,7 @@ t_list* esis;
 t_list* instancias_caidas;
 t_list* clavesNuevasPorEsi;
 t_dictionary* clavesReemplazadas;
+t_dictionary* ocupadoAnterior;
 pthread_mutex_t mutex_instancias;
 pthread_mutex_t mutex_esis;
 pthread_mutex_t mutex_clavesNuevas;
@@ -37,7 +38,6 @@ char* simulacionGetProximoKE(int letraAscii){
 	t_IdInstancia*rv= list_find(instancias, between);
 	return rv->nombre;
 }
-
 char* simulacionGetProximo() {
 	if (list_size(instancias) == 0)
 		return "No hay instancias";
@@ -92,6 +92,15 @@ int getProximoKE(int letraAscii){
 	}
 	t_IdInstancia*rv= list_find(instancias, between);
 	return rv->socket;
+}
+int getProximoLSU(){
+	if (list_size(instancias) == 0)
+		return 0;
+	bool ordenar(t_IdInstancia* inst, t_IdInstancia* instMenor) {
+		return inst->entradasOcupadas < instMenor->entradasOcupadas;
+	}
+	list_sort(instancias, ordenar);
+	return ((t_IdInstancia*)list_get(instancias,0))->socket;
 }
 void reOrganizar(){
 	int cant=list_size(instancias);
@@ -335,9 +344,11 @@ void accion(void* socket) {
 					instancia = malloc(sizeof(t_IdInstancia));
 					instancia->nombre = nombreInstancia;
 					instancia->claves = list_create();
+					instancia->entradasOcupadas=0;
 				}
 				instancia->socket = socketFD;
 				instancia->activo = false;
+
 				pthread_mutex_lock(&mutex_instancias);
 				list_add(instancias, instancia);
 				if(!strcmp(ALGORITMO_DISTRIBUCION,"KE"))
@@ -351,11 +362,27 @@ void accion(void* socket) {
 				}
 				char* claveNueva = malloc(strlen((char*) paquete.Payload) + 1);
 				strcpy(claveNueva, paquete.Payload);
-				char* value = malloc(strlen(paquete.Payload+strlen(claveNueva)+1)+1);
-				strcpy(value,paquete.Payload+strlen(claveNueva)+1);
+				paquete.Payload+=strlen(claveNueva)+1;
+				char* value = malloc(strlen((char*)paquete.Payload)+1);
+				strcpy(value,paquete.Payload);
+				paquete.Payload+=strlen(value)+1;
+				int entradasOcupadas =*((int*)paquete.Payload);
+				paquete.Payload+=sizeof(int);
+				paquete.Payload-=paquete.header.tamPayload;
 				pthread_mutex_lock(&mutex_instancias);
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
-				list_add(aux->claves, claveNueva);
+				bool iguales(char*e){
+					return !strcmp(e,claveNueva) ? true : false;
+				}
+				if(NULL==list_find(aux->claves,iguales)){
+					list_add(aux->claves, claveNueva);
+					dictionary_put(ocupadoAnterior,claveNueva,(int)entradasOcupadas);
+					aux->entradasOcupadas+=entradasOcupadas;
+				}else{
+					aux->entradasOcupadas-=(int)dictionary_get(ocupadoAnterior,claveNueva);
+					aux->entradasOcupadas+=entradasOcupadas;
+					dictionary_put(ocupadoAnterior,claveNueva,(int)entradasOcupadas);
+				}
 				pthread_mutex_unlock(&mutex_instancias);
 				char *idEsi = malloc(strlen(obtenerId((char*) paquete.Payload, 0))+1);
 				strcpy(idEsi, obtenerId((char*) paquete.Payload, 0));
@@ -393,8 +420,16 @@ void accion(void* socket) {
 				int tiene_socket(t_IdInstancia *e) {
 					return e->socket == socketFD;
 				}
+				char*aux1=malloc(strlen((char*)paquete.Payload)+1);
+				strcpy(aux1,paquete.Payload);
+				paquete.Payload+=strlen(aux1)+1;
+				int entradasOcupadas=*((int*)paquete.Payload);
+				paquete.Payload+=sizeof(int);
+				paquete.Payload-=paquete.header.tamPayload;
+				free(aux1);
 				pthread_mutex_lock(&mutex_instancias);
 				t_IdInstancia *aux = list_find(instancias, tiene_socket);
+				aux->entradasOcupadas-=entradasOcupadas;
 				list_remove_by_condition(aux->claves,
 						LAMBDA(int _(char *clave) {
 							return !strcmp(clave, (char* )paquete.Payload);
@@ -489,6 +524,19 @@ void accion(void* socket) {
 										fflush(stdout);
 									}
 									pthread_mutex_unlock(&mutex_instancias);
+								}else{
+									if(!strcmp(ALGORITMO_DISTRIBUCION,"LSU")){
+										pthread_mutex_lock(&mutex_instancias);
+										int socketSiguiente = getProximoLSU();
+										if(socketSiguiente!=0){
+											EnviarDatosTipo(socketSiguiente,COORDINADOR,sendInstancia,tam,SETINST);
+										}else{
+											//error, no hay instancias conectadas al sistema
+											log_info(vg_logger,"No hay instancias conectadas al sistema");
+											fflush(stdout);
+										}
+										pthread_mutex_unlock(&mutex_instancias);
+									}
 								}
 							}
 							free(sendInstancia);
@@ -724,6 +772,7 @@ int main(void) {
 	sem_init(&sem_compactacion,0,0);
 	compactacion_activada=false;
 	dict_compactacion=dictionary_create();
+	ocupadoAnterior=dictionary_create();
 	esis = list_create();
 	instancias = list_create();
 	instancias_caidas = list_create();
