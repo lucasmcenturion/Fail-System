@@ -679,10 +679,28 @@ void accion(void* socket) {
 				datos = paquete.Payload;
 				int tope = ((uint32_t*) datos)[0];
 				datos += sizeof(uint32_t);
+				int tamanio = sizeof(uint32_t);
+				void* instancias = malloc(sizeof(uint32_t));
+				((uint32_t*) instancias)[0] = tope;
 				for (int i = 0; i < tope; i++) {
-					printf("%s\n", datos);
+					char* instancia;
+					if (!strcmp(ALGORITMO_DISTRIBUCION, "EL")){
+						instancia = simulacionGetProximo();
+					}
+					else if (!strcmp(ALGORITMO_DISTRIBUCION, "KE")){
+						instancia = simulacionGetProximoKE((int)((char*)datos)[0]);
+					}
+					instancias = realloc(instancias, tamanio + strlen(instancia) + 1);
+
+					strcpy(instancias + tamanio, instancia);
+					tamanio += strlen(instancia) + 1;
 					datos += strlen(datos) + 1;
 				}
+				EnviarDatosTipo(socketPlanificador, COORDINADOR, instancias,
+												tamanio, CLAVESBLOQUEADAS);
+				free(instancias);
+
+
 			}
 				break;
 			}

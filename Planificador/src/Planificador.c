@@ -127,6 +127,19 @@ void escuchaCoordinador() {
 		}
 			break;
 
+		case CLAVESBLOQUEADAS: {
+			datos = paquete.Payload;
+			int tope = ((uint32_t*) datos)[0];
+			datos += sizeof(uint32_t);
+			for (int i = 0; i < tope; i++) {
+				clavexEsi* cxe = list_get(clavesBloqueadas,i);
+				cxe->instancia = malloc(strlen(datos)+1);
+				strcpy(cxe->instancia, datos);
+				datos += strlen(datos);
+			}
+		}
+			break;
+
 		case SETOKPLANI:{
 			char* id, *value, *key, *instancia;
 			id = paquete.Payload;
@@ -230,6 +243,8 @@ void EscucharESIyPlanificarlo(void* socket) {
 						strcpy(clavexEsiAAgregar->clave, clavexEsiABorrar->clave);
 						clavexEsiAAgregar->idEsi = malloc(strlen(esiADesbloquear->esi->id)+1);
 						strcpy(clavexEsiAAgregar->idEsi, esiADesbloquear->esi->id);
+						clavexEsiAAgregar->instancia = malloc(strlen(clavexEsiABorrar->instancia)+1);
+						strcpy(clavexEsiAAgregar->instancia, clavexEsiABorrar->instancia);
 						list_add(clavesBloqueadas, clavexEsiAAgregar);
 						list_add(LISTOS, esiAPonerReady); //mandar func enviar a Listos
 						if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1)

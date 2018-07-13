@@ -83,6 +83,8 @@ void Desbloquear(char* clave, bool flagPrint){
 		strcpy(clavexEsiAAgregar->clave, clave);
 		clavexEsiAAgregar->idEsi = malloc(strlen(esiDesbloqueado->esi->id)+1);
 		strcpy(clavexEsiAAgregar->idEsi, esiDesbloqueado->esi->id);
+		clavexEsiAAgregar->instancia = malloc(strlen(clavexEsiABorrar->instancia)+1);
+		strcpy(clavexEsiAAgregar->instancia, clavexEsiABorrar->instancia);
 		list_add(clavesBloqueadas, clavexEsiAAgregar);
 		list_add(LISTOS, esiAPonerReady);
 		flag = 1;
