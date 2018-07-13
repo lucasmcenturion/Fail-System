@@ -49,6 +49,7 @@ void imprimirArchivoConfiguracion() {
 	fflush(stdout);
 }
 
+
 void enviarHandshakeESI(int socketFD, char emisor[13]) {
 	Paquete* paquete = malloc(TAMANIOHEADER + strlen(ID) + 1);
 	Header header;
@@ -183,6 +184,8 @@ int main(int argc, char* argv[]) {
 	crearLogger();
 	log_info(logger, "El programa a ejecutar es %s\n", programaAEjecutar);
 	fflush(stdout);
+	ConectarAServidor(PUERTO_PLANIFICADOR, IP_PLANIFICADOR, PLANIFICADOR, ESI, RecibirHandshake);
+	ConectarAServidor(PUERTO_COORDINADOR, IP_COORDINADOR, COORDINADOR, ESI, RecibirHandshake);
 	pthread_mutex_init(&mutexFinalizar, NULL);
 	sem_init(&binario,0,0);
 	socketPlanificador = ConectarAServidorESI(PUERTO_PLANIFICADOR,

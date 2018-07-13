@@ -9,7 +9,9 @@ pthread_mutex_t mutexOperaciones;
 pthread_mutex_t ordenPlanificacionDetenida;
 int socketCoordinador;
 
-t_list *listaHilos;
+//COLAS
+
+t_list *listos, *ejecucion, *bloqueados, *terminados, *listaHilos;
 bool end;
 sem_t semaforoESI;
 sem_t semPlanificacionDetenida;
@@ -177,9 +179,107 @@ void CalcularEstimacion(procesoEsi *unEsi) {
 		b = b * unEsi->rafagasEstimadas;
 		unEsi->rafagasEstimadas = a + b;
 	}
+}
 	//	printf("%s: ESTIMACION: %.4f\n", unEsi->id, unEsi->rafagasEstimadas);
 	//	fflush(stdout);
-}
+
+//	void PausarContinuar() {
+//
+//	}
+//
+//	void Bloquear() {
+//
+//	}
+//
+//	void Desbloquear() {
+//
+//	}
+//
+//	void Listar() {
+//
+//	}
+//
+//	void Kill() {
+//
+//	}
+//
+//	void Status() {
+//
+//	}
+//
+//	void Deadlock() {
+//
+//	}
+	void consola() {
+		char * linea;
+		while (true) {
+			linea = readline(">> ");
+			if (linea)
+				add_history(linea);
+			if (!strcmp(linea, "pausar/continuar")) {
+				printf("Pausó/Continuó.\n");
+				PausarContinuar();
+			} else if (!strncmp(linea, "bloquear ", 9)) {
+				char **array_input = string_split(linea, " ");
+				printf(
+						"Se bloqueó el proceso ESI de id %s, en la cola del recurso %s.\n",
+						array_input[2], array_input[1]);
+				Bloquear();
+				string_iterate_lines(array_input, free);
+				free(array_input);
+			} else if (!strncmp(linea, "desbloquear ", 12)) {
+				char **array_input = string_split(linea, " ");
+				printf(
+						"Se desbloqueó el primer proceso ESI en la cola del recurso %s.\n",
+						array_input[1]);
+				Desbloquear();
+				string_iterate_lines(array_input, free);
+				free(array_input);
+			} else if (!strncmp(linea, "listar ", 7)) {
+				char **array_input = string_split(linea, " ");
+				printf(
+						"Se listan los procesos bloqueados esperando el recurso %s.\n",
+						array_input[1]);
+				Listar();
+				string_iterate_lines(array_input, free);
+				free(array_input);
+			}
+
+			else if (!strncmp(linea, "kill ", 5)) {
+				char **array_input = string_split(linea, " ");
+				printf("Se finaliza el proceso de id %s.\n", array_input[1]);
+				Kill();
+				string_iterate_lines(array_input, free);
+				free(array_input);
+			} else if (!strncmp(linea, "status ", 7)) {
+				char **array_input = string_split(linea, " ");
+				printf("Se muestra el estado de la clave %s.\n",
+						array_input[1]);
+				Status();
+				string_iterate_lines(array_input, free);
+				free(array_input);
+			} else if (!strcmp(linea, "deadlock")) {
+				printf("Se muestra deadlocks del sistema.\n");
+				Deadlock();
+			} else if (!strcmp(linea, "exit")) {
+				printf("Salió\n");
+				free(linea);
+				break;
+			} else
+				printf("No se conoce el comando\n");
+			free(linea);
+		}
+	}
+
+	void accion(void* socket) {
+		int socketFD = *(int*) socket;
+		Paquete paquete;
+		void* datos;
+		while (RecibirPaqueteServidor(socketFD, COORDINADOR, &paquete) > 0) {
+			//SWITCH
+		}
+	}
+
 
 void EscucharESIyPlanificarlo(void *socket) {
 	int socketFD = *(int *) socket;
@@ -416,83 +516,86 @@ void HacerHRRN() {
 	}
 }
 
-	void planificar() {
-		if (!planificacion_detenida) {
-			if (!list_is_empty(LISTOS)) {
-				if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
-					procesoEsi *esiAEjecutar = (procesoEsi *) list_remove(
-							LISTOS, 0);
-					list_add(EJECUCION, esiAEjecutar);
-					ejecutarEsi();
-				} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
-					HacerSJF();
-				} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
-					HacerSJF();
-				} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
-					HacerHRRN();
-				}
+void planificar() {
+	if (!planificacion_detenida) {
+		if (!list_is_empty(LISTOS)) {
+			if (!strcmp(ALGORITMO_PLANIFICACION, "FIFO")) {
+				procesoEsi *esiAEjecutar = (procesoEsi *) list_remove(LISTOS,
+						0);
+				list_add(EJECUCION, esiAEjecutar);
+				ejecutarEsi();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-SD")) {
+				HacerSJF();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD")) {
+				HacerSJF();
+			} else if (!strcmp(ALGORITMO_PLANIFICACION, "HRRN")) {
+				HacerHRRN();
 			}
 		}
 	}
+}
 
-	void EnviarHandshakePlani(int socketFD, char emisor[13]) {
-		void *datos = malloc(0);
-		int tamanio = 0, cant = 0;
+void EnviarHandshakePlani(int socketFD, char emisor[13]) {
+	void *datos = malloc(0);
+	int tamanio = 0, cant = 0;
 
-		string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char *item1) {
-			datos = realloc(datos, tamanio + strlen(item1) + 1)
-			;
-			strcpy(datos + tamanio, item1)
-			;
-			tamanio += strlen(item1) + 1
-			;
-			cant++
-			;
-			free(item1)
-			;
-		}
-		));
-
-		Paquete *paquete = malloc(
-		TAMANIOHEADER + sizeof(int) + tamanio);
-		Header header;
-		header.tipoMensaje = ESHANDSHAKE;
-
-		header.tamPayload = tamanio + sizeof(int);
-		paquete->Payload = malloc(sizeof(int) + tamanio);
-
-		((int *) paquete->Payload)[0] = cant;
-		memcpy(paquete->Payload + sizeof(int), datos, tamanio);
-		free(datos);
-
-		strcpy(header.emisor, emisor);
-		paquete->header = header;
-
-		EnviarPaquete(socketFD, paquete);
-
-		free(paquete->Payload);
-		free(paquete);
-		free(CLAVES_BLOQUEADAS);
+	string_iterate_lines(CLAVES_BLOQUEADAS, LAMBDA(void _(char *item1) {
+		datos = realloc(datos, tamanio + strlen(item1) + 1)
+		;
+		strcpy(datos + tamanio, item1)
+		;
+		tamanio += strlen(item1) + 1
+		;
+		cant++
+		;
+		free(item1)
+		;
 	}
+	));
 
-	int main(void) {
-		inicializar();
-		obtenerValoresArchivoConfiguracion();
-		imprimirArchivoConfiguracion();
-		planificacion_detenida = false;
-		crearLogger();
+	Paquete *paquete = malloc(
+	TAMANIOHEADER + sizeof(int) + tamanio);
+	Header header;
+	header.tipoMensaje = ESHANDSHAKE;
 
-		socketCoordinador = ConectarAServidorPlanificador(PUERTO_COORDINADOR,
-				IP_COORDINADOR, COORDINADOR,
-				PLANIFICADOR, RecibirHandshake, EnviarHandshakePlani);
-		pthread_t hiloCoordinador;
-		pthread_create(&hiloCoordinador, NULL, (void *) escuchaCoordinador,
-		NULL);
-		pthread_t hiloConsola;
-		pthread_create(&hiloConsola, NULL, (void *) consola, NULL);
-		ServidorConcurrente(IP, PUERTO, PLANIFICADOR, &listaHilos, &end,
-				EscucharESIyPlanificarlo);
-		pthread_join(hiloConsola, NULL);
-		pthread_join(hiloCoordinador, NULL);
-		return EXIT_SUCCESS;
-	}
+	header.tamPayload = tamanio + sizeof(int);
+	paquete->Payload = malloc(sizeof(int) + tamanio);
+
+	((int *) paquete->Payload)[0] = cant;
+	memcpy(paquete->Payload + sizeof(int), datos, tamanio);
+	free(datos);
+
+	strcpy(header.emisor, emisor);
+	paquete->header = header;
+
+	EnviarPaquete(socketFD, paquete);
+
+	free(paquete->Payload);
+	free(paquete);
+	free(CLAVES_BLOQUEADAS);
+}
+int main(void) {
+	inicializar();
+	obtenerValoresArchivoConfiguracion();
+	imprimirArchivoConfiguracion();
+	planificacion_detenida = false;
+	crearLogger();
+	socketCoordinador = ConectarAServidor(PUERTO_COORDINADOR,
+						IP_COORDINADOR, COORDINADOR, PLANIFICADOR, RecibirHandshake);
+
+	socketCoordinador = ConectarAServidorPlanificador(PUERTO_COORDINADOR,
+			IP_COORDINADOR, COORDINADOR,
+			PLANIFICADOR, RecibirHandshake, EnviarHandshakePlani);
+	pthread_t hiloCoordinador;
+	pthread_create(&hiloCoordinador, NULL, (void *) escuchaCoordinador,
+	NULL);
+	pthread_t hiloConsola;
+	pthread_create(&hiloConsola, NULL, (void *) consola, NULL);
+	ServidorConcurrente(IP, PUERTO, PLANIFICADOR, &listaHilos, &end,
+			EscucharESIyPlanificarlo);
+//	ServidorConcurrente(IP, PUERTO, PLANIFICADOR, &listaHilos, &end,
+//						accion);
+	pthread_join(hiloConsola, NULL);
+	pthread_join(hiloCoordinador, NULL);
+	return EXIT_SUCCESS;
+}
