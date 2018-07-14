@@ -434,12 +434,12 @@ void crearArchivo(char*key, char*value) {
 void dump() {
 	pthread_mutex_lock(&mutex_entradas);
 
-		t_list*atomicos=list_create();
-		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico;}));
+		t_list*activos=list_create();
+		activos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->activo;}));
 		int i, j;
-		for (i = 0; i < list_size(atomicos); i++) {
+		for (i = 0; i < list_size(activos); i++) {
 
-			t_Entrada* actual = (t_Entrada*) list_get(atomicos,i);
+			t_Entrada* actual = (t_Entrada*) list_get(activos,i);
 			char* directorio_actual = calloc(1,strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 3);
 			strcpy(directorio_actual, PUNTO_MONTAJE);
 			strcat(directorio_actual,"/");
@@ -493,7 +493,6 @@ int main(int argc, char* argv[]) {
 		}
 			break;
 		case STOREINST: {
-
 			char *key = calloc(1,strlen(datos) + 1);
 			strcpy(key, datos);
 			pthread_mutex_lock(&mutex_entradas);
@@ -520,6 +519,8 @@ int main(int argc, char* argv[]) {
 			//creo el archivo
 			crearArchivo(key, valueReturn);
 			//limpio los datos
+			printf("ANTES DE LIMPIAR %s\n",tabla_entradas[0]);
+			fflush(stdout);
 			for (i = esperada->index; i < (esperada->index + esperada->entradasOcupadas);i++) {
 				strcpy(tabla_entradas[i],"NaN");
 				ENTRADAS_LIBRES++;
@@ -575,12 +576,14 @@ int main(int argc, char* argv[]) {
 			{
 				t_Entrada* entrada = list_find(entradas_administrativa,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(key, elemento->clave);}));
 				int i;
-				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
-						i++) {
-					free(tabla_entradas[i]);
-					tabla_entradas[i]=calloc(1,TAMANIO_ENTRADA);
-					strcpy(tabla_entradas[i],"NaN");
-					ENTRADAS_LIBRES++;
+				if(entrada->activo){
+					for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
+							i++) {
+						free(tabla_entradas[i]);
+						tabla_entradas[i]=calloc(1,TAMANIO_ENTRADA);
+						strcpy(tabla_entradas[i],"NaN");
+						ENTRADAS_LIBRES++;
+					}
 				}
 
 				entrada->entradasOcupadas = ceilDivision(strlen(value));

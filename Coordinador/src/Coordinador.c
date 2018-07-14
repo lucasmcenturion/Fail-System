@@ -30,7 +30,13 @@ void finalizarLogger() {
 	log_destroy(vg_logger);
 
 }
-
+char* simulacionGetProximoKE(int letraAscii){
+	void* between(t_IdInstancia*aux){
+			return letraAscii <= aux->finalKE ? true : false;
+	}
+	t_IdInstancia*rv= list_find(instancias, between);
+	return rv->nombre;
+}
 char* simulacionGetProximoKE(int letraAscii){
 	void* between(t_IdInstancia*aux){
 			return letraAscii <= aux->finalKE ? true : false;
@@ -633,6 +639,8 @@ void accion(void* socket) {
 					}
 					else if (!strcmp(ALGORITMO_DISTRIBUCION, "KE")){
 						instancia = simulacionGetProximoKE((int)lakey[0]);
+					}else if (!strcmp(ALGORITMO_DISTRIBUCION, "LSU")){
+						instancia = simulacionGetProximoLSU();
 					}
 					int tamSend = strlen(paquete.Payload) + strlen(id) + strlen(instancia) + 3;
 					void* sendPlanificador = malloc(tamSend);
@@ -679,6 +687,13 @@ void accion(void* socket) {
 							"El COORDINADOR recibió operación STORE del ESI: %s, con clave: %s\n",
 							id, paquete.Payload);
 					if (verificarGet(id, (char*) paquete.Payload)) {
+						t_list*claves = ((t_esiCoordinador*) list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {
+									return elemento->socket == socketFD;}
+						)))->claves;
+						list_remove_by_condition(claves,LAMBDA(int _(char *e) {
+									return !strcmp(e,paquete.Payload);
+								}
+						));
 						int socketInstancia = obtenerSocket(paquete.Payload);
 						if (socketInstancia != 0)
 							EnviarDatosTipo(socketInstancia, COORDINADOR,
