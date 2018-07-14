@@ -4,6 +4,9 @@ char *IP, *ALGORITMO_PLANIFICACION, *IP_COORDINADOR;
 int PUERTO, ESTIMACION_INICIAL, PUERTO_COORDINADOR, ALFA_ESTIMACION;
 char **CLAVES_BLOQUEADAS;
 int flag = 0;
+//COLAS
+t_list *clavesBloqueadas;
+t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *TERMINADOS;
 
 pthread_mutex_t mutexOperaciones;
 t_log* logger;
@@ -14,7 +17,6 @@ t_list* listaHilos;
 bool end;
 sem_t semaforoESI;
 sem_t semPlanificacionDetenida;
-/* Creo el logger de ESI*/
 
 /*Creación de Logger*/
 void crearLogger() {
@@ -22,9 +24,6 @@ void crearLogger() {
 			LOG_LEVEL_INFO);
 }
 
-//COLAS
-t_list *clavesBloqueadas;
-t_list *LISTOS, *EJECUCION, *BLOQUEADOS, *TERMINADOS;
 
 void inicializar() {
 	clavesBloqueadas = list_create();
@@ -96,7 +95,7 @@ void escuchaCoordinador() {
 				esiBloqueado->esi = esiABloquear;
 				esiBloqueado->clave = malloc(strlen(paquete.Payload) + 1);
 				strcpy(esiBloqueado->clave, paquete.Payload);
-				log_info(logger,"Se bloquea esi id%s por clave:%s",esiBloqueado->esi->id,esiBloqueado->clave);
+				log_info(logger,"Se recibe GET de esi id%s y se bloquea por clave:%s",esiBloqueado->esi->id,esiBloqueado->clave);
 				list_add(BLOQUEADOS, esiBloqueado);
 				planificar();
 			} else {	//Sino, agrega la clave a claves bloqueadas
@@ -108,6 +107,7 @@ void escuchaCoordinador() {
 				strcpy(cxe->idEsi, paquete.Payload + strlen(cxe->clave) + 1);
 				cxe->instancia = malloc(strlen(paquete.Payload + strlen(cxe->clave) + strlen(cxe->idEsi)+2) + 1);
 				strcpy(cxe->instancia, paquete.Payload + strlen(cxe->clave) + strlen(cxe->idEsi)+2);
+				log_info(logger,"Se recibe GET de esi id%s con clave:%s y se ejecuta OK",cxe->idEsi,cxe->clave);
 				list_add(clavesBloqueadas, cxe);
 //				if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
 //					procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, paquete.Payload + strlen(paquete.Payload)+1);}));
@@ -115,14 +115,16 @@ void escuchaCoordinador() {
 //				}
 				ChequearPlanificacionYSeguirEjecutando();
 			}
-			log_info(logger, "GET OK en Planificador");
+
 		}
 			break;
 
 		case ABORTAR: { // VER SI CUANDO ABORTA LA OPERACION EL COORD. DEBERIAMOS HACER MUERTEESI PARA QUE LIBERE TODO OK
+
 			procesoEsi* esiAAbortar = (procesoEsi*) list_find(EJECUCION, LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, datos);}));
+			log_info(logger, "Aborta ESI %s",esiAAbortar->id);
 			EnviarDatosTipo(esiAAbortar->socket, PLANIFICADOR, NULL, 0, ABORTAR);
-			log_info(logger, "Aborta ESI");
+
 		}
 			break;
 
@@ -151,18 +153,19 @@ void escuchaCoordinador() {
 			cxe->instancia = malloc(strlen(instancia)+1);
 			strcpy(cxe->valor, value);
 			strcpy(cxe->instancia, instancia);
+			log_info(logger, "SET OK de ESI %s de clave %s en instancia %s",cxe->idEsi,cxe->clave,cxe->instancia);
 //			if(!strcmp(ALGORITMO_PLANIFICACION,"SJF-CD")){
 //				procesoEsi* esiAEstarReady =(procesoEsi*) list_remove_by_condition(EJECUCION,LAMBDA(bool _(procesoEsi* item1){ return !strcmp(item1->id, (char*)paquete.Payload);}));
 //				list_add(LISTOS, esiAEstarReady);
 //			}
 			ChequearPlanificacionYSeguirEjecutando();
-			log_info(logger, "SET OK en Planificador");
+
 		}
 			break;
 		case STOREOKPLANI: {
+			log_info(logger, " STORE OK al Planificador con %s", (char *) datos);
 			Desbloquear(datos, false);
-			log_info(logger, " STORE OK al Planificador");
-		}
+					}
 			break;
 		}
 		pthread_mutex_unlock(&mutexOperaciones);
@@ -208,9 +211,8 @@ void EscucharESIyPlanificarlo(void* socket) {
 
 				strcpy(nuevoEsi->id, paquete.Payload);
 				list_add(LISTOS, nuevoEsi);
-				//ChequearPlanificacionYSeguirEjecutando();
 				if(!planificacion_detenida){
-					if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || list_size(LISTOS) == 1){
+					if (!strcmp(ALGORITMO_PLANIFICACION, "SJF-CD") || (list_size(LISTOS) == 1 &&list_size(EJECUCION) == 0)){
 						list_iterate(LISTOS, (void*) CalcularEstimacion);
 						planificar();
 					}
@@ -266,7 +268,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 				if(list_size(BLOQUEADOS) > 0 )
 					if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
 					{
-						log_info(logger,"Ejecucion %s, %d, %d, %f", ((procesoEsi*) list_get(EJECUCION, 0))->id
+						log_info(logger,"Ejecucion %s, %d, %d, %.2f", ((procesoEsi*) list_get(EJECUCION, 0))->id
 								,((procesoEsi*) list_get(EJECUCION, 0))->socket,
 								((procesoEsi*) list_get(EJECUCION, 0))->rafagasRealesEjecutadas,
 								((procesoEsi*) list_get(EJECUCION, 0))->rafagasEstimadas);
@@ -305,11 +307,17 @@ void PasarESIMuertoAColaTerminados(char* idEsiFinalizado) {
 }
 
 int tiempoDeEspera(procesoEsi *esi) {
-	return (tiempoActual - esi->tiempoDeLlegada);
+	return (tiempoActual - (esi->tiempoDeLlegada));
 }
 
 float tasaDeRespuesta(procesoEsi *esi) {
-	return (tiempoDeEspera(esi) + esi->rafagasEstimadas) / tiempoDeEspera(esi);
+	int tasa= ((tiempoDeEspera(esi) + (esi->rafagasEstimadas))/tiempoDeEspera(esi));
+	if(tasa <= 0){
+	return  0;
+	}
+	else{
+		return tasa;
+	}
 }
 
 bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
@@ -317,18 +325,21 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 bool ComparadorDeTasaDeRespuesta(procesoEsi *esi, procesoEsi *esiMenor) {
+	log_info(logger,"Comparador de RR: Esi: id %s - RR %.2f, Esi: %s - RR %.2f", esi-> id, tasaDeRespuesta(esi), esiMenor->id, tasaDeRespuesta(esiMenor));
+	if (tasaDeRespuesta(esi) == tasaDeRespuesta(esiMenor)){
+		return true;
+	}else{
 	return tasaDeRespuesta(esi) > tasaDeRespuesta(esiMenor);
-	log_info(logger,"Comparador de RR: Esi: id %s - RR %f, Esi: %d - RR %f", esi-> id, tasaDeRespuesta(esi), esiMenor->id, tasaDeRespuesta(esiMenor));
-
+	}
 }
 
 void ejecutarEsi() {
 	//if(!planificacion_detenida){
-		if (list_size(EJECUCION) != 0) {
+		if (list_size(EJECUCION) > 0) {
 			if(list_size(BLOQUEADOS) > 0 )
 				//if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
 				//{
-					log_info(logger,"Ejecucion id %s, socket %d, Raf Reales%d, Raf Est %f,Tiempo De llegada %d", ((procesoEsi*) list_get(EJECUCION, 0))->id
+					log_info(logger,"Ejecucion id %s, socket %d, Raf Reales%d, Raf Est %.2f,Tiempo De llegada %d", ((procesoEsi*) list_get(EJECUCION, 0))->id
 							,((procesoEsi*) list_get(EJECUCION, 0))->socket,
 							((procesoEsi*) list_get(EJECUCION, 0))->rafagasRealesEjecutadas,
 							((procesoEsi*) list_get(EJECUCION, 0))->rafagasEstimadas,
@@ -386,13 +397,13 @@ void HacerHRRN() {
 //	t_list *listaAuxAOrdenar = list_duplicate(LISTOS);
 	if (list_size(LISTOS) == 1) {
 				procesoEsi *esiAEjecutar = list_remove(LISTOS, 0);
-				log_info(logger,"Planificó HRRN y solo hay un esi id%s para ejecutar con RR %f",esiAEjecutar->id , tasaDeRespuesta(esiAEjecutar));
+				log_info(logger,"Planificó HRRN y solo hay un esi id%s para ejecutar con RR %.2f",esiAEjecutar->id , tasaDeRespuesta(esiAEjecutar));
 		list_add(EJECUCION, esiAEjecutar);
 		ejecutarEsi();
 	} else {
 		list_sort(LISTOS, (void *) ComparadorDeTasaDeRespuesta);
 		procesoEsi *esiMayorRR = list_remove(LISTOS, 0);
-		log_info(logger,"Planificó HRRN y solo hay un esi id%s para ejecutar con RR %f",esiMayorRR->id , tasaDeRespuesta(esiMayorRR));
+		log_info(logger,"Planificó HRRN el proximo esi es id%s para ejecutar con RR %.2f",esiMayorRR->id , tasaDeRespuesta(esiMayorRR));
 		//list_destroy(listaAuxAOrdenar);
 
 //	procesoEsi *esiAEjecutar =

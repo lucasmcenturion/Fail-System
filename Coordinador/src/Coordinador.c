@@ -1,4 +1,4 @@
-#include <sockets.h>
+#include "sockets.h"
 #define logearError(msg) {log_error(vg_logger,msg);}
 
 /* Variables Globales */
@@ -155,7 +155,7 @@ void obteneryValidarValoresArchivoConfiguracion() {
 			config_get_string_value(arch, "ALGORITMO_DISTRIBUCION"));
 	CANT_ENTRADAS = config_get_int_value(arch, "CANT_ENTRADAS");
 	TAMANIO_ENTRADA = config_get_int_value(arch, "TAMANIO_ENTRADA");
-	RETARDO = config_get_int_value(arch, "RETARDO");
+	RETARDO = (config_get_int_value(arch, "RETARDO")*1000);
 	config_destroy(arch);
 
 }
