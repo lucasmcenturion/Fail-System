@@ -83,7 +83,6 @@ void Desbloquear(char* clave, bool flagPrint) {
 				log_info(logger,
 						"Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
 						esiDesbloqueado->esi->id, esiDesbloqueado->clave);
-			tiempoActual--;
 			procesoEsi* esiAPonerReady = malloc(sizeof(procesoEsi));
 			esiAPonerReady->id = malloc(strlen(esiDesbloqueado->esi->id) + 1);
 			strcpy(esiAPonerReady->id, esiDesbloqueado->esi->id);
