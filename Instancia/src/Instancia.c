@@ -109,7 +109,18 @@ void compactacion(bool condicion) {
 	}
 	log_info(logger,"Compactación en %s finalizada",NOMBRE_INSTANCIA);
 }
-
+void verificarArchivo(char*key){
+	char* ruta = calloc(1,strlen(PUNTO_MONTAJE)+"/"+strlen(key)+2);
+	strcpy(ruta,PUNTO_MONTAJE);
+	strcat(ruta,"/");
+	strcat(ruta,key);
+	if( access( ruta, F_OK ) != -1 ) {
+		remove(ruta);
+	}
+	if(ruta){
+		free(ruta);
+	}
+}
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 	if (!strcmp(ALGORITMO_REEMPLAZO, "CIRC")){
 		int i = 0;
@@ -135,6 +146,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 					i++;
 					aux = list_get(atomicos, i);
 					log_info(logger,"Se reemplazo la clave %s",elem->clave);
+					verificarArchivo(aux->clave);
 					//free(elem->clave);
 					//free(elem);
 				}
@@ -153,6 +165,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
 				free(claveYTamanio);
 				log_info(logger,"Se reemplazo la clave %s",elem->clave);
+				verificarArchivo(aux->clave);
 				//free(elem->clave);
 				// free(elem);
 			}
@@ -639,7 +652,7 @@ int main(int argc, char* argv[]) {
 				strcpy(tabla_entradas[i], "NaN");
 			}
 			ENTRADAS_LIBRES=CANT_ENTRADA;
-			//obtenerEntradasViejas();
+			obtenerEntradasViejas();
 		}
 			break;
 		case COMPACTACION: {
