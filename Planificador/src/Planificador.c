@@ -394,7 +394,6 @@ void HacerSJF() {
 }
 
 void HacerHRRN() {
-//	t_list *listaAuxAOrdenar = list_duplicate(LISTOS);
 	if (list_size(LISTOS) == 1) {
 				procesoEsi *esiAEjecutar = list_remove(LISTOS, 0);
 				log_info(logger,"Planificó HRRN y solo hay un esi id%s para ejecutar con RR %.2f",esiAEjecutar->id , tasaDeRespuesta(esiAEjecutar));
@@ -404,12 +403,7 @@ void HacerHRRN() {
 		list_sort(LISTOS, (void *) ComparadorDeTasaDeRespuesta);
 		procesoEsi *esiMayorRR = list_remove(LISTOS, 0);
 		log_info(logger,"Planificó HRRN el proximo esi es id%s para ejecutar con RR %.2f",esiMayorRR->id , tasaDeRespuesta(esiMayorRR));
-		//list_destroy(listaAuxAOrdenar);
 
-//	procesoEsi *esiAEjecutar =
-//			list_remove_by_condition(LISTOS,
-//					LAMBDA(
-//							bool _(procesoEsi * item1) { return !strcmp(item1->id, esiMenoryPrimeroEnLlegar->id); }));
 		list_add(EJECUCION, esiMayorRR);
 		ejecutarEsi();
 	}
