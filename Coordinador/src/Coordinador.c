@@ -37,12 +37,14 @@ char* simulacionGetProximoKE(int letraAscii){
 	t_IdInstancia*rv= list_find(instancias, between);
 	return rv->nombre;
 }
-char* simulacionGetProximoKE(int letraAscii){
-	void* between(t_IdInstancia*aux){
-			return letraAscii <= aux->finalKE ? true : false;
+char* simulacionGetProximoLSU(){
+	if (list_size(instancias) == 0)
+		return "No hay instancias";
+	bool ordenar(t_IdInstancia* inst, t_IdInstancia* instMenor) {
+		return inst->entradasOcupadas < instMenor->entradasOcupadas;
 	}
-	t_IdInstancia*rv= list_find(instancias, between);
-	return rv->nombre;
+	list_sort(instancias, ordenar);
+	return ((t_IdInstancia*)list_get(instancias,0))->nombre;
 }
 char* simulacionGetProximo() {
 	if (list_size(instancias) == 0)
