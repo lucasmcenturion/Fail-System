@@ -109,7 +109,7 @@ void compactacion(bool condicion) {
 	}
 	log_info(logger,"Compactación en %s finalizada",NOMBRE_INSTANCIA);
 }
-void verificarArchivo(char*key){/*
+void verificarArchivo(char*key){
 	char* ruta = calloc(1,strlen(PUNTO_MONTAJE)+"/"+strlen(key)+2);
 	strcpy(ruta,PUNTO_MONTAJE);
 	strcat(ruta,"/");
@@ -119,7 +119,7 @@ void verificarArchivo(char*key){/*
 	}
 	if(ruta){
 		free(ruta);
-	}*/
+	}
 }
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 	if (!strcmp(ALGORITMO_REEMPLAZO, "CIRC")){
@@ -552,7 +552,7 @@ int main(int argc, char* argv[]) {
 		case SETINST: {
 			char*key = calloc(1,100);
 			strcpy(key, datos);
-			for (int var = 0; var <= 7; ++var) {
+			for (int var = 0; var < CANT_ENTRADA; ++var) {
 				log_info(logger, "%s", tabla_entradas[var]);
 			}
 			key = realloc(key,strlen(key)+1);
