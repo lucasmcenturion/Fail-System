@@ -69,10 +69,15 @@ void Bloquear(char* clave, char* id) {
 }
 
 void Desbloquear(char* clave, bool flagPrint) {
-	clavexEsi* clavexEsiABorrar =
-			list_remove_by_condition(clavesBloqueadas,
-					LAMBDA(
-							bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
+//	clavexEsi* clavexEsiABorrar =
+//			list_remove_by_condition(clavesBloqueadas,
+//					LAMBDA(
+//							bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
+		if (list_count_satisfying(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}))>1){
+		list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return (!strcmp(item1->clave, clave))&&(!strcmp(item1->idEsi, "SYSTEM"));}));
+		}
+		clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1){ return !strcmp(item1->clave, clave);}));
+
 	if (clavexEsiABorrar != NULL) {
 		esiBloqueado* esiDesbloqueado =
 				list_remove_by_condition(BLOQUEADOS,

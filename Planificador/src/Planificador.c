@@ -227,6 +227,7 @@ void EscucharESIyPlanificarlo(void* socket) {
 				//libero claves bloqueadas por ese ESI
 				while (list_any_satisfy(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->idEsi,idEsiFinalizado);}))) {
 					clavexEsi* clavexEsiABorrar = list_remove_by_condition(clavesBloqueadas, LAMBDA(bool _(clavexEsi* item1) {return !strcmp(item1->idEsi,idEsiFinalizado);}));
+					log_info(logger, "Se murio el ESI %s que tenia clave %s a liberar.\n",clavexEsiABorrar->idEsi, clavexEsiABorrar->clave);
 					esiBloqueado* esiADesbloquear = list_remove_by_condition(BLOQUEADOS, LAMBDA(bool _(esiBloqueado* esiBloqueado ){ return !strcmp(esiBloqueado->clave, clavexEsiABorrar->clave);}));
 					if (esiADesbloquear != NULL) {
 						log_info(logger, "Se desbloqueó el primer proceso ESI %s en la cola del recurso %s.\n",
@@ -325,7 +326,7 @@ bool ComparadorDeRafagas(procesoEsi* esi, procesoEsi* esiMenor) {
 }
 
 bool ComparadorDeTasaDeRespuesta(procesoEsi *esi, procesoEsi *esiMenor) {
-	log_info(logger,"Comparador de RR: Esi: id %s - RR %.2f, Esi: %s - RR %.2f", esi-> id, tasaDeRespuesta(esi), esiMenor->id, tasaDeRespuesta(esiMenor));
+	log_info(logger,"Comparador de RR:'\n Esi: %s - S %f - W %d - RR %.2f '\n Esi: %s - S %f - W %d - RR %.2f", esi-> id, esi->rafagasEstimadas, tiempoDeEspera(esi), tasaDeRespuesta(esi), esiMenor->id,esiMenor->rafagasEstimadas, tiempoDeEspera(esiMenor), tasaDeRespuesta(esiMenor));
 	if (tasaDeRespuesta(esi) == tasaDeRespuesta(esiMenor)){
 		return true;
 	}else{
