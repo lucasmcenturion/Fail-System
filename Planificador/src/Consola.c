@@ -97,12 +97,12 @@ void Desbloquear(char* clave, bool flagPrint){
 		free(esiDesbloqueado->esi);
 		free(esiDesbloqueado);
 	}
-	log_info("%s %s %s %s", clavexEsiABorrar->clave, clavexEsiABorrar->idEsi, clavexEsiABorrar->valor, clavexEsiABorrar->instancia);
-	free(clavexEsiABorrar->clave);
-	free(clavexEsiABorrar->idEsi);
-	free(clavexEsiABorrar->valor);
-	free(clavexEsiABorrar->instancia);
-	free(clavexEsiABorrar);
+	if(clavexEsiABorrar){
+		free(clavexEsiABorrar->idEsi);
+		free(clavexEsiABorrar->valor);
+		free(clavexEsiABorrar->instancia);
+		free(clavexEsiABorrar);
+	}
 	ChequearPlanificacionYSeguirEjecutando();
 
 }
