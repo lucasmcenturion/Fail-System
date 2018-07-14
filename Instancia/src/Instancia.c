@@ -435,7 +435,7 @@ void dump() {
 	pthread_mutex_lock(&mutex_entradas);
 
 		t_list*atomicos=list_create();
-		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico;}));
+		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
 		int i, j;
 		for (i = 0; i < list_size(atomicos); i++) {
 
