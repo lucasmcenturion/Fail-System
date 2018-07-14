@@ -31,7 +31,7 @@ void obtenerValoresArchivoConfiguracion(char* id) {
 			config_get_string_value(arch, "NOMBRE_INSTANCIA"));
 	PUNTO_MONTAJE = string_from_format("/home/utnso/inst%s", id);
 	NOMBRE_INSTANCIA = string_from_format("Inst%s", id);
-	INTERVALO_DUMP = (strcmp(id,"1") ? 100 : 10); //config_get_int_value(arch, "INTERVALO_DUMP");
+	INTERVALO_DUMP = /*(strcmp(id,"1") ? 100 : 10); //*/config_get_int_value(arch, "INTERVALO_DUMP");
 	config_destroy(arch);
 }
 
@@ -109,7 +109,7 @@ void compactacion(bool condicion) {
 	}
 	log_info(logger,"Compactación en %s finalizada",NOMBRE_INSTANCIA);
 }
-void verificarArchivo(char*key){
+void verificarArchivo(char*key){/*
 	char* ruta = calloc(1,strlen(PUNTO_MONTAJE)+"/"+strlen(key)+2);
 	strcpy(ruta,PUNTO_MONTAJE);
 	strcat(ruta,"/");
@@ -119,7 +119,7 @@ void verificarArchivo(char*key){
 	}
 	if(ruta){
 		free(ruta);
-	}
+	}*/
 }
 void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 	if (!strcmp(ALGORITMO_REEMPLAZO, "CIRC")){
@@ -552,6 +552,9 @@ int main(int argc, char* argv[]) {
 		case SETINST: {
 			char*key = calloc(1,100);
 			strcpy(key, datos);
+			for (int var = 0; var <= 7; ++var) {
+				log_info(logger, "%s", tabla_entradas[var]);
+			}
 			key = realloc(key,strlen(key)+1);
 			datos += strlen(datos) + 1;
 			char* value = calloc(1,strlen(datos) + 1);
@@ -627,7 +630,7 @@ int main(int argc, char* argv[]) {
 			}
 			ULT_REF++;
 			pthread_mutex_unlock(&mutex_entradas);
-			log_info(logger, "se hizo un SET de clave %s", key);
+			log_info(logger, "se hizo un SET de clave %s con value %s", key, value);
 			int tam=strlen(key)+strlen(value)+sizeof(int)+2;
 			void* claveykey = calloc(1,tam);
 			strcpy(claveykey,key);
