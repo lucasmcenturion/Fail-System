@@ -212,6 +212,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 					i++;
 					aux = list_get(atomicos, i);
 					log_info(logger,"Se reemplazo la clave %s",elem->clave);
+					verificarArchivo(aux->clave);
 //					free(elem->clave);
 //					free(elem);
 				}
@@ -230,6 +231,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
 				free(claveYTamanio);
 				log_info(logger,"Se reemplazo la clave %s",elem->clave);
+				verificarArchivo(aux->clave);
 //				free(elem->clave);
 //				free(elem);
 			}
@@ -274,6 +276,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 					i++;
 					aux = list_get(atomicos, i);
 					log_info(logger,"Se reemplazo la clave %s",elem->clave);
+					verificarArchivo(aux->clave);
 //					free(elem->clave);
 //					free(elem);
 				}
@@ -292,6 +295,7 @@ void aplicarAlgoritmoReemplazo(int cantidadEntradas) {
 				EnviarDatosTipo(socketCoordinador, INSTANCIA, claveYTamanio,tam, ELIMINARCLAVE);
 				free(claveYTamanio);
 				log_info(logger,"Se reemplazo la clave %s",elem->clave);
+				verificarArchivo(aux->clave);
 //				free(elem->clave);
 //				free(elem);
 			}
