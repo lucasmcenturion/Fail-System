@@ -493,7 +493,8 @@ int main(int argc, char* argv[]) {
 		}
 			break;
 		case STOREINST: {
-
+			printf("%s\n",tabla_entradas[0]);
+			fflush(stdout);
 			char *key = calloc(1,strlen(datos) + 1);
 			strcpy(key, datos);
 			pthread_mutex_lock(&mutex_entradas);
@@ -504,6 +505,8 @@ int main(int argc, char* argv[]) {
 			//ya no esta mas activa esta entrada
 			esperada->activo=false;
 			//obtengo el valor asociado
+			printf("ANTES DE GUARDAR %s\n",tabla_entradas[0]);
+			fflush(stdout);
 			char *valueReturn = calloc(1,esperada->tamanio + 1);
 			for (int var = esperada->index;var < esperada->index + esperada->entradasOcupadas; var++) {
 				if ((esperada->index + esperada->entradasOcupadas) - 1 == var) {
@@ -515,15 +518,21 @@ int main(int argc, char* argv[]) {
 				valueReturn += TAMANIO_ENTRADA;
 			}
 			valueReturn -= esperada->tamanio;
+			printf("DESPUES DE GUARDAR %s\n",tabla_entradas[0]);
+			fflush(stdout);
 			pthread_mutex_unlock(&mutex_entradas);
 			int i;
 			//creo el archivo
 			crearArchivo(key, valueReturn);
 			//limpio los datos
+			printf("ANTES DE LIMPIAR %s\n",tabla_entradas[0]);
+			fflush(stdout);
 			for (i = esperada->index; i < (esperada->index + esperada->entradasOcupadas);i++) {
 				strcpy(tabla_entradas[i],"NaN");
 				ENTRADAS_LIBRES++;
 			}
+			printf("DESPUES DE LIMPIAR %s\n",tabla_entradas[0]);
+			fflush(stdout);
 			log_info(logger, "STORE OK se creo archivo con clave %s y valor %s",key, valueReturn);
 			//aviso a coordinador que termine OK
 			EnviarDatosTipo(socketCoordinador, INSTANCIA, key, strlen(key) + 1,STOREOK);
@@ -532,6 +541,8 @@ int main(int argc, char* argv[]) {
 		}
 			break;
 		case SETINST: {
+			printf("%s\n",tabla_entradas[0]);
+			fflush(stdout);
 			char*key = calloc(1,100);
 			strcpy(key, datos);
 			key = realloc(key,strlen(key)+1);
@@ -575,12 +586,14 @@ int main(int argc, char* argv[]) {
 			{
 				t_Entrada* entrada = list_find(entradas_administrativa,LAMBDA(bool _(t_Entrada *elemento) { return !strcmp(key, elemento->clave);}));
 				int i;
-				for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
-						i++) {
-					free(tabla_entradas[i]);
-					tabla_entradas[i]=calloc(1,TAMANIO_ENTRADA);
-					strcpy(tabla_entradas[i],"NaN");
-					ENTRADAS_LIBRES++;
+				if(entrada->activo){
+					for (i = entrada->index; i < (entrada->index + entrada->entradasOcupadas);
+							i++) {
+						free(tabla_entradas[i]);
+						tabla_entradas[i]=calloc(1,TAMANIO_ENTRADA);
+						strcpy(tabla_entradas[i],"NaN");
+						ENTRADAS_LIBRES++;
+					}
 				}
 
 				entrada->entradasOcupadas = ceilDivision(strlen(value));

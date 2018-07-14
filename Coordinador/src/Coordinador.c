@@ -679,6 +679,13 @@ void accion(void* socket) {
 							"El COORDINADOR recibió operación STORE del ESI: %s, con clave: %s\n",
 							id, paquete.Payload);
 					if (verificarGet(id, (char*) paquete.Payload)) {
+						t_list*claves = ((t_esiCoordinador*) list_find(esis,LAMBDA(int _(t_esiCoordinador *elemento) {
+									return elemento->socket == socketFD;}
+						)))->claves;
+						list_remove_by_condition(claves,LAMBDA(int _(char *e) {
+									return !strcmp(e,paquete.Payload);
+								}
+						));
 						int socketInstancia = obtenerSocket(paquete.Payload);
 						if (socketInstancia != 0)
 							EnviarDatosTipo(socketInstancia, COORDINADOR,
