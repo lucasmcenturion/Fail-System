@@ -552,6 +552,9 @@ int main(int argc, char* argv[]) {
 		case SETINST: {
 			char*key = calloc(1,100);
 			strcpy(key, datos);
+			for (int var = 0; var <= 7; ++var) {
+				log_info(logger, "%s", tabla_entradas[var]);
+			}
 			key = realloc(key,strlen(key)+1);
 			datos += strlen(datos) + 1;
 			char* value = calloc(1,strlen(datos) + 1);
@@ -627,7 +630,7 @@ int main(int argc, char* argv[]) {
 			}
 			ULT_REF++;
 			pthread_mutex_unlock(&mutex_entradas);
-			log_info(logger, "se hizo un SET de clave %s", key);
+			log_info(logger, "se hizo un SET de clave %s con value %s", key, value);
 			int tam=strlen(key)+strlen(value)+sizeof(int)+2;
 			void* claveykey = calloc(1,tam);
 			strcpy(claveykey,key);
