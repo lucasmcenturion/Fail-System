@@ -177,7 +177,7 @@ void imprimirArchivoConfiguracion() {
 			"CANT_ENTRADAS=%d\n"
 			"TAMANIO_ENTRADA=%d\n"
 			"RETARDO=%d\n", IP, PUERTO, ALGORITMO_DISTRIBUCION, CANT_ENTRADAS,
-			TAMANIO_ENTRADA, RETARDO);
+			TAMANIO_ENTRADA, RETARDO/1000);
 	fflush(stdout);
 }
 

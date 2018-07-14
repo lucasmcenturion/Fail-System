@@ -311,7 +311,7 @@ int tiempoDeEspera(procesoEsi *esi) {
 }
 
 float tasaDeRespuesta(procesoEsi *esi) {
-	int tasa= ((tiempoDeEspera(esi) + (esi->rafagasEstimadas))/tiempoDeEspera(esi));
+	float tasa= ((tiempoDeEspera(esi) + (esi->rafagasEstimadas))/(esi->rafagasEstimadas));
 	if(tasa <= 0){
 	return  0;
 	}
@@ -336,7 +336,7 @@ bool ComparadorDeTasaDeRespuesta(procesoEsi *esi, procesoEsi *esiMenor) {
 void ejecutarEsi() {
 	//if(!planificacion_detenida){
 		if (list_size(EJECUCION) > 0) {
-			if(list_size(BLOQUEADOS) > 0 )
+			//if(list_size(BLOQUEADOS) > 0 )
 				//if(!strcmp(((esiBloqueado*)(list_get(BLOQUEADOS,0)))->esi->id, "Tiramisu"))
 				//{
 					log_info(logger,"Ejecucion id %s, socket %d, Raf Reales%d, Raf Est %.2f,Tiempo De llegada %d", ((procesoEsi*) list_get(EJECUCION, 0))->id
@@ -348,6 +348,7 @@ void ejecutarEsi() {
 				//}
 			procesoEsi* esiAEjecutar = (procesoEsi*) list_get(EJECUCION, 0);
 			tiempoActual++;
+			log_info(logger,"Tiempo Actual %d", tiempoActual);
 			++esiAEjecutar->rafagasRealesEjecutadas;
 			EnviarDatosTipo(esiAEjecutar->socket, PLANIFICADOR, NULL, 0, SIGUIENTELINEA);
 		}else {
