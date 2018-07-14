@@ -434,12 +434,12 @@ void crearArchivo(char*key, char*value) {
 void dump() {
 	pthread_mutex_lock(&mutex_entradas);
 
-		t_list*atomicos=list_create();
-		atomicos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->atomico && e->activo;}));
+		t_list*activos=list_create();
+		activos = list_filter(entradas_administrativa,LAMBDA(int _(t_Entrada *e) {return e->activo;}));
 		int i, j;
-		for (i = 0; i < list_size(atomicos); i++) {
+		for (i = 0; i < list_size(activos); i++) {
 
-			t_Entrada* actual = (t_Entrada*) list_get(atomicos,i);
+			t_Entrada* actual = (t_Entrada*) list_get(activos,i);
 			char* directorio_actual = calloc(1,strlen(PUNTO_MONTAJE) + strlen(actual->clave) + 3);
 			strcpy(directorio_actual, PUNTO_MONTAJE);
 			strcat(directorio_actual,"/");
